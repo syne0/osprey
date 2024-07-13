@@ -55,7 +55,7 @@ Function Out-MultipleFileType {
 
         # Set the output path
         if ([string]::IsNullOrEmpty($User)) {
-            $path = join-path $Hawk.filepath "\Tenant"
+            $path = join-path $Osprey.filepath "\Tenant"
             # Test the path if it is there do nothing otherwise create it
             if (test-path $path) { }
             else {
@@ -64,7 +64,7 @@ Function Out-MultipleFileType {
             }
         }
         else {
-            $path = join-path $Hawk.filepath $user
+            $path = join-path $Osprey.filepath $user
 
             # Set a bool so we know this is a user output
             [bool]$UserOutput = $true

@@ -20,13 +20,13 @@ Function Get-IPGeolocation {
         $IPAddress
     )
 
-    # If we don't have a HawkAppData variable then we need to read it in
-    if (!([bool](get-variable HawkAppData -erroraction silentlycontinue))) {
-        Read-HawkAppData
+    # If we don't have a OspreyAppData variable then we need to read it in
+    if (!([bool](get-variable OspreyAppData -erroraction silentlycontinue))) {
+        Read-OspreyAppData
     }
 
     # if there is no value of access_key then we need to get it from the user
-    if ($null -eq $HawkAppData.access_key) {
+    if ($null -eq $OspreyAppData.access_key) {
 
         Write-Host -ForegroundColor Green "
         IpStack.com now requires an API access key to gather GeoIP information from their API.
@@ -37,10 +37,10 @@ Function Get-IPGeolocation {
         $Accesskey = Read-Host "ipstack.com accesskey"
 
         # add the access key to the appdata file
-        Add-HawkAppData -name access_key -Value $Accesskey
+        Add-OspreyAppData -name access_key -Value $Accesskey
     }
     else {
-        $Accesskey = $HawkAppData.access_key
+        $Accesskey = $OspreyAppData.access_key
     }
 
     # Check the global IP cache and see if we already have the IP there

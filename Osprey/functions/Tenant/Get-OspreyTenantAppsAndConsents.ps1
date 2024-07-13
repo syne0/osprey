@@ -48,7 +48,7 @@ Function Get-OspreyTenantAppsAndConsents {
     $SuspiciousApps = Invoke-RestMethod -URI https://raw.githubusercontent.com/syne0/detections/main/M365_Oauth_Apps/MaliciousOauthAppDetections.json #pull list of malicious oauth apps from github
 
     #TODO: ps custom object to get properties from both outputs
-    $MatchingApps = $($AllTenantApps|Where-Object displayname -in $SuspiciousApps.applications.name;$AllTenantApps|Where-Object appid -in $SuspiciousApps.appid) | Sort-Object appid -unique
+    $MatchingApps = $($AllTenantApps | Where-Object displayname -in $SuspiciousApps.applications.name; $AllTenantApps | Where-Object appid -in $SuspiciousApps.appid) | Sort-Object appid -unique
 
     if ($null -eq $MatchingApps) {
         Out-LogFile "No suspicious applications found in tenant"
@@ -58,16 +58,18 @@ Function Get-OspreyTenantAppsAndConsents {
         $MatchingApps | Out-MultipleFileType -FilePrefix "_Investigate_Suspicious_App_List" -txt -notice
     }
 
+    <#
     ##Gathering all apps and their principles and permissions##
     # Using the script from the article https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/detect-and-remediate-illicit-consent-grants
 
     [array]$Grants = Get-AzureADPSPermissions -ShowProgress
     # [bool]$flag = $false
 
-    #This isnt super helpful since it always grabs some apps that are from Microsoft, so it's very noisy and easy to ignore. Cutting below bit out for now.
+    #This isnt super helpful since it always grabs some apps that are from Microsoft
+    #TODO: use MS apps json i put on GH and exclude stuff inside of that list
     #TODO: Improve this bit to be more useful in situations of admin compromise
     
-    <# Search the Grants for the listed bad grants that we can detect
+    # Search the Grants for the listed bad grants that we can detect
     if ($Grants.consenttype -contains 'AllPrinciples') {
         Out-LogFile "Found at least one `'AllPrinciples`' Grant" -notice
         $flag = $true
@@ -85,8 +87,8 @@ Function Get-OspreyTenantAppsAndConsents {
         Out-LogFile "To review this data follow:"
         Out-LogFile "https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/detect-and-remediate-illicit-consent-grants#inventory-apps-with-access-in-your-organization"
     }
-#>
+
 
     $Grants | Out-MultipleFileType -FilePrefix "Tenant_Applications" -csv -json
-
+#>
 }

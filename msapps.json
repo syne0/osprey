@@ -1,0 +1,382 @@
+[
+    {
+        "AppDisplayName":  "AAD App Management",
+        "AppId":  "f0ae4899-d877-4d3c-ae25-679e38eea492"
+    },
+    {
+        "AppDisplayName":  "AAD Request Verification Service - PROD",
+        "AppId":  "c728155f-7b2a-4502-a08b-b8af9b269319"
+    },
+    {
+        "AppDisplayName":  "AADReporting",
+        "AppId":  "1b912ec3-a9dd-4c4d-a53e-76aa7adb28d7"
+    },
+    {
+        "AppDisplayName":  "Azure Credential Configuration Endpoint Service",
+        "AppId":  "ea890292-c8c8-4433-b5ea-b09d0668e1a6"
+    },
+    {
+        "AppDisplayName":  "Azure Information Protection",
+        "AppId":  "5b20c633-9a48-4a5f-95f6-dae91879051f"
+    },
+    {
+        "AppDisplayName":  "Azure MFA StrongAuthenticationService",
+        "AppId":  "b5a60e17-278b-4c92-a4e2-b9262e66bb28"
+    },
+    {
+        "AppDisplayName":  "Azure Portal",
+        "AppId":  "c44b4083-3bb0-49c1-b47d-974e53cbdf3c"
+    },
+    {
+        "AppDisplayName":  "Azure Resource Graph",
+        "AppId":  "509e4652-da8d-478d-a730-e9d4a1996ca4"
+    },
+    {
+        "AppDisplayName":  "AzureSupportCenter",
+        "AppId":  "37182072-3c9c-4f6a-a4b3-b3f91cacffce"
+    },
+    {
+        "AppDisplayName":  "Bing",
+        "AppId":  "9ea1ad79-fdb6-4f9a-8bc3-2b70f96e34c7"
+    },
+    {
+        "AppDisplayName":  "Common Data Service License Management",
+        "AppId":  "1c2909a7-6432-4263-a70d-929a3c1f9ee5"
+    },
+    {
+        "AppDisplayName":  "ComplianceWorkbenchApp",
+        "AppId":  "92876b03-76a3-4da8-ad6a-0511ffdf8647"
+    },
+    {
+        "AppDisplayName":  "Conference Auto Attendant",
+        "AppId":  "207a6836-d031-4764-a9d8-c1193f455f21"
+    },
+    {
+        "AppDisplayName":  "Conferencing Virtual Assistant",
+        "AppId":  "9e133cac-5238-4d1e-aaa0-d8ff4ca23f4e"
+    },
+    {
+        "AppDisplayName":  "Cortana at Work Service",
+        "AppId":  "2a486b53-dbd2-49c0-a2bc-278bdfc30833"
+    },
+    {
+        "AppDisplayName":  "Cortana Runtime Service",
+        "AppId":  "81473081-50b9-469a-b9d8-303109583ecb"
+    },
+    {
+        "AppDisplayName":  "CPIM Service",
+        "AppId":  "bb2a2e3a-c5e7-4f0a-88e0-8e01fd3fc1f4"
+    },
+    {
+        "AppDisplayName":  "Customer Experience Platform PROD",
+        "AppId":  "2220bbc4-4518-4fef-aac6-c6f32e9f9fd1"
+    },
+    {
+        "AppDisplayName":  "Customer Service Trial PVA",
+        "AppId":  "944861d3-5975-4f8b-afd4-3422c0b1b6ce"
+    },
+    {
+        "AppDisplayName":  "Customer Service Trial PVA - readonly",
+        "AppId":  "6abc93dc-978e-48a3-8e54-458e593ed8cf"
+    },
+    {
+        "AppDisplayName":  "Device Registration Service",
+        "AppId":  "01cb2876-7ebd-4aa4-9cc9-d28bd4d359a9"
+    },
+    {
+        "AppDisplayName":  "Dynamics Data Integration",
+        "AppId":  "2e49aa60-1bd3-43b6-8ab6-03ada3d9f08b"
+    },
+    {
+        "AppDisplayName":  "Dynamics Lifecycle services",
+        "AppId":  "913c6de4-2a4a-4a61-a9ce-945d2b2ce2e0"
+    },
+    {
+        "AppDisplayName":  "IC3 Long Running Operations Service",
+        "AppId":  "21a8a852-89f4-4947-a374-b26b2db3d365"
+    },
+    {
+        "AppDisplayName":  "IDML Graph Resolver Service and CAD",
+        "AppId":  "d88a361a-d488-4271-a13f-a83df7dd99c2"
+    },
+    {
+        "AppDisplayName":  "IpLicensingService",
+        "AppId":  "189cf920-d3d8-4133-9145-23adcc6824fa"
+    },
+    {
+        "AppDisplayName":  "IPSubstrate",
+        "AppId":  "4c8f074c-e32b-4ba7-b072-0f39d71daf51"
+    },
+    {
+        "AppDisplayName":  "M365 Label Analytics",
+        "AppId":  "75513c96-801d-4559-830a-6754de13dd19"
+    },
+    {
+        "AppDisplayName":  "M365 License Manager",
+        "AppId":  "aeb86249-8ea3-49e2-900b-54cc8e308f85"
+    },
+    {
+        "AppDisplayName":  "MCAPI Authorization Prod",
+        "AppId":  "d73f4b35-55c9-48c7-8b10-651f6f2acb2e"
+    },
+    {
+        "AppDisplayName":  "Messaging Augmentation Application",
+        "AppId":  "f7c7f738-cb99-4489-9da3-57b15655c430"
+    },
+    {
+        "AppDisplayName":  "Messaging Bot API Application",
+        "AppId":  "5a807f24-c9de-44ee-a3a7-329e88a00ffc"
+    },
+    {
+        "AppDisplayName":  "Microsoft 365 Security and Compliance Center",
+        "AppId":  "80ccca67-54bd-44ab-8625-4b79c4dc7775"
+    },
+    {
+        "AppDisplayName":  "Microsoft B2B Admin Worker",
+        "AppId":  "1e2ca66a-c176-45ea-a877-e87f7231e0ee"
+    },
+    {
+        "AppDisplayName":  "Microsoft Cloud App Security",
+        "AppId":  "05a65629-4c1b-48c1-a78b-804c4abdd4af"
+    },
+    {
+        "AppDisplayName":  "Microsoft Developer Sample Packs for SharePoint",
+        "AppId":  "18cd1722-ae3d-4729-8e39-0ba15c742e28"
+    },
+    {
+        "AppDisplayName":  "Microsoft Device Management Checkin",
+        "AppId":  "ca0a114d-6fbc-46b3-90fa-2ec954794ddb"
+    },
+    {
+        "AppDisplayName":  "Microsoft Exchange Online Protection",
+        "AppId":  "00000007-0000-0ff1-ce00-000000000000"
+    },
+    {
+        "AppDisplayName":  "Microsoft Flow CDS Integration Service",
+        "AppId":  "0eda3b13-ddc9-4c25-b7dd-2f6ea073d6b7"
+    },
+    {
+        "AppDisplayName":  "Microsoft Flow Service",
+        "AppId":  "7df0a125-d3be-4c96-aa54-591f83ff541c"
+    },
+    {
+        "AppDisplayName":  "Microsoft Graph Change Tracking",
+        "AppId":  "0bf30f3b-4a52-48df-9a82-234910c4a086"
+    },
+    {
+        "AppDisplayName":  "Microsoft Information Protection API",
+        "AppId":  "40775b29-2688-46b6-a3b5-b256bd04df9f"
+    },
+    {
+        "AppDisplayName":  "Microsoft Insider Risk Management",
+        "AppId":  "1fe0d6b3-81f0-4cf5-9dfd-fbb297d7848c"
+    },
+    {
+        "AppDisplayName":  "Microsoft Intune API",
+        "AppId":  "c161e42e-d4df-4a3d-9b42-e7a3c31f59d4"
+    },
+    {
+        "AppDisplayName":  "Microsoft Intune SCCM Connector",
+        "AppId":  "63e61dc2-f593-4a6f-92b9-92e4d2c03d4f"
+    },
+    {
+        "AppDisplayName":  "Microsoft Invitation Acceptance Portal",
+        "AppId":  "4660504c-45b3-4674-a709-71951a6b0763"
+    },
+    {
+        "AppDisplayName":  "Microsoft Mobile Application Management",
+        "AppId":  "0a5f63c0-b750-4f38-a71c-4fc0d58b89e2"
+    },
+    {
+        "AppDisplayName":  "Microsoft password reset service",
+        "AppId":  "93625bc8-bfe2-437a-97e0-3d0060024faa"
+    },
+    {
+        "AppDisplayName":  "Microsoft Service Trust",
+        "AppId":  "d6fdaa33-e821-4211-83d0-cf74736489e1"
+    },
+    {
+        "AppDisplayName":  "Microsoft Teams AuthSvc",
+        "AppId":  "a164aee5-7d0a-46bb-9404-37421d58bdf7"
+    },
+    {
+        "AppDisplayName":  "Microsoft Teams Chat Aggregator",
+        "AppId":  "b1379a75-ce5e-4fa3-80c6-89bb39bf646c"
+    },
+    {
+        "AppDisplayName":  "Microsoft Teams UIS",
+        "AppId":  "1996141e-2b07-4491-927a-5a024b335c78"
+    },
+    {
+        "AppDisplayName":  "Microsoft To-Do",
+        "AppId":  "c830ddb0-63e6-4f22-bd71-2ad47198a23e"
+    },
+    {
+        "AppDisplayName":  "Microsoft Windows AutoPilot Service API",
+        "AppId":  "cbfda01c-c883-45aa-aedc-e7a484615620"
+    },
+    {
+        "AppDisplayName":  "Microsoft Workplace Search Service",
+        "AppId":  "f3a218b7-5c8f-460b-93af-56b072788c15"
+    },
+    {
+        "AppDisplayName":  "Microsoft.Azure.SyncFabric",
+        "AppId":  "00000014-0000-0000-c000-000000000000"
+    },
+    {
+        "AppDisplayName":  "MIP Exchange Solutions - SPO",
+        "AppId":  "192644fe-6aac-4786-8d93-775a056aa1de"
+    },
+    {
+        "AppDisplayName":  "MS Teams Griffin Assistant",
+        "AppId":  "c9224372-5534-42cb-a48b-8db4f4a3892e"
+    },
+    {
+        "AppDisplayName":  "MsgDataMgmt",
+        "AppId":  "61a63147-3824-45f5-a186-ace3f4c9daeb"
+    },
+    {
+        "AppDisplayName":  "MS-PIM",
+        "AppId":  "01fc33a7-78ba-4d2f-a4b7-768e336e890e"
+    },
+    {
+        "AppDisplayName":  "My Apps",
+        "AppId":  "2793995e-0a7d-40d7-bd35-6968ba142197"
+    },
+    {
+        "AppDisplayName":  "O365 Demeter",
+        "AppId":  "982bda36-4632-4165-a46a-9863b1bbcf7d"
+    },
+    {
+        "AppDisplayName":  "O365 Secure Score",
+        "AppId":  "8b3391f4-af01-4ee8-b4ea-9871b2499735"
+    },
+    {
+        "AppDisplayName":  "o365.servicecommunications.microsoft.com",
+        "AppId":  "cb1bda4c-1213-4e8b-911a-0a8c83c5d3b7"
+    },
+    {
+        "AppDisplayName":  "OCaaS Experience Management Service",
+        "AppId":  "6e99704e-62d5-40f6-b2fe-90aafbe3a710"
+    },
+    {
+        "AppDisplayName":  "Office 365 Configure",
+        "AppId":  "aa9ecb1e-fd53-4aaa-a8fe-7a54de2c1334"
+    },
+    {
+        "AppDisplayName":  "Office 365 Exchange Online",
+        "AppId":  "00000002-0000-0ff1-ce00-000000000000"
+    },
+    {
+        "AppDisplayName":  "Office 365 Information Protection",
+        "AppId":  "2f3f02c9-5679-4a5c-a605-0de55b07d135"
+    },
+    {
+        "AppDisplayName":  "Office 365 Search Service",
+        "AppId":  "66a88757-258c-4c72-893c-3e8bed4d6899"
+    },
+    {
+        "AppDisplayName":  "Office 365 SharePoint Online",
+        "AppId":  "00000003-0000-0ff1-ce00-000000000000"
+    },
+    {
+        "AppDisplayName":  "Office MRO Device Manager Service",
+        "AppId":  "ebe0c285-db95-403f-a1a3-a793bd6d7767"
+    },
+    {
+        "AppDisplayName":  "Office Online Service LEGACY",
+        "AppId":  "67e3df25-268a-4324-a550-0de1c7f97287"
+    },
+    {
+        "AppDisplayName":  "Office365 Zoom",
+        "AppId":  "0d38933a-0bbd-41ca-9ebd-28c4b5ba7cb7"
+    },
+    {
+        "AppDisplayName":  "Office365DirectorySynchronizationService",
+        "AppId":  "18af356b-c4fd-4f52-9899-d09d21397ab7"
+    },
+    {
+        "AppDisplayName":  "OfficeClientService",
+        "AppId":  "0f698dd4-f011-4d23-a33e-b36416dcb1e6"
+    },
+    {
+        "AppDisplayName":  "OfficeServicesManager",
+        "AppId":  "9e4a5442-a5c9-4f6f-b03f-5b9fcaaf24b1"
+    },
+    {
+        "AppDisplayName":  "OneProfile Service",
+        "AppId":  "b2cc270f-563e-4d8a-af47-f00963a71dcd"
+    },
+    {
+        "AppDisplayName":  "Policy Administration Service",
+        "AppId":  "0469d4cd-df37-4d93-8a61-f8c75b809164"
+    },
+    {
+        "AppDisplayName":  "PowerApps-Advisor",
+        "AppId":  "c9299480-c13a-49db-a7ae-cdfe54fe0313"
+    },
+    {
+        "AppDisplayName":  "ProjectWorkManagement",
+        "AppId":  "09abbdfd-ed23-44ee-a2d9-a627aa1c90f3"
+    },
+    {
+        "AppDisplayName":  "SalesInsightsWebApp",
+        "AppId":  "b20d0d3a-dc90-485b-ad11-6031e769e221"
+    },
+    {
+        "AppDisplayName":  "SharePoint Home Notifier",
+        "AppId":  "4e445925-163e-42ca-b801-9073bfa46d17"
+    },
+    {
+        "AppDisplayName":  "SharePoint Online Web Client Extensibility",
+        "AppId":  "08e18876-6177-487e-b8b5-cf950c1e598c"
+    },
+    {
+        "AppDisplayName":  "Skype for Business",
+        "AppId":  "7557eb47-c689-4224-abcf-aef9bd7573df"
+    },
+    {
+        "AppDisplayName":  "Skype for Business Online",
+        "AppId":  "00000004-0000-0ff1-ce00-000000000000"
+    },
+    {
+        "AppDisplayName":  "Skype Teams Firehose",
+        "AppId":  "cdccd920-384b-4a25-897d-75161a4b74c1"
+    },
+    {
+        "AppDisplayName":  "Substrate Instant Revocation Pipeline",
+        "AppId":  "eace8149-b661-472f-b40d-939f89085bd4"
+    },
+    {
+        "AppDisplayName":  "Substrate-FileWatcher",
+        "AppId":  "fbb0ac1a-82dd-478b-a0e5-0b2b98ef38fe"
+    },
+    {
+        "AppDisplayName":  "Teams CMD Services and Data",
+        "AppId":  "00edd498-7c0c-4e68-859c-5a55d518c9c0"
+    },
+    {
+        "AppDisplayName":  "Teams NRT DLP Ingestion Service",
+        "AppId":  "0ef94e72-e4fc-4aa0-a8f4-ff27deb3e6eb"
+    },
+    {
+        "AppDisplayName":  "Viva Engage",
+        "AppId":  "00000005-0000-0ff1-ce00-000000000000"
+    },
+    {
+        "AppDisplayName":  "Viva Learning",
+        "AppId":  "2c9e12e5-a56c-4ba1-b768-7a141586c6fe"
+    },
+    {
+        "AppDisplayName":  "Windows 365",
+        "AppId":  "0af06dc6-e4b5-4f28-818e-e78e62d137a5"
+    },
+    {
+        "AppDisplayName":  "Windows Azure Service Management API",
+        "AppId":  "797f4846-ba00-4fd7-ba43-dac1f8f63013"
+    },
+    {
+        "AppDisplayName":  "WindowsUpdate-Service",
+        "AppId":  "6f0478d5-61a3-4897-a2f2-de09a5a90c7f"
+    }
+]

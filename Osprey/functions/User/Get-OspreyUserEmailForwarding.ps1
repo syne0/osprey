@@ -1,36 +1,12 @@
-﻿Function Get-OspreyUserEmailForwarding {
-    <#
-	.SYNOPSIS
-	Pulls mail forwarding configuration for a specified user.
+﻿<#
 	.DESCRIPTION
 	Pulls the values of ForwardingSMTPAddress and ForwardingAddress to see if the user has these configured.
-	.PARAMETER UserPrincipalName
-	Single UPN of a user, commans seperated list of UPNs, or array of objects that contain UPNs.
 	.OUTPUTS
-
 	File: _Investigate_Users_WithForwarding.csv
-	Path: \
-	Description: All users that are found to have forwarding configured.
-
 	File: User_ForwardingReport.csv
-	Path: \
-	Description: Mail forwarding configuration for all searched users; even if null.
-
 	File: ForwardingReport.csv
-	Path: \<user>
-	Description: Forwarding confiruation of the searched user.
-	.EXAMPLE
-
-	Get-OspreyUserEmailForwarding -UserPrincipalName user@contoso.com
-
-	Gathers possible email forwarding configured on the user.
-
-    .EXAMPLE
-
-	Get-OspreyUserEmailForwarding -UserPrincipalName (get-mailbox -Filter {Customattribute1 -eq "C-level"})
-
-	Gathers possible email forwarding configured for all users who have "C-Level" set in CustomAttribute1
     #>
+Function Get-OspreyUserEmailForwarding {
 
     param
     (

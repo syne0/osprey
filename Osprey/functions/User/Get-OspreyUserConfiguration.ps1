@@ -1,42 +1,17 @@
-Function Get-OspreyUserConfiguration {
 <#
-.SYNOPSIS
-	Gathers baseline information about the provided user.
 .DESCRIPTION
 	Gathers and records baseline information about the provided user.
 	* Get-EXOMailbox
 	* Get-EXOMailboxStatistics
 	* Get-EXOMailboxFolderStatistics
 	* Get-CASMailbox
-.PARAMETER UserPrincipalName
-	Single UPN of a user, commans seperated list of UPNs, or array of objects that contain UPNs.
 .OUTPUTS
-
-	File: Mailbox_Info.txt
-	Path: \<User>
-	Description: Output of Get-EXOMailbox for the user
-
-	File: Mailbox_Statistics.txt
-	Path : \<User>
-	Description: Output of Get-EXOMailboxStatistics for the user
-
-	File: Mailbox_Folder_Statistics.txt
-	Path : \<User>
-	Description: Output of Get-EXOMailboxFolderStatistics for the user
-
-	File: CAS_Mailbox_Info.txt
-	Path : \<User>
-	Description: Output of Get-CasMailbox for the user
-.EXAMPLE
-	Get-OspreyUserConfiguration -user bsmith@contoso.com
-
-	Gathers the user configuration for bsmith@contoso.com
-.EXAMPLE
-
-	Get-OspreyUserConfiguration -UserPrincipalName (Get-EXOMailbox -Filter {Customattribute1 -eq "C-level"})
-
-	Gathers the user configuration for all users who have "C-Level" set in CustomAttribute1
+	Mailbox_Info.txt
+	Mailbox_Statistics.txt
+	Mailbox_Folder_Statistics.txt
+	CAS_Mailbox_Info.txt
 #>
+Function Get-OspreyUserConfiguration {
 
     param
     (

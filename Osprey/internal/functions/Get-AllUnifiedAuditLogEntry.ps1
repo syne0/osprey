@@ -7,9 +7,9 @@
 .PARAMETER UnifiedSearch
     The search parameters
 .PARAMETER StartDate
-    The start date provided by user during Hawk Object Initialization
+    The start date provided by user during Osprey Object Initialization
 .PARAMETER EndDate
-    The end date provide by the user during Hawk Object Initialization
+    The end date provide by the user during Osprey Object Initialization
 .EXAMPLE
     Get-AllUnifiedAuditLogEntry
     Gets all unified auditlog entries
@@ -20,8 +20,8 @@
     (
         [Parameter(Mandatory = $true)]
         [string]$UnifiedSearch,
-        [datetime]$StartDate = $Hawk.StartDate,
-        [datetime]$EndDate = $Hawk.EndDate
+        [datetime]$StartDate = $Osprey.StartDate,
+        [datetime]$EndDate = $Osprey.EndDate
     )
 
     # Validate the incoming search command

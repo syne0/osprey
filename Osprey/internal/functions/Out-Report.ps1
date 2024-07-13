@@ -42,7 +42,7 @@
     # Set our output path
     # Single report file for all outputs user/tenant/etc.
     # This might change in the future???
-    $reportpath = Join-path $hawk.filepath report.xml
+    $reportpath = Join-path $Osprey.filepath report.xml
 
     # Switch statement to handle the state to color mapping
     switch ($State) {
@@ -53,14 +53,14 @@
     }
 
     # Check if we have our XSL file in the output directory
-    $xslpath = Join-path $hawk.filepath Report.xsl
+    $xslpath = Join-path $Osprey.filepath Report.xsl
 
     if (Test-Path $xslpath ) { }
     else {
         # Copy the XSL file into the current output path
-        $sourcepath = join-path (split-path (Get-Module Hawk).path) report.xsl
+        $sourcepath = join-path (split-path (Get-Module Osprey).path) report.xsl
         if (test-path $sourcepath) {
-            Copy-Item -Path $sourcepath -Destination $hawk.filepath
+            Copy-Item -Path $sourcepath -Destination $Osprey.filepath
         }
         # If we couldn't find it throw and error and stop
         else {
@@ -82,7 +82,7 @@
 
         # Create the xml declaraiton and stylesheet
         $reportxml.AppendChild($reportxml.CreateXmlDeclaration("1.0", $null, $null)) | Out-Null
-        # $xmlstyle = "type=`"text/xsl`" href=`"https://csshawk.azurewebsites.net/report.xsl`""
+        # $xmlstyle = "type=`"text/xsl`" href=`"https://cssOsprey.azurewebsites.net/report.xsl`""
         # $reportxml.AppendChild($reportxml.CreateProcessingInstruction("xml-stylesheet",$xmlstyle)) | Out-Null
 
         # Create all of the needed elements

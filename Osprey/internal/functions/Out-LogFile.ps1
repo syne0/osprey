@@ -26,15 +26,10 @@ Function Out-LogFile {
         [switch]$silentnotice
 	)
 
-	Write-PSFMessage -Message $string -ModuleName Hawk -FunctionName (Get-PSCallstack)[1].FunctionName
-
-    # Make sure we have the Hawk Global Object
-    if ([string]::IsNullOrEmpty($Hawk.FilePath)) {
-        Initialize-HawkGlobalObject
-    }
+	Write-PSFMessage -Message $string -ModuleName Osprey -FunctionName (Get-PSCallstack)[1].FunctionName
 
     # Get our log file path
-    $LogFile = Join-path $Hawk.FilePath "Hawk.log"
+    $LogFile = Join-path $Osprey.FilePath "Osprey.log"
     $ScreenOutput = $true
     $LogOutput = $true
 

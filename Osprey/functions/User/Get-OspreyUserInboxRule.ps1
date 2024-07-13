@@ -1,37 +1,16 @@
 ﻿# Gets user inbox rules and looks for Investigate rules
-Function Get-OspreyUserInboxRule {
 <#
-.SYNOPSIS
-    Exports inbox rules for the specified user.
 .DESCRIPTION
-    Gathers inbox rules for the provided uers.
-    Looks for rules that forward or delete email and flag them for follow up
-.PARAMETER UserPrincipalName
-    Single UPN of a user, commans seperated list of UPNs, or array of objects that contain UPNs.
+    Gathers inbox rules and sweep rules for the provided users.
+    Looks for rules that forward,delete, or redirect email to specific sus folders and flags them.
 .OUTPUTS
-
-    File: _Investigate_InboxRules.csv
-    Path: \<User>
-    Description: Inbox rules that delete or forward messages.
-
-    File: InboxRules.csv
-    Path: \<User>
-    Description: All inbox rules that were found for the user.
-
-    File: All_InboxRules.csv
-    Path: \
-    Description: All users inbox rules.
-.EXAMPLE
-
-    Get-OspreyUserInboxRule -UserPrincipalName user@contoso.com
-
-    Pulls all inbox rules for user@contoso.com and looks for Investigate rules.
-.EXAMPLE
-
-    Get-OspreyUserInboxRule -UserPrincipalName (get-mailbox -Filter {Customattribute1 -eq "C-level"})
-
-    Gathers inbox rules for all users who have "C-Level" set in CustomAttribute1
+    _Investigate_InboxRules.csv
+    InboxRules.csv
+    All_InboxRules.csv
+    SweepRules.csv
+    All_SweepRules.csv
 #>
+Function Get-OspreyUserInboxRule {
 
     param
     (
@@ -66,25 +45,26 @@ Function Get-OspreyUserInboxRule {
                 if (!([string]::IsNullOrEmpty($Rule.ForwardAsAttachmentTo))) { $Investigate = $true }
                 if (!([string]::IsNullOrEmpty($Rule.ForwardTo))) { $Investigate = $true }
                 if (!([string]::IsNullOrEmpty($Rule.RedirectTo))) { $Investigate = $true }
+                if ($Rule.MoveToFolder -like "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
 
                 # If we have set the Investigate flag then report it and output it to a seperate file
                 if ($Investigate -eq $true) {
                     Out-LogFile ("Possible Investigate inbox rule found ID:" + $Rule.Identity + " Rule:" + $Rule.Name) -notice
-					# Description is multiline
-					$Rule.Description = $Rule.Description.replace("`r`n", " ").replace("`t", "")
+                    # Description is multiline
+                    $Rule.Description = $Rule.Description.replace("`r`n", " ").replace("`t", "")
                     $Rule | Out-MultipleFileType -FilePreFix "_Investigate_InboxRules" -user $user -csv -json -append -Notice
                 }
             }
 
-			# Description is multiline
-			$inboxrulesRawDescription = $InboxRules
-			$InboxRules = New-Object -TypeName "System.Collections.ArrayList"
+            # Description is multiline
+            $inboxrulesRawDescription = $InboxRules
+            $InboxRules = New-Object -TypeName "System.Collections.ArrayList"
 
-			$inboxrulesRawDescription | ForEach-Object {
-				$_.Description = $_.Description.Replace("`r`n", " ").replace("`t", "")
+            $inboxrulesRawDescription | ForEach-Object {
+                $_.Description = $_.Description.Replace("`r`n", " ").replace("`t", "")
 
-				$null = $InboxRules.Add($_)
-			}
+                $null = $InboxRules.Add($_)
+            }
 
             # Output all of the inbox rules to a generic csv
             $InboxRules | Out-MultipleFileType -FilePreFix "InboxRules" -User $user -csv -json
