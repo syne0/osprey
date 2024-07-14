@@ -10,7 +10,7 @@
 	Remove Unverified Domain
 .OUTPUTS
 	Domain_Changes.csv
-#>
+#> #conf 7/13
 Function Get-OspreyTenantDomainActivity {
 	
 	Test-EXOConnection

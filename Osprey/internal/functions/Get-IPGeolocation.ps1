@@ -11,7 +11,7 @@
     Gets all IP Geolocation data of IPs that recieved
 .NOTES
     General notes
-#>
+#> 
 Function Get-IPGeolocation {
 
     Param

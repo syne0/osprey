@@ -24,7 +24,7 @@
     Determined what file is being used for export of data
 .NOTES
     Need to review invesigation criteria of data being exported
-#>
+#> 
 Function Out-MultipleFileType {
     param
     (

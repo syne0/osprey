@@ -3,7 +3,7 @@
     Searches the UAL for eDiscovery events
 .OUTPUTS
     eDiscoveryLogs.csv
-    #>
+    #> #conf 7/13
 Function Get-OspreyTenantEDiscoveryLogs {
     
     Test-EXOConnection

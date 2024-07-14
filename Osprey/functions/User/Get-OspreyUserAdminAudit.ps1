@@ -17,7 +17,9 @@
 
     Gets all changes made to user@company.com and ouputs them to the csv and xml files.
 #>
-
+#TODO: Determine if this can/should stick around and what is needed to keep it
+#no access to admin audit log anymore to check what activities were gathered, so determine what changes to a user account we'd need to most know about
+#this may be tough as records like 'update user' have a lot of stuff contained and a lot of it is automatic system garbage..
     param
     (
         [Parameter(Mandatory = $true)]

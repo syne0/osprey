@@ -9,7 +9,7 @@
     Suspicious_App_List.txt
     Tenant_Applications.csv
     Tenant_Applications.json
-#>
+#> #conf 7/13
 Function Get-OspreyTenantAppsAndConsents {
     
     Test-EXOConnection

@@ -20,23 +20,16 @@
 
     Gathers 48 hours worth of audit data starting at midnight on October 25th 2018
 #>
+#TODO: determime if all the rigamarole with slowly pushing the date by increments is really needed due to current UAL performance (prehaps is in larger tenants?)
 
-    Param (
+Param (
         [Parameter(Mandatory = $true)]
         [datetime]$StartDate,
         [int]$IntervalMinutes = 15
     )
 
-    # # Try to convert the submitted date into [datetime] format
-    # try {
-    #     [datetime]$DateToStartSearch = Get-Date $StartDate
-    # }
-    # catch {
-    #     Out-Logfile "[ERROR] - Unable to convert submitted date"
-    #     break
-    # }
-
     # Make sure the start date isn't more than 90 days in the past
+    #TODO: fix this to 180
     if ((Get-Date).adddays(-91) -gt $StartDate) {
         Out-Logfile "[ERROR] - Start date is over 90 days in the past"
         break

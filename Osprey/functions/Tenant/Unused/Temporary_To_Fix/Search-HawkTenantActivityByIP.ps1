@@ -38,6 +38,7 @@
 
     Searches for all Logon activity from IP 10.234.20.12.
 #>
+#TODO: Validate if this works, fix if not, and improve if possible
     param
     (
         [parameter(Mandatory = $true)]

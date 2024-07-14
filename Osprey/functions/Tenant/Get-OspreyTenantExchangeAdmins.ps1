@@ -5,7 +5,7 @@
     who can change Exchange Online configurations.
 .OUTPUTS
     ExchangeAdmins.csv
-#>
+#> #conf 7/13
 Function Get-OspreyTenantExchangeAdmins {
     
         Out-LogFile "Gathering Exchange Online Administrators"

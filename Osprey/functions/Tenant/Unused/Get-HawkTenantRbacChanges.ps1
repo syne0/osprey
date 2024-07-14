@@ -1,4 +1,5 @@
-﻿# Search for any changes made to RBAC in the search window and report them
+﻿##FUNCTION DEPRECATED##
+#Capabilities from this were moved into Get-OspreyTenantExchangeLogs
 Function Get-HawkTenantRBACChanges {
 <#
 .SYNOPSIS

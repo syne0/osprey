@@ -12,7 +12,7 @@ Function Import-AzureAuthenticationLogs {
     Imprts Azure Auth logs
 .NOTES
     General notes
-#>
+#> 
     Param([array]$JsonConvertedLogs)
 
     # Null out the output object

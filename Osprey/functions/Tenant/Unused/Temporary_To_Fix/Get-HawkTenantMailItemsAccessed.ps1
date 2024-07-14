@@ -24,8 +24,10 @@
     "OperationnProperties" and "Folders" will return "System.Object" as they are nested JSON within the AuditData field.
     You will need to conduct individual log pull and review via PowerShell or other SIEM to determine values
     for those fields.
-
 #>
+
+#TODO: Overhaul to get the data from JSON
+#Also use that one github script to pull data from msg trace and get at least SOME accessed emails since mailitemsaccessed is such as useless event without it
     [cmdletbinding()]
     param(
         [parameter(Mandatory)]

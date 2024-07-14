@@ -43,7 +43,7 @@ Function Start-OspreyUserInvestigation {
     Send-AIEvent -Event "CmdRun"
 
     # Pull the tenent configuration
-    Get-OspreyTenantConfiguration
+    Get-OspreyTenantConfiguration #TODO: Why?
 
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
@@ -66,8 +66,8 @@ Function Start-OspreyUserInvestigation {
         Out-LogFile "Running Get-OspreyUserAuthHistory" -action
         Get-OspreyUserAuthHistory -User $user -ResolveIPLocations
 		
-        Out-LogFile "Running Get-OspreyUserMailboxAuditing" -action
-        Get-OspreyUserMailboxAuditing -User $User
+        Out-LogFile "Running Get-OspreyUserEmailActivity" -action
+        Get-OspreyUserEmailActivity -User $User
 
         Out-LogFile "Running Get-OspreyUserAdminAudit" -action
 		Get-OspreyUserAdminAudit -User $User

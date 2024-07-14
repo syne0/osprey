@@ -12,7 +12,7 @@
     Output (if any)
 .NOTES
     General notes
-#>
+#> 
 Function Read-OspreyAppData {
     $OspreyAppdataPath = join-path $env:LOCALAPPDATA "Osprey\Osprey.json"
 

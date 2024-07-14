@@ -12,7 +12,7 @@
     Output (if any)
 .NOTES
     General notes
-#>
+#> 
 Function Test-EXOConnection {
     # In all cases make sure we are "connected" to EXO
     try {

@@ -9,7 +9,7 @@
     eDiscoveryRoleAssignments.csv
     eDiscoveryRoleAssignments.xml
     eDiscoveryRoleAssignments.json
-#>
+#> #conf 7/13
 Function Get-OspreyTenantEDiscoveryConfiguration {
 
     Test-EXOConnection

@@ -1,6 +1,6 @@
 ﻿Function Get-AzureADPSPermissions {
-
-    <#
+#TODO: replace this with newer script
+    <# 
     .SYNOPSIS
         Lists delegated permissions (OAuth2PermissionGrants) and application permissions (AppRoleAssignments).
     .DESCRIPTION

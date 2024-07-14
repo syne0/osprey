@@ -1,4 +1,6 @@
-﻿Function Get-HawkTenantAzureAppAuditLog{
+﻿##FUNCTION DEPRECATED##
+#Capabilities from this were moved into Get-OspreyTenantAppsAndConsents
+Function Get-HawkTenantAzureAppAuditLog{
 <#
 .SYNOPSIS
 	Gathers common data about a tenant.

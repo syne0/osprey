@@ -1,16 +1,8 @@
 <#
-.SYNOPSIS
-	Initializes a new Osprey session
 .DESCRIPTION
 	Connects to the nessesary modules and gathers information needed for user to run Osprey. Gives suggestions on commands user can run.
     Includes functions to reinitialize an osprey session and change parameters or tenant.
-.OUTPUTS
-	n/a
-.EXAMPLE
-	Start-Osprey
-
-Starts a new Osprey session.
-#> 
+#> #conf 7/13
 [CmdletBinding()]
 param
 (

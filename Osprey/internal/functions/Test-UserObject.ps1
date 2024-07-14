@@ -14,7 +14,7 @@
     Output (if any)
 .NOTES
     General notes
-#>
+#> 
 Function Test-UserObject {
     param ([array]$ToTest)
 

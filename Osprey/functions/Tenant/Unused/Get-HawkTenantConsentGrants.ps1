@@ -1,4 +1,6 @@
-﻿Function Get-HawkTenantConsentGrants {
+﻿##FUNCTION DEPRECATED##
+#Capabilities from this were moved into Get-OspreyTenantAppsAndConsents
+Function Get-HawkTenantConsentGrants {
 <#
 .SYNOPSIS
     Gathers application grants

@@ -11,7 +11,8 @@ Function Get-OspreyTenantEntraUsers {
     Out-LogFile "Gathering Entra ID Users"
     Send-AIEvent -Event "CmdRun"
 
-    Get-MgUser -all -Property UserPrincipalName, DisplayName, UserType, CreatedDateTime, AccountEnabled, Id, Mail, LastPasswordChangeDateTime | select-object UserPrincipalName, DisplayName, UserType, CreatedDateTime, AccountEnabled, Id, Mail, LastPasswordChangeDateTime | Out-MultipleFileType -fileprefix "EntraIDUsers" -csv #good enough
-    
+    Get-MgUser -all -Property UserPrincipalName, DisplayName, UserType, CreatedDateTime, AccountEnabled, Id, Mail, LastPasswordChangeDateTime | select-object UserPrincipalName, DisplayName, UserType, CreatedDateTime, AccountEnabled, Id, Mail, LastPasswordChangeDateTime | Out-MultipleFileType -fileprefix "EntraIDUsers" -csv
+    #TODO: If admin comp, mark list of users created during investigate period as needing further investigation.
+    #also more can be done with this probably.
     Out-Logfile "Completed exporting Entra ID users"
 }

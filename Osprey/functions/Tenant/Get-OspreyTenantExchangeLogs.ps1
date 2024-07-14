@@ -14,7 +14,7 @@
     Impersonation_Roles.csv / Impersonation_Roles.json / Impersonation_Roles.xml
     Impersonation_Rights.csv / Impersonation_Rights.json / Impersonation_Rights.xml
     RBAC_Changes.csv / RBAC_Changes.json / RBAC_Changes.xml
-#>
+#> 
 Function Get-OspreyTenantExchangeLogs {
 
     Test-EXOConnection
@@ -113,7 +113,7 @@ Function Get-OspreyTenantExchangeLogs {
         # Go thru each rule and prepare it to output to CSV
         Foreach ($rule in $TenantRemoveInboxRules) {
             $rule1 = $rule.auditdata | ConvertFrom-Json
-            $report = $rule1  | Select-Object -Property CreationTime, #TODO: fix fix!! also figure out why i needed to fix this lol
+            $report = $rule1  | Select-Object -Property CreationTime, #TODO: fix fix!! also figure out why i needed to fix this lol i dont remember
             Id,
             Operation,
             UserID,
@@ -127,7 +127,7 @@ Function Get-OspreyTenantExchangeLogs {
 
     ##Searching for interesting inbox rules##
     #Deprecating for now until I figure out how to fix this!
-    #TODO: Make this work with UAL, but also improve it further to match stuff like suspicious inbox rule names
+    #TODO: Make this work with UAL, but also improve it further to match stuff like suspicious inbox rule names like in the user inbox rule part
     <#
     Out-LogFile "Searching for Interesting Inbox Rules Created in the last $StartRead days" -action
 
@@ -137,7 +137,6 @@ Function Get-OspreyTenantExchangeLogs {
     # if we found a rule report it and output it to the _Investigate files
     if ($InvestigateInboxRules.count -gt 0) {
         Out-LogFile ("Found " + $InvestigateInboxRules.count + " Inbox Rules that should be investigated further.") -notice
-        $InvestigateInboxRules | Get-SimpleAdminAuditLog | Out-MultipleFileType -fileprefix "_Investigate_Simple_New_InboxRule" -csv -json -Notice
         $InvestigateInboxRules | Out-MultipleFileType -fileprefix "_Investigate_New_InboxRules" -xml -txt -Notice
     }
     #>
@@ -146,8 +145,9 @@ Function Get-OspreyTenantExchangeLogs {
     ##Look for changes to user forwarding##
 
     Out-LogFile "Searching for changes to user forwarding" -action
-
-    $TenantForwardingChanges = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operations Set-Mailbox -FreeText ForwardingSmtpAddress") #nice
+# Getting records from UAL where user forwarding was changed, either enabled or disabled
+#TODO: determine if i can further work this log to only pull user forwarding enabled events
+    $TenantForwardingChanges = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operations Set-Mailbox -FreeText ForwardingSmtpAddress")
     # If null we found forwarding changes
     if ($null -eq $TenantForwardingChanges) {
         Out-LogFile "No forwarding changes in the last $StartRead days found"
@@ -174,7 +174,8 @@ Function Get-OspreyTenantExchangeLogs {
 
 
     ##Look for changes to mailbox permissions##
-    #This isnt working properly right now...
+    #This isnt working properly right now, as system makes too many random changes that throw dozens of false positives
+    #TODO: Fix this or remove it
 
     <#Out-LogFile "Searching for changes to mailbox permissions" -Action
     [array]$TenantMailboxPermissionChanges = Search-AdminAuditLog -StartDate $Osprey.StartDate -EndDate $Osprey.EndDate -cmdlets Add-MailboxPermission

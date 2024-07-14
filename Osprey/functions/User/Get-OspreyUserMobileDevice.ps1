@@ -23,7 +23,7 @@
     Get-OspreyUserMessageTrace -UserPrincipalName user@contoso.com
 
     Gets the message trace for user@contoso.com for the last 7 days
-#>
+#> 
 
     param
     (

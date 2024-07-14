@@ -14,7 +14,7 @@
     Output (if any)
 .NOTES
     General notes
-#>
+#> 
 Function Compress-OspreyData {
     Out-LogFile ("Compressing all data in " + $Osprey.FilePath + " for Upload")
     # Make sure we don't already have a zip file

@@ -15,7 +15,7 @@
     Gets all unified auditlog entries
 .NOTES
     General notes
-#>
+#> 
     param
     (
         [Parameter(Mandatory = $true)]

@@ -1,5 +1,5 @@
 ﻿Function Get-OspreyUserAuthHistory {
-<#
+    <#
 .SYNOPSIS
     Gathers ip addresses that logged into the user account
 .DESCRIPTION
@@ -45,6 +45,8 @@
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
     [array]$RecordTypes = "AzureActiveDirectoryAccountLogon", "AzureActiveDirectory", "AzureActiveDirectoryStsLogon"
 
+    #TODO: Determine if the record types it grabs are even valid/useful in current year
+    
     foreach ($Object in $UserArray) {
 
         [string]$User = $Object.UserPrincipalName
@@ -74,7 +76,7 @@
             $FailedConversions = New-Object System.Collections.ArrayList
 
             # Process our results in a way to deal with JSON Errors
-            Foreach ($Entry in $UserLogonLogs){
+            Foreach ($Entry in $UserLogonLogs) {
 
                 try {
                     $jsonEntry = $Entry.AuditData | ConvertFrom-Json
@@ -85,7 +87,7 @@
                 }
             }
 
-            if ($FailedConversions -le 0){}
+            if ($FailedConversions -le 0) {}
             else {
                 Out-LogFile ("[ERROR] - " + $FailedConversions.Count + " Entries failed JSON Conversion")
                 $FailedConversions | Out-MultipleFileType -fileprefix "Failed_Conversion_Authentication_Logs" -user $User -csv -json
@@ -105,8 +107,8 @@
                     }
 
                     # Get the location information for this IP address
-                    if($ExpandedUserLogonLogs.item($i).clientip){
-                    $Location = Get-IPGeolocation -ipaddress $ExpandedUserLogonLogs.item($i).clientip
+                    if ($ExpandedUserLogonLogs.item($i).clientip) {
+                        $Location = Get-IPGeolocation -ipaddress $ExpandedUserLogonLogs.item($i).clientip
                     }
                     else {
                         $Location = "IP Address Null"
@@ -134,6 +136,4 @@
 
         }
     }
-
-
 }

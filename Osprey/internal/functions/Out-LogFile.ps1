@@ -15,8 +15,8 @@
     Out-LogFile
     Sends messages to the log file
 .NOTES
-    This is will depracted soon.
-#>
+    This is will depracted soon. #TODO: Will it? determine why this was, though I'm assuming it was due to overhaul to ps framework.
+#> 
 Function Out-LogFile {
     Param
     (

@@ -21,7 +21,7 @@
     Add the data to an XML report
 .NOTES
     General notes
-#>
+#> 
     Param
     (
         [Parameter(Mandatory = $true)]

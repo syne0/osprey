@@ -11,7 +11,7 @@
     Checks for update to Osprey Module on PowerShell Gallery
 .NOTES
     General notes
-#>
+#> #TODO: Update
     param
     (
         [switch]$ElevatedUpdate

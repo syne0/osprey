@@ -16,7 +16,7 @@
     Output (if any)
 .NOTES
     General notes
-#>
+#> #TODO: This doesnt work, find alternative or nuke
 Function Test-MicrosoftIP {
     param
     (

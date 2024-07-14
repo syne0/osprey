@@ -6,4 +6,4 @@ Function Connect-PrereqModules {
     Connect-ExchangeOnline
     Write-Information "Connecting to Graph API"
     Connect-MgGraph -Scopes "User.Read.All", "Group.Read.All", "Domain.Read.All", "Directory.Read.All", "Application.Read.All"
-}
+} 

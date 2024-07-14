@@ -1,4 +1,4 @@
-﻿Function Get-OspreyUserHiddenRule { #TODO: determine if this is still nessecary, combine this into normal inboxrule function
+﻿Function Get-OspreyUserHiddenRule { #TODO: determine if this is still nessecary, combine this into normal inboxrule function. 
     <#
     .SYNOPSIS
     Pulls inbox rules for the specified user using EWS.

@@ -19,11 +19,8 @@
 .NOTES
 #>
 BEGIN{
-    #Initializing Hawk Object if not present
-    if ([string]::IsNullOrEmpty($Hawk.FilePath)) {
-		Initialize-HawkGlobalObject
-	}
-    Test-AzureADConnection
+#TODO: Determine if this is staying, if it's useful, and what it will look like/how to fix/if it can be fixed?
+#Seems like better use is to determine only things created or edited during investigation range??
 
     Out-LogFile "Collecting Azure AD Service Principals"
     $spns = get-azureadserviceprincipal -all $true | Sort-Object -Property DisplayName

@@ -36,7 +36,7 @@
 .LINK
     https://gallery.technet.microsoft.com/office/Start-RobustCloudCommand-69fb349e
 #>
-
+#TODO: kill robustcloudcommand stuff as it's deprecated! Getting this info is still totally possible wiht a bit of trimming, i think. Just takes a ton of time.
     param (
         [string]$CSVPath,
         [Parameter(Mandatory = $true)]

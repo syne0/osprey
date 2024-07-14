@@ -1,4 +1,4 @@
-﻿Function Test-RecipientAge {
+﻿Function Test-RecipientAge { #TODO: determine purpose and if staying
 <#
 .SYNOPSIS
     Check to see if a recipient object was created since our start date

@@ -5,7 +5,7 @@
 .OUTPUTS
     EntraIDAdministrators.csv
     EntraIDAdministrators.json
-#>
+#> #conf 7/13
 Function Get-OspreyTenantEntraAdmins {
     Out-LogFile "Gathering Entra ID Administrators"
     Send-AIEvent -Event "CmdRun"

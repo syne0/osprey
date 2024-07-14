@@ -10,7 +10,7 @@
 	Mailbox_Statistics.txt
 	Mailbox_Folder_Statistics.txt
 	CAS_Mailbox_Info.txt
-#>
+#>  #conf 7/13
 Function Get-OspreyUserConfiguration {
 
     param

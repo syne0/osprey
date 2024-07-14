@@ -26,7 +26,6 @@
 	Pulls the header and reviews critical information
 
     #>
-
     param
     (
         [Parameter(Mandatory = $true)]

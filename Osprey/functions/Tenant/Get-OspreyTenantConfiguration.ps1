@@ -21,7 +21,7 @@
 	TransportConfig.txt
 	TransportConfig.xml
 	TransportConfig.json
-#>
+#> #conf 7/13
 Function Get-OspreyTenantConfiguration {
 
 	Test-EXOConnection
