@@ -44,7 +44,8 @@ Function Get-OspreyTenantAppsAndConsents {
     ##Searching for known malicious applications##
 
     $AllTenantApps = @(Get-MgServicePrincipal) #get display name of all apps in tenant
-
+    #TODO: use MS apps json i put on GH and exclude stuff inside of that list
+    
     $SuspiciousApps = Invoke-RestMethod -URI https://raw.githubusercontent.com/syne0/detections/main/M365_Oauth_Apps/MaliciousOauthAppDetections.json #pull list of malicious oauth apps from github
 
     #TODO: ps custom object to get properties from both outputs
@@ -66,7 +67,6 @@ Function Get-OspreyTenantAppsAndConsents {
     # [bool]$flag = $false
 
     #This isnt super helpful since it always grabs some apps that are from Microsoft
-    #TODO: use MS apps json i put on GH and exclude stuff inside of that list
     #TODO: Improve this bit to be more useful in situations of admin compromise
     
     # Search the Grants for the listed bad grants that we can detect

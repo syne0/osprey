@@ -1,5 +1,5 @@
 ﻿function Get-OspreyUserEmailActivity {
-<#
+    <#
 .DESCRIPTION
     Pulls email-related activity (Update, Delete, Send) for a user from the UAL. Does NOT pull MailItemsAccessed record.
 .PARAMETER UserPrincipalName
@@ -46,38 +46,30 @@
         $mbx = Get-Mailbox -identity $User
         if ($mbx.AuditEnabled -eq $true) {
             # if enabled pull the mailbox auditing from the unified audit logs
-            Out-LogFile "Mailbox Auditing is enabled."
             Out-LogFile "Searching Unified Audit Log for Exchange Related Events"
 
-            $UALExchangeRecords = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIDs " + $User + " -RecordType ExchangeItem")
+            $UALExchangeItemRecords = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIDs " + $User + " -RecordType ExchangeItem -operation update")
             
-            if ($null -eq $UALExchangeRecords) {
+            if ($null -eq $UALExchangeItemRecords) {
                 Out-LogFile "No Exchange activity found."
             }
             # If not null then we must have found some events so flag them
             else {
-                Out-LogFile ("Found " + $UALExchangeRecords.Count + " Exchange audit records.")
-
+                Out-LogFile ("Found " + $UALExchangeItemRecords.Count + " Exchange audit records.") 
+                
                 #TODO: fix this all asap next
-                Foreach ($record in $UALExchangeRecords) {
+                #Issue: for this i need to extract stuff from Item in some records, but i cant do it like with the inbox rules or apps
+                #since it seems that it's just a bunch of string data
+                Foreach ($record in $UALExchangeItemRecords) {
                     $record1 = $record.auditdata | ConvertFrom-Json
                     $report = $record1  | Select-Object -Property CreationTime,
                     Id,
                     Operation,
                     UserID,
                     ClientIP,
-                    @{Name = 'Rule Name'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'Name' }).value } },
-                    @{Name = 'SentTo'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SentTo' }).value } },
-                    @{Name = 'From'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'From' }).value } },
-                    @{Name = 'FromAddressContains'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'FromAddressContainsWords' }).value } },
-                    @{Name = 'MoveToFolder'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'MoveToFolder' }).value } },
-                    @{Name = 'MarkAsRead'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'MarkAsRead' }).value } },
-                    @{Name = 'DeleteMessage'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'DeleteMessage' }).value } },
-                    @{Name = 'SubjectContainsWords'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SubjectContainsWords' }).value } },
-                    @{Name = 'SubjectOrBodyContainsWords'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SubjectOrBodyContainsWords' }).value } },
-                    @{Name = 'ForwardTo'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'ForwardTo' }).value } }
-        
-                    $report | Out-MultipleFileType -fileprefix "InboxRules_New" -csv -append #-notice ugly
+                    @{Name = 'thing'; Expression = { ($_.Item) } }
+
+                    $report  | Out-MultipleFileType -fileprefix "ExchangeItems" -csv -append
         
                 }
             }

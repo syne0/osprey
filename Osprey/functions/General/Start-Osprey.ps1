@@ -182,7 +182,7 @@ Function Start-Osprey {
     }
     #triggers if Start-Osprey is rerun, will allow you to choose if you want to reinitialize 
     if ($OspreyInitialized) {
-       
+
         $title = "Osprey Is Initialized"
         $message = "Osprey has already been initialized. Would you like to reinitialize Osprey with differant parameters or on a differant tenant?"
         $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Reruns Osprey initialization."
@@ -251,13 +251,13 @@ Function Start-Osprey {
     #update checking
     if ($OspreyInitialized -ne $true) {
         # If we are skipping the update log it
-        #TODO: review this and update it for new repo -s
+        #TODO: review this and update it for new repo
         if ($SkipUpdate) {
             Write-Information "Skipping Update Check"
         }
         # Check to see if there is an Update for Osprey
         else {
-            #Update-OspreyModule commenting for testing
+            Update-OspreyModule
         }
     }
 
