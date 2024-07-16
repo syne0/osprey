@@ -16,7 +16,7 @@
     Start-OspreyUserPWNCheck -Email user@company.com
 
     Returns the pwn state of the email address provided
-#> #TODO: determione if this is staying or leaving
+#>
 
     param([array]$Email)
 

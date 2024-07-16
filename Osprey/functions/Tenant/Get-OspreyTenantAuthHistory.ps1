@@ -1,26 +1,14 @@
-﻿Function Get-HawkTenantAuthHistory {
+﻿
 <#
-.SYNOPSIS
-    Gathers 48 hours worth of Unified Audit logs.
-    Pulls everyting into a CSV file.
 .DESCRIPTION
     Connects to EXO and searches the unified audit log file only a date time filter.
     Searches in 15 minute increments to ensure that we gather all data.
     Should be used once you have used other commands to determine a "window" that needs more review.
-.PARAMETER StartDate
-    Start date of authentication audit log search
-.PARAMETER IntervalMinutes
-    Time interval for increments
 .OUTPUTS
-    File: Audit_Log_Full_<date>.csv
-    Path: \Tenant
-    Description: Audit data for ALL users over a 48 hour period
-.EXAMPLE
-    Get-HawkTenantAuthHistory -StartDate "10/25/2018"
-
-    Gathers 48 hours worth of audit data starting at midnight on October 25th 2018
+    Audit_Log_Full_<date>.csv
+    Audit_Log_Full_<date>.json
 #>
-#TODO: determime if all the rigamarole with slowly pushing the date by increments is really needed due to current UAL performance (prehaps is in larger tenants?)
+Function Get-OspreyTenantAuthHistory {
 
 Param (
         [Parameter(Mandatory = $true)]
@@ -28,10 +16,9 @@ Param (
         [int]$IntervalMinutes = 15
     )
 
-    # Make sure the start date isn't more than 90 days in the past
-    #TODO: fix this to 180
-    if ((Get-Date).adddays(-91) -gt $StartDate) {
-        Out-Logfile "[ERROR] - Start date is over 90 days in the past"
+    # Make sure the start date isn't more than 180 days in the past
+    if ((Get-Date).adddays(-181) -gt $StartDate) {
+        Out-Logfile "[ERROR] - Start date is over 180 days in the past"
         break
     }
 

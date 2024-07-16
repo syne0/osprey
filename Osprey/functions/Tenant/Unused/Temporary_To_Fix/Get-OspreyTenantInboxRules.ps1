@@ -1,11 +1,11 @@
-﻿Function Get-HawkTenantInboxRules {
+﻿Function Get-OspreyTenantInboxRules {
     <#
 .SYNOPSIS
     Gets inbox rules and forwarding directly from all mailboxes in the org.
 .DESCRIPTION
     Uses Start-RobustCloudCommand to gather data from each mailbox in the org.
-    Gathers inbox rules with Get-HawkUserInboxRule
-    Gathers forwarding with Get-HawkUserEmailForwarding
+    Gathers inbox rules with Get-OspreyUserInboxRule
+    Gathers forwarding with Get-OspreyUserEmailForwarding
 .PARAMETER CSVPath
     Path to a CSV file with a list of users to run against.
     CSV header should have DisplayName,PrimarySMTPAddress at minimum
@@ -14,23 +14,23 @@
     The UPN of the user that will authenticate against Exchange Online.
 
 .OUTPUTS
-    See Help for Get-HawkUserInboxRule for inbox rule output
-    See Help for Get-HawkUserEmailForwarding for email forwarding output
+    See Help for Get-OspreyUserInboxRule for inbox rule output
+    See Help for Get-OspreyUserEmailForwarding for email forwarding output
 
     File: Robust.log
     Path: \
     Description: Logfile for Start-RobustCloudCommand
 
 .EXAMPLE
-    Start-HawkTenantInboxRules -UserPrincipalName userx@tenantdomain.onmicrosoft.com
+    Start-OspreyTenantInboxRules -UserPrincipalName userx@tenantdomain.onmicrosoft.com
 
-    Runs Get-HawkUserInboxRule and Get-HawkUserEmailForwarding against all mailboxes in the org. The UserPrincipalName
+    Runs Get-OspreyUserInboxRule and Get-OspreyUserEmailForwarding against all mailboxes in the org. The UserPrincipalName
     is the Admin/User who is running the cmdlet.
 
 .EXAMPLE
-    Start-HawkTenantInboxRules -csvpath c:\temp\myusers.csv
+    Start-OspreyTenantInboxRules -csvpath c:\temp\myusers.csv
 
-    Runs Get-HawkUserInboxRule and Get-HawkUserEmailForwarding against all mailboxes listed in myusers.csv.The UserPrincipalName
+    Runs Get-OspreyUserInboxRule and Get-OspreyUserEmailForwarding against all mailboxes listed in myusers.csv.The UserPrincipalName
     is the Admin/User who is running the cmdlet.
 
 .LINK
@@ -85,10 +85,10 @@
     Out-LogFile ("Found " + $AllMailboxes.count + " Mailboxes")
 
     # Path for robust log file
-    $RobustLog = Join-path $Hawk.FilePath "Robust.log"
+    $RobustLog = Join-path $Osprey.FilePath "Robust.log"
 
     # Build the command we are going to need to run with Start-RobustCloudCommand
-    $cmd = "Start-RobustCloudCommand -UserPrincipalName " + $UserPrincipalName + " -logfile `$RobustLog -recipients `$AllMailboxes -scriptblock {Get-HawkUserInboxRule -UserPrincipalName `$input.PrimarySmtpAddress.tostring()}"
+    $cmd = "Start-RobustCloudCommand -UserPrincipalName " + $UserPrincipalName + " -logfile `$RobustLog -recipients `$AllMailboxes -scriptblock {Get-OspreyUserInboxRule -UserPrincipalName `$input.PrimarySmtpAddress.tostring()}"
 
     # Invoke our Start-Robust command to get all of the inbox rules
     Out-LogFile "===== Starting Robust Cloud Command to gather user inbox rules for all tenant users ====="

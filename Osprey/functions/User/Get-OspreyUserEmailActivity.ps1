@@ -69,7 +69,8 @@
                     ClientIP,
                     @{Name = 'thing'; Expression = { ($_.Item) } }
 
-                    $report  | Out-MultipleFileType -fileprefix "ExchangeItems" -csv -append
+                    $report 
+                    # | Out-MultipleFileType -fileprefix "ExchangeItems" -csv -append temp comment out for testing
         
                 }
             }

@@ -112,7 +112,7 @@ Function Get-Eula {
 
     DISCLAIMER:
     
-    Osprey is based on Hawk, so the original licence and disclaimer applies.
+    Osprey is based on Osprey, so the original licence and disclaimer applies.
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -229,11 +229,11 @@ Function Start-Osprey {
         
         Write-Host ('
         Welcome to Osprey, a Powershell-based tool for gathering information about O365 breaches.
-        Osprey is a fork of Hawk and started as a personal project to remove deprecated dependent
+        Osprey is a fork of Osprey and started as a personal project to remove deprecated dependent
         modules and implement QoL improvements.
         
         Osprey would not have been possible without the years of work that the community put into
-        maintaining Hawk. A sincere thank you to the Hawk maintainers for everything you have done
+        maintaining Osprey. A sincere thank you to the Osprey maintainers for everything you have done
         for the M365 IR and BEC community. <3
 
         More information about Osprey can be found at https://cybercorner.tech/osprey.

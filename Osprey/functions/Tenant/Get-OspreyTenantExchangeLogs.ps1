@@ -146,7 +146,7 @@ Function Get-OspreyTenantExchangeLogs {
 
     Out-LogFile "Searching for changes to user forwarding" -action
 # Getting records from UAL where user forwarding was changed, either enabled or disabled
-#TODO: determine if i can further work this log to only pull user forwarding enabled events
+
     $TenantForwardingChanges = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operations Set-Mailbox -FreeText ForwardingSmtpAddress")
     # If null we found forwarding changes
     if ($null -eq $TenantForwardingChanges) {

@@ -1,4 +1,4 @@
-﻿Function Get-HawkTenantMailItemsAccessed {
+﻿Function Get-OspreyTenantMailItemsAccessed {
 <#
 .SYNOPSIS
     This will export MailboxItemsAccessed operations from the Unified Audit Log (UAL). Must be connected to Exchange Online
@@ -12,7 +12,7 @@
 .PARAMETER ApplicationID
     Malicious Application ID that you're investigating
 .EXAMPLE
-    Get-HawkTenantMailItemsAccessed
+    Get-OspreyTenantMailItemsAccessed
     Gets MailItemsAccess from Unified Audit Log (UAL) that corresponds to the App ID that is provided
 .OUTPUTS
     MailItemsAccessed.csv

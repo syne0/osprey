@@ -1,4 +1,4 @@
-﻿Function Search-HawkTenantActivityByIP {
+﻿Function Search-OspreyTenantActivityByIP {
 <#
 .SYNOPSIS
     Gathers logon activity based on a submitted IP Address.
@@ -34,7 +34,7 @@
     Description: Client XML of unique users the IP logged into
 .EXAMPLE
 
-    Search-HawkTenantActivityByIP -IPAddress 10.234.20.12
+    Search-OspreyTenantActivityByIP -IPAddress 10.234.20.12
 
     Searches for all Logon activity from IP 10.234.20.12.
 #>
