@@ -45,7 +45,7 @@ Function Get-OspreyUserInboxRule {
                 if (!([string]::IsNullOrEmpty($Rule.ForwardAsAttachmentTo))) { $Investigate = $true }
                 if (!([string]::IsNullOrEmpty($Rule.ForwardTo))) { $Investigate = $true }
                 if (!([string]::IsNullOrEmpty($Rule.RedirectTo))) { $Investigate = $true }
-                if ($Rule.MoveToFolder -like "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
+                if ($Rule.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
 
                 # If we have set the Investigate flag then report it and output it to a seperate file
                 if ($Investigate -eq $true) {
