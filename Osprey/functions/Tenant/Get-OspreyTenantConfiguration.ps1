@@ -35,10 +35,7 @@ Function Get-OspreyTenantConfiguration {
 	Get-AdminAuditLogConfig | Out-MultipleFileType -FilePrefix "AuditLogConfig" -txt -xml
 
 	if (-not (Get-AdminAuditLogConfig).UnifiedAuditLogIngestionEnabled) {
-		Out-Logfile "!WARNING! Audit logging is NOT enabled. Attempting to enable audit logging now. Osprey results will be limited as UAL was not enabled. Post-incident enabling of UAL does not allow visibility into past events." -notice
-		Enable-OrganizationCustomization
-		Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true
-		Out-LogFile "Attempted to enable UAL. Please verify if UAL is enabled and attempt to enable it using a Global Admin account if it's not." -notice
+		Out-Logfile "!WARNING! Audit logging is NOT enabled. Post-incident enabling of UAL does not allow visibility into past events." -notice
 	}
 
 	Out-LogFile "Organization Configuration"

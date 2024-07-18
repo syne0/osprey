@@ -94,7 +94,9 @@ Function Out-MultipleFileType {
         else {
 
             # Determine what file type or types we need to write this object into and output it
-            # Output XML File
+
+            ##Output XML File##
+
             if ($xml -eq $true) {
                 # lets put the xml files in a seperate directory to not clutter things up
                 $xmlpath = Join-path $Path XML
@@ -120,7 +122,48 @@ Function Out-MultipleFileType {
                 if ($Notice) { Out-LogFile -string ($filename) -silentnotice }
             }
 
-            # Output CSV file
+
+            ##Output JSON File##
+
+            if ($json -eq $true) {
+
+                # lets put the xml files in a seperate directory to not clutter things up
+                $jsonpath = Join-path $Path JSON
+                if (Test-path $jsonPath) { }
+                else {
+                    Out-LogFile ("Making output directory for xml files " + $jsonPath)
+                    $null = New-Item $jsonPath -ItemType Directory
+                }
+                # Build the file name
+                if ($UserOutput) {
+                    $filename = Join-Path $jsonPath ($FilePrefix + "_" + $ShortUser + ".json")
+                }
+                else {
+                    $filename = Join-Path $jsonPath ($FilePrefix + ".json")
+                }
+
+                # If we have -append then append the data
+                if ($append) {
+
+                    Out-LogFile ("Appending Data to " + $filename)
+
+                    # Write it out to json making sture to append
+                    $AllObject | ConvertTo-Json -Depth 100 | Out-File -FilePath $filename -Append
+                }
+
+                # Otherwise overwrite
+                else {
+                    Out-LogFile ("Writing Data to " + $filename)
+                    $AllObject | ConvertTo-Json -Depth 100 | Out-File -FilePath $filename
+                }
+
+                # If notice is set we need to write the file name to _Investigate.txt
+                if ($Notice) { Out-LogFile -string ($filename) -silentnotice }
+            }
+
+
+            ##Output CSV file##
+
             if ($csv -eq $true) {
                 # Build the file name
                 if ($UserOutput) {
@@ -149,7 +192,8 @@ Function Out-MultipleFileType {
                 if ($Notice) { Out-LogFile -string ($filename) -silentnotice }
             }
 
-            # Output Text files
+            ##Output Text files##
+
             if ($txt -eq $true) {
                 # Build the file name
                 if ($UserOutput) {
@@ -176,33 +220,7 @@ Function Out-MultipleFileType {
             }
 
             # Output JSON file
-            if ($json -eq $true) {
-                # Build the file name
-                if ($UserOutput) {
-                    $filename = Join-Path $Path ($FilePrefix + "_" + $ShortUser + ".json")
-                }
-                else {
-                    $filename = Join-Path $Path ($FilePrefix + ".json")
-                }
-
-                # If we have -append then append the data
-                if ($append) {
-
-                    Out-LogFile ("Appending Data to " + $filename)
-
-                    # Write it out to json making sture to append
-                    $AllObject | ConvertTo-Json -Depth 100 | Out-File -FilePath $filename -Append
-                }
-
-                # Otherwise overwrite
-                else {
-                    Out-LogFile ("Writing Data to " + $filename)
-                    $AllObject | ConvertTo-Json -Depth 100 | Out-File -FilePath $filename
-                }
-
-                # If notice is set we need to write the file name to _Investigate.txt
-                if ($Notice) { Out-LogFile -string ($filename) -silentnotice }
-            }
+            
         }
     }
 
