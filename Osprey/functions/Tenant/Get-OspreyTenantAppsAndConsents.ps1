@@ -46,7 +46,7 @@ Function Get-OspreyTenantAppsAndConsents {
     $AllTenantApps = @(Get-MgServicePrincipal) #get display name of all apps in tenant
     #TODO: use MS apps json i put on GH and exclude stuff inside of that list
     
-    $SuspiciousApps = Invoke-RestMethod -URI https://raw.githubusercontent.com/syne0/detections/main/M365_Oauth_Apps/MaliciousOauthAppDetections.json #pull list of malicious oauth apps from github
+    $SuspiciousApps = Invoke-RestMethod -URI https://raw.githubusercontent.com/randomaccess3/detections/main/M365_Oauth_Apps/MaliciousOauthAppDetections.json #pull list of malicious oauth apps from github
 
     #TODO: ps custom object to get properties from both outputs
     $MatchingApps = $($AllTenantApps | Where-Object displayname -in $SuspiciousApps.applications.name; $AllTenantApps | Where-Object appid -in $SuspiciousApps.appid) | Sort-Object appid -unique
