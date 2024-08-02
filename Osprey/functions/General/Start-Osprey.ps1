@@ -215,7 +215,7 @@ Function Start-Osprey {
                 Disconnect-ExchangeOnline
                 Disconnect-MgGraph
                 Write-Host "Connecting to prerequisites with new tenant."
-                Connect-PrereqModules
+                Connect-Prerequisites
             }
             1 {
                 Write-Host "Continuing as usual..."
@@ -279,7 +279,7 @@ Function Start-Osprey {
     Write-Information "Setting Up Osprey environment" 
     
     if ($OspreyInitialized -ne $true) {
-        Connect-PrereqModules #Connects to the prerequisite modules
+        Connect-Prerequisites #Connects to the prerequisite modules
     }
     
     ##Get path and set subdirectory##

@@ -1,4 +1,4 @@
-Function Connect-PrereqModules {
+Function Connect-Prerequisites {
     #Connects to the modules Osprey needs to run.
     Write-Information "Connecting to AzureAD Powershell (remove this eventually OK!)"
     Connect-AzureAD
