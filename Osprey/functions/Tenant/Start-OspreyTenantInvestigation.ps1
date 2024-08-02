@@ -17,30 +17,39 @@ Function Start-OspreyTenantInvestigation {
 
 	Out-LogFile "Running Get-OspreyTenantConfiguration" -action
 	Get-OspreyTenantConfiguration
+	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantEDiscoveryConfiguration" -action
 	Get-OspreyTenantEDiscoveryConfiguration
+	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantEDiscoveryLogs"
 	Get-OspreyTenantEDiscoveryLogs -action
+	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantExchangeLogs" -action 
 	Get-OspreyTenantExchangeLogs
+	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantDomainActivity" -action 
 	Get-OspreyTenantDomainActivity
+	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantAppsAndConsents" -action
 	Get-OspreyTenantAppsAndConsents
+	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantExchangeAdmins" -action
 	Get-OspreyTenantExchangeAdmins
+	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantEntraAdmins" -action
 	Get-OspreyTenantEntraAdmins
+	Write-Host "------------------------------------------------"
 
 	Out-Logfile "Running Get-OspreyTenantEntraUsers" -action
 	Get-OspreyTenantEntraUsers
+	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Tenant Investigation complete. You can now run Start-OspreyUserInvestigation."
 }

@@ -205,7 +205,7 @@ Function Out-MultipleFileType {
 
                 # If we have -append then append the data
                 if ($Append) {
-                    Out-LogFile ("Appending Data to " + $filename)
+                    Out-LogFile ("Appending Data to " + $filename) -silentnotice
                     $AllObject | Format-List * | Out-File $filename -Append
                 }
 
@@ -219,9 +219,7 @@ Function Out-MultipleFileType {
                 if ($Notice) { Out-LogFile -string ($filename) -silentnotice }
             }
 
-            # Output JSON file
-            
         }
+        Return $filename | Out-null
     }
-
 }

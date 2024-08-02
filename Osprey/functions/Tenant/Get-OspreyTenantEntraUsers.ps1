@@ -36,5 +36,5 @@ Function Get-OspreyTenantEntraUsers {
             $report | Out-MultipleFileType -fileprefix "New_Users" -csv -append 
         }
     }
-
+    $Filepath
 }
