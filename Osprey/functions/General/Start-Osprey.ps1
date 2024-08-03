@@ -214,6 +214,7 @@ Function Start-Osprey {
                 Disconnect-AzureAD
                 Disconnect-ExchangeOnline
                 Disconnect-MgGraph
+                Disconnect-graph #TODO: required? determine..
                 Write-Host "Connecting to prerequisites with new tenant."
                 Connect-Prerequisites
             }

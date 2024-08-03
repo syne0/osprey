@@ -1,7 +1,5 @@
 Function Connect-Prerequisites {
     #Connects to the modules Osprey needs to run.
-    Write-Information "Connecting to AzureAD Powershell (remove this eventually OK!)"
-    Connect-AzureAD
     Write-Information "Connecting to Exchange Online Powershell"
     Connect-ExchangeOnline
     Write-Information "Connecting to Graph API"
