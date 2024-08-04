@@ -1,4 +1,4 @@
-﻿Function Get-OspreyUserDevices { #TODO: determine if this just grabs 'mobile devices'? When I really wanna see is any Azure/Entra/Intune registered or joined stuff!
+﻿Function Get-OspreyUserDevices {
 <#
 .DESCRIPTION
     Pulls all mobile devices attached to them mailbox using get-mobiledevice.

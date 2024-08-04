@@ -43,9 +43,10 @@
 
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
-    [array]$RecordTypes = "AzureActiveDirectoryAccountLogon", "AzureActiveDirectory", "AzureActiveDirectoryStsLogon"
+    
+    $LoginRecordType = "AzureActiveDirectoryStsLogon"#,"AzureActiveDirectoryAccountLogon","AzureActiveDirectory" these additional types dont seem to be returning anything so are noisy.
+    #[array]$RecordOperations = "UserLoggedIn","UserLoginFailed", "SignInEvent"#,"mailboxlogin" #I want this to work but i'm running into too many errors right now
 
-    #TODO: Determine if the record types it grabs are even valid/useful in current year
     
     foreach ($Object in $UserArray) {
 
@@ -57,14 +58,12 @@
         Out-LogFile ("Retrieving Logon History for " + $User) -action
 
         # Get back the account logon logs for the user
-        foreach ($Type in $RecordTypes) {
-            Out-LogFile ("Searching Unified Audit log for Records of type: " + $Type)
-            $UserLogonLogs += Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIds " + $User + " -RecordType " + $Type)
-        }
+
+        $UserLogonLogs = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIds " + $User + " -RecordType " + $LoginRecordType)
 
         # Make sure we have results
         if ($null -eq $UserLogonLogs) {
-            Out-LogFile "[ERROR] - No results found when searching UAL for AzureActiveDirectoryAccountLogon events"
+            Out-LogFile "[ERROR] - No results found when searching UAL for login events"
         }
         else {
 
@@ -87,11 +86,11 @@
                 }
             }
 
-            if ($FailedConversions -le 0) {}
+            if ($FailedConversions.count -eq 0) {}
             else {
                 Out-LogFile ("[ERROR] - " + $FailedConversions.Count + " Entries failed JSON Conversion")
                 $FailedConversions | Out-MultipleFileType -fileprefix "Failed_Conversion_Authentication_Logs" -user $User -csv -json
-            }
+            } 
 
             # Add IP Geo Location information to the data
             if ($ResolveIPLocations) {

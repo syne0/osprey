@@ -409,6 +409,14 @@ Function Start-Osprey {
     Out-LogFile "Script Variable Configured"
     Out-LogFile ("*** Version " + (Get-Module Osprey).version + " ***")
     Out-LogFile $Osprey
+
+    if ([string]::IsNullOrEmpty($Osprey.FilePath)) {
+        Out-LogFile "Osprey initialization may have ran into an issue. Please rerun Start-Osprey, or visit https://cybercorner.tech/osprey for help." -action
+    }
+    else {
+        Write-Host "Osprey is now initialized. You may run Start-OspreyTenantInvestigation to continue" -ForegroundColor DarkMagenta
+    }
+
 }
 
     

@@ -28,7 +28,7 @@ Function Get-OspreyTenantExchangeLogs {
     $TenantSetInboxRules = $Null
     $TenantRemoveInboxRules = $Null
 
-    Out-LogFile "Searching for ALL Inbox Rules Created, Modified, or Deleted in the last $StartRead days" -action
+    Out-LogFile "Searching for ALL Inbox Rules Created, Modified, or Deleted during the investigation period." -action
 
     ##Search for the creation of ANY inbox rules##
 
@@ -36,7 +36,7 @@ Function Get-OspreyTenantExchangeLogs {
 
     # If null we found no rules
     if ($null -eq $TenantNewInboxRules) {
-        Out-LogFile "No Inbox Rules created in the last $StartRead days found"
+        Out-LogFile "No Inbox Rules created during the investigation period found."
     }
     # If not null then we must have found some events so flag them
     else {
@@ -87,7 +87,7 @@ Function Get-OspreyTenantExchangeLogs {
 
     # If null we found no rules modified
     if ($null -eq $TenantSetinboxRules) {
-        Out-LogFile "No Inbox Rules modified in the last $StartRead days found"
+        Out-LogFile "No Inbox Rules modified during the investigation period found."
     }
     # If not null then we must have found some events so flag them
     else {
@@ -122,7 +122,7 @@ Function Get-OspreyTenantExchangeLogs {
     $TenantRemoveInboxRules = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operations Remove-InboxRule")
 
     if ($null -eq $TenantRemoveinboxRules) {
-        Out-LogFile "No Inbox Rules deleted in the last $StartRead days found"
+        Out-LogFile "No Inbox Rules deleted during the investigation period found."
     }
     # If not null then we must have found some events so flag them
     else {
@@ -151,7 +151,7 @@ Function Get-OspreyTenantExchangeLogs {
     $TenantForwardingChanges = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operations Set-Mailbox -FreeText ForwardingSmtpAddress")
     # If null we found forwarding changes
     if ($null -eq $TenantForwardingChanges) {
-        Out-LogFile "No forwarding changes in the last $StartRead days found"
+        Out-LogFile "No forwarding changes during the investigation period found."
     }
     # If not null then we must have found some events so flag them
     else {
@@ -180,7 +180,7 @@ Function Get-OspreyTenantExchangeLogs {
     $TenantMailboxPermissionChanges = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operations Add-MailboxPermission")
 
     if ($null -eq $TenantMailboxPermissionChanges) {
-        Out-LogFile "No permission changes in the last $StartRead days found"
+        Out-LogFile "No permission changes during the investigation period found."
     }
     # If not null then we must have found some events so flag them
     else {

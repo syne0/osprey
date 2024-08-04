@@ -1,9 +1,9 @@
 ﻿
 <#
 .SYNOPSIS
-    Get the Location of an IP using the freegeoip.net rest API
+    Get the Location of an IP using the http://ipwho.is/ API
 .DESCRIPTION
-    Get the Location of an IP using the freegeoip.net rest API
+    Get the Location of an IP using the http://ipwho.is/ API
 .PARAMETER IPAddress
     IP address of geolocation
 .EXAMPLE
@@ -20,8 +20,9 @@ Function Get-IPGeolocation {
         $IPAddress
     )
 
+    ##Deprecating API key check since current API service does not require a key. Keeping it around in case another one is chosen.##
     # If we don't have a OspreyAppData variable then we need to read it in
-    if (!([bool](get-variable OspreyAppData -erroraction silentlycontinue))) {
+    <#if (!([bool](get-variable OspreyAppData -erroraction silentlycontinue))) {
         Read-OspreyAppData
     }
 
@@ -41,28 +42,27 @@ Function Get-IPGeolocation {
     }
     else {
         $Accesskey = $OspreyAppData.access_key
-    }
+    }#> 
 
     # Check the global IP cache and see if we already have the IP there
     if ($IPLocationCache.ip -contains $IPAddress) {
         return ($IPLocationCache | Where-Object { $_.ip -eq $IPAddress } )
         Write-Verbose ("IP Cache Hit: " + [string]$IPAddress)
     }
-    elseif ($IPAddress -eq "<null>"){
+    elseif ($IPAddress -eq "<null>") {
         write-Verbose ("Null IP Provided: " + $IPAddress)
-                $hash = @{
-                IP               = $IPAddress
-                CountryName      = "NULL IP"
-                Continent        = "Unknown"
-                ContinentName    = "Unknown"
-                City             = "Unknown"
-                KnownMicrosoftIP = "Unknown"
-            }
+        $hash = @{
+            IP            = $IPAddress
+            CountryName   = "NULL IP"
+            Continent     = "Unknown"
+            ContinentName = "Unknown"
+            City          = "Unknown"
+        }
     }
     # If not then we need to look it up and populate it into the cache
     else {
         # URI to pull the data from
-        $resource = "http://api.ipstack.com/" + $ipaddress + "?access_key=" + $Accesskey
+        $resource = "http://ipwho.is/" + $ipaddress
 
         # Return Data from web
         $Error.Clear()
@@ -71,26 +71,24 @@ Function Get-IPGeolocation {
         if (($Error.Count -gt 0) -or ($null -eq $geoip.type)) {
             Out-LogFile ("Failed to retreive location for IP " + $IPAddress)
             $hash = @{
-                IP               = $IPAddress
-                CountryName      = "Failed to Resolve"
-                Continent        = "Unknown"
-                ContinentName    = "Unknown"
-                City             = "Unknown"
-                KnownMicrosoftIP = "Unknown"
+                IP            = $IPAddress
+                CountryName   = "Failed to Resolve"
+                Continent     = "Unknown"
+                ContinentName = "Unknown"
+                City          = "Unknown"
             }
         }
         else {
             # Determine if this IP is known to be owned by Microsoft
-            [string]$isMSFTIP = Test-MicrosoftIP -IP $IPAddress -type $geoip.type
+            # [string]$isMSFTIP = Test-MicrosoftIP -IP $IPAddress -type $geoip.type
 
             # Push return into a response object
             $hash = @{
-                IP               = $geoip.ip
-                CountryName      = $geoip.country_name
-                Continent        = $geoip.continent_code
-                ContinentName    = $geoip.continent_name
-                City             = $geoip.City
-                KnownMicrosoftIP = $isMSFTIP
+                IP            = $geoip.ip
+                CountryName   = $geoip.country
+                Continent     = $geoip.continent_code
+                ContinentName = $geoip.continent_name
+                City          = $geoip.City
             }
             $result = New-Object PSObject -Property $hash
         }

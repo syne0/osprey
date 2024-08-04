@@ -75,7 +75,7 @@ Function Start-OspreyUserInvestigation {
 		Out-LogFile "Running Get-OspreyUserMessageTrace" -action
 		Get-OspreyUserMessageTrace -user $User
 
-		Out-LogFile "Running Get-OspreyUserMobileDevice" -action
-		Get-OspreyUserMobileDevice -user $User
+		Out-LogFile "Running Get-OspreyUserDevices" -action
+		Get-OspreyUserDevices -user $User
     }
 }

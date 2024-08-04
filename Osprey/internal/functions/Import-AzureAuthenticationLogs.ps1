@@ -161,7 +161,7 @@ Function Import-AzureAuthenticationLogs {
 
     # Build an ordered arry to use to order the output coloums
     # Key coloums that we want ordered at the begining of the output
-    [array]$baseorder = "CreationTime", "UserId", "Workload", "ClientIP", "CountryName", "KnownMicrosoftIP"
+    [array]$baseorder = "CreationTime", "UserId", "Workload", "ClientIP", "CountryName", "City", "UserAgent", "Operation"
 
     foreach ($coloumheader in $baseorder) {
         # If the coloum header exists as one of our base properties then add to to coloumorder array and remove from baseproperties list
