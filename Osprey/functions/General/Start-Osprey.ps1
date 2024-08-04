@@ -383,10 +383,7 @@ Function Start-Osprey {
     
     
     # Determine if we have access to a P1 or P2 Azure Ad License
-    # EMS SKU contains Azure P1 as part of the sku
-    #TODO: Verify that these are all still good with the MS licence fuckery that constantly happens
-    #also what do these even do???
-    if ([bool] (Get-MgSubscribedSku | Where-Object { ($_.SkuPartNumber -like "*aad_premium*") -or ($_.SkuPartNumber -like "*EMS*") -or ($_.SkuPartNumber -like "*E5*") -or ($_.SkuPartNumber -like "*G5*") } )) {
+    if ([bool] (Get-MgSubscribedSku | Where-Object { ($_.SkuPartNumber -like "*aad_premium*") -or ($_.SkuPartNumber -like "*EMS*") -or ($_.SkuPartNumber -like "*E5*") -or ($_.SkuPartNumber -like "*G5*") -or ($_.SkuPartNumber -like "*SPB*") -or ($_.SkuPartNumber -like "*A3*") -or ($_.SkuPartNumber -like "*A5*") -or ($_.SkuPartNumber -like "*F1*")} )) {
         Write-Information "Advanced Entra ID License Found"
         [bool]$AdvancedEntraLicense = $true
     }
@@ -419,4 +416,4 @@ Function Start-Osprey {
 
 }
 
-    
+
