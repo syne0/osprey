@@ -42,42 +42,45 @@ Function Get-OspreyTenantExchangeLogs {
     else {
         Out-LogFile "New inbox rules have been found" -Notice
         # Go thru each rule and prepare it to output to CSV
-        Foreach ($rule in $TenantNewInboxRules) {
+
+        $NewRuleReport = foreach ($rule in $TenantNewInboxRules) {
+            #throwing all new inbox rules created into custom object
             $rule1 = $rule.auditdata | ConvertFrom-Json
-            $report = $rule1  | Select-Object -Property CreationTime,
-            Id,
-            Operation,
-            UserID,
-            ClientIP,
-            @{Name = 'Rule Name'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'Name' }).value } },
-            @{Name = 'SentTo'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SentTo' }).value } },
-            @{Name = 'From'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'From' }).value } },
-            @{Name = 'FromAddressContains'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'FromAddressContainsWords' }).value } },
-            @{Name = 'MoveToFolder'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'MoveToFolder' }).value } },
-            @{Name = 'MarkAsRead'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'MarkAsRead' }).value } },
-            @{Name = 'DeleteMessage'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'DeleteMessage' }).value } },
-            @{Name = 'SubjectContainsWords'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SubjectContainsWords' }).value } },
-            @{Name = 'SubjectOrBodyContainsWords'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SubjectOrBodyContainsWords' }).value } },
-            @{Name = 'ForwardTo'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'ForwardTo' }).value } }
-
-            $report | Out-MultipleFileType -fileprefix "New_InboxRule" -csv -append 
-
-            $Investigate = $false #make sure flag is false
-
-            # Evaluate each of the properties that we know bad actors like to use and flip the flag if needed
-            if ($report.DeleteMessage -eq $true) { $Investigate = $true }
-            if (!([string]::IsNullOrEmpty($report.ForwardAsAttachmentTo))) { $Investigate = $true }
-            if (!([string]::IsNullOrEmpty($report.ForwardTo))) { $Investigate = $true }
-            if (!([string]::IsNullOrEmpty($report.RedirectTo))) { $Investigate = $true }
-            if ($report.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
-
-            # If we have set the Investigate flag then report it and output it to a seperate file
-            if ($Investigate -eq $true) {
-                Out-LogFile ("Possible Investigate inbox rule found ID:" + $Report.Id) -notice
-                $report | Out-MultipleFileType -fileprefix "_Investigate_New_InboxRule" -csv -append
+            [PSCustomObject]@{
+                CreationTime               = $rule1 | Select-Object -ExpandProperty CreationTime
+                Id                         = $rule1 | Select-Object -ExpandProperty id
+                Operation                  = $rule1 | Select-Object -ExpandProperty Operation
+                UserID                     = $rule1 | Select-Object -ExpandProperty UserID
+                ClientIP                   = $rule1 | Select-Object -ExpandProperty ClientIP
+                RuleName                   = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq name | Select-Object -expandproperty value
+                SentTo                     = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SentTo | Select-Object -expandproperty value
+                RecievedFrom               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq From | Select-Object -expandproperty value
+                FromAddressContains        = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq FromAddressContains | Select-Object -expandproperty value
+                MoveToFolder               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MoveToFolder | Select-Object -expandproperty value
+                MarkAsRead                 = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MarkAsRead | Select-Object -expandproperty value
+                DeleteMessage              = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq DeleteMessage | Select-Object -expandproperty value
+                SubjectContainsWords       = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SubjectContainsWords | Select-Object -expandproperty value
+                SubjectOrBodyContainsWords = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SubjectOrBodyContainsWords | Select-Object -expandproperty value
+                ForwardTo                  = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq ForwardTo | Select-Object -expandproperty value
             }
         }
+        $NewRuleReport | Out-MultipleFileType -fileprefix "New_InboxRule" -csv
+        $InvestigateNewInboxRule = @()
+        Foreach ($rule in $NewRuleReport) {
 
+            $Investigate = $false
+            if ($rule.DeleteMessage -eq $true) { $Investigate = $true }
+            if (!([string]::IsNullOrEmpty($rule.ForwardAsAttachmentTo))) { $Investigate = $true }
+            if (!([string]::IsNullOrEmpty($rule.ForwardTo))) { $Investigate = $true }
+            if (!([string]::IsNullOrEmpty($rule.RedirectTo))) { $Investigate = $true }
+            if ($rule.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
+            
+            if ($Investigate -eq $true) {
+                $InvestigateNewInboxRule += $rule
+                Out-LogFile ("Possible Investigate inbox rule found! ID:" + $rule.Id) -notice
+                $InvestigateNewInboxRule | Out-MultipleFileType -fileprefix "_Investigate_New_InboxRule" -csv
+            }
+        }
     }
 
 
@@ -93,27 +96,29 @@ Function Get-OspreyTenantExchangeLogs {
     else {
         Out-LogFile "Modified inbox rules have been found"
         # Go thru each rule and prepare it to output to CSV
-        Foreach ($rule in $TenantSetInboxRules) {
+
+        $SetRuleReport = foreach ($rule in $TenantSetInboxRules) {
+            #throwing all edited inbox rules created into custom object
             $rule1 = $rule.auditdata | ConvertFrom-Json
-            $report = $rule1  | Select-Object -Property CreationTime,
-            Id,
-            Operation,
-            UserID,
-            ClientIP,
-            @{Name = 'Rule Name'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'Name' }).value } },
-            @{Name = 'SentTo'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SentTo' }).value } },
-            @{Name = 'From'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'From' }).value } },
-            @{Name = 'FromAddressContains'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'FromAddressContainsWords' }).value } },
-            @{Name = 'MoveToFolder'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'MoveToFolder' }).value } },
-            @{Name = 'MarkAsRead'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'MarkAsRead' }).value } },
-            @{Name = 'DeleteMessage'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'DeleteMessage' }).value } },
-            @{Name = 'SubjectContainsWords'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SubjectContainsWords' }).value } },
-            @{Name = 'SubjectOrBodyContainsWords'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'SubjectOrBodyContainsWords' }).value } },
-            @{Name = 'ForwardTo'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'ForwardTo' }).value } }
-
-            $report | Out-MultipleFileType -fileprefix "Set_InboxRule" -csv -append
-
+            [PSCustomObject]@{
+                CreationTime               = $rule1 | Select-Object -ExpandProperty CreationTime
+                Id                         = $rule1 | Select-Object -ExpandProperty id
+                Operation                  = $rule1 | Select-Object -ExpandProperty Operation
+                UserID                     = $rule1 | Select-Object -ExpandProperty UserID
+                ClientIP                   = $rule1 | Select-Object -ExpandProperty ClientIP
+                RuleName                   = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq name | Select-Object -expandproperty value
+                SentTo                     = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SentTo | Select-Object -expandproperty value
+                RecievedFrom               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq From | Select-Object -expandproperty value
+                FromAddressContains        = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq FromAddressContains | Select-Object -expandproperty value
+                MoveToFolder               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MoveToFolder | Select-Object -expandproperty value
+                MarkAsRead                 = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MarkAsRead | Select-Object -expandproperty value
+                DeleteMessage              = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq DeleteMessage | Select-Object -expandproperty value
+                SubjectContainsWords       = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SubjectContainsWords | Select-Object -expandproperty value
+                SubjectOrBodyContainsWords = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SubjectOrBodyContainsWords | Select-Object -expandproperty value
+                ForwardTo                  = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq ForwardTo | Select-Object -expandproperty value
+            }
         }
+        $SetRuleReport | Out-MultipleFileType -fileprefix "Set_InboxRule" -csv
     }
 
     ##Search for the deletion of ALL Inbox Rules##
@@ -128,18 +133,20 @@ Function Get-OspreyTenantExchangeLogs {
     else {
         Out-LogFile "Deleted inbox rules have been found"
         # Go thru each rule and prepare it to output to CSV
-        Foreach ($rule in $TenantRemoveInboxRules) {
+
+        $RemoveRuleReport = foreach ($rule in $TenantRemoveInboxRules) {
+            #throwing all new inbox rules created into custom object
             $rule1 = $rule.auditdata | ConvertFrom-Json
-            $report = $rule1  | Select-Object -Property CreationTime, 
-            Id,
-            Operation,
-            UserID,
-            ClientIP,
-            @{Name = 'Identity'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'Identity' }).value } }
-
-            $report | Out-MultipleFileType -fileprefix "Remove_InboxRule" -csv -append
-
+            [PSCustomObject]@{
+                CreationTime = $rule1 | Select-Object -ExpandProperty CreationTime
+                Id           = $rule1 | Select-Object -ExpandProperty id
+                Operation    = $rule1 | Select-Object -ExpandProperty Operation
+                UserID       = $rule1 | Select-Object -ExpandProperty UserID
+                ClientIP     = $rule1 | Select-Object -ExpandProperty ClientIP
+                Identity     = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq Identity | Select-Object -expandproperty value
+            }
         }
+        $RemoveRuleReport | Out-MultipleFileType -fileprefix "Remove_InboxRule" -csv
     }
 
 
@@ -155,23 +162,22 @@ Function Get-OspreyTenantExchangeLogs {
     }
     # If not null then we must have found some events so flag them
     else {
-        Out-LogFile "Forwarding changes have been found" -Notice
+        Out-LogFile "Forwarding changes have been found"
         # Go thru each log and prepare it to output to CSV
-        Foreach ($log in $TenantForwardingChanges) {
+        $ForwardingChangeReport = Foreach ($log in $TenantForwardingChanges) {
             $log1 = $log.auditdata | ConvertFrom-Json
-            $report = $log1  | Select-Object -Property CreationTime,
-            Id,
-            Operation,
-            UserID,
-            ClientIP,
-            @{Name = 'DeliverToMailboxAndForward'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'DeliverToMailboxAndForward' }).value } },
-            @{Name = 'ForwardingSmtpAddress'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'ForwardingSmtpAddress' }).value } }
-                
-            $report | Out-MultipleFileType -fileprefix "Forwarding_Changes" -csv -append -Notice
-
+            [PSCustomObject]@{
+                CreationTime      = $log1 | Select-Object -ExpandProperty CreationTime
+                Id                = $log1 | Select-Object -ExpandProperty id
+                Operation         = $log1 | Select-Object -ExpandProperty Operation
+                UserID            = $log1 | Select-Object -ExpandProperty UserID
+                ClientIP          = $log1 | Select-Object -ExpandProperty ClientIP
+                ForwardingStatus  = $log1 | Select-object -ExpandProperty Parameters | Where-Object name -eq DeliverToMailboxAndForward | Select-Object -expandproperty value
+                ForwardingAddress = $log1 | Select-object -ExpandProperty Parameters | Where-Object name -eq ForwardingSmtpAddress | Select-Object -expandproperty value
+            }
         }
     }
-    
+    $ForwardingChangeReport | Out-MultipleFileType -fileprefix "Forwarding_Changes" -csv
 
 
     ##Look for changes to mailbox permissions##
@@ -235,8 +241,7 @@ Function Get-OspreyTenantExchangeLogs {
     # If there are any results push them to an output file
     if ($RBACChanges.Count -gt 0) {
         Out-LogFile ("Found " + $RBACChanges.Count + " Changes made to Roles Based Access Control") -notice
-        $RBACChanges | Out-MultipleFileType -FilePrefix "RBAC_Changes" -csv -Notice
-        $RBACChanges | Out-MultipleFileType -FilePrefix "RBAC_Changes" -xml -json
+        $RBACChanges | Out-MultipleFileType -FilePrefix "RBAC_Changes" -csv -xml -json
     }
     # Otherwise report no results found
     else {
