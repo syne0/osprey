@@ -23,7 +23,8 @@ Function Out-LogFile {
         [string]$string,
         [switch]$action,
         [switch]$notice,
-        [switch]$silentnotice
+        [switch]$silentnotice,
+        [switch]$silentoutput
 	)
 
 	Write-PSFMessage -Message $string -ModuleName Osprey -FunctionName (Get-PSCallstack)[1].FunctionName
@@ -70,7 +71,15 @@ Function Out-LogFile {
 
     # Write everything to our log file
     if ($LogOutput) {
+        if ($silentoutput){
+
+            $logstring | Out-File -FilePath $LogFile -Append
+            $ScreenOutput = $false
+
+        }
+        else{
         $logstring | Out-File -FilePath $LogFile -Append
+        }
     }
 
     # Output to the screen

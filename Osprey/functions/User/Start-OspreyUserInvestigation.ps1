@@ -42,9 +42,6 @@ Function Start-OspreyUserInvestigation {
     Out-LogFile "Investigating Users"
     Send-AIEvent -Event "CmdRun"
 
-    # Pull the tenent configuration
-    Get-OspreyTenantConfiguration #TODO: Why?
-
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
 

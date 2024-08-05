@@ -113,7 +113,7 @@ Function Out-MultipleFileType {
                 else {
                     $filename = Join-Path $xmlPath ($FilePrefix + ".xml")
                 }
-                Out-LogFile ("Writing Data to " + $filename)
+                Out-LogFile ("Writing Data to " + $filename) -silentoutput
 
                 # Output our objects to clixml
                 $AllObject | Export-Clixml $filename
@@ -145,7 +145,7 @@ Function Out-MultipleFileType {
                 # If we have -append then append the data
                 if ($append) {
 
-                    Out-LogFile ("Appending Data to " + $filename)
+                    Out-LogFile ("Appending Data to " + $filename) -silentoutput
 
                     # Write it out to json making sture to append
                     $AllObject | ConvertTo-Json -Depth 100 | Out-File -FilePath $filename -Append
@@ -153,7 +153,7 @@ Function Out-MultipleFileType {
 
                 # Otherwise overwrite
                 else {
-                    Out-LogFile ("Writing Data to " + $filename)
+                    Out-LogFile ("Writing Data to " + $filename) -silentoutput
                     $AllObject | ConvertTo-Json -Depth 100 | Out-File -FilePath $filename
                 }
 
