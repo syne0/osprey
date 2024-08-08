@@ -54,7 +54,7 @@
             $Result = Invoke-WebRequest $InvokeURL -Headers $headers -userAgent 'Osprey' -ErrorAction Stop
         }
         catch {
-            switch ($Error[0].exception.response.statuscode) {
+            switch ($Error[0].exception.response.stateside) {
                 NotFound {
                     write-host "Email Not Found to be Pwned"
                     return

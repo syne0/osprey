@@ -54,7 +54,7 @@ Function Get-OspreyTenantExchangeLogs {
                 ClientIP                   = $rule1 | Select-Object -ExpandProperty ClientIP
                 RuleName                   = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq name | Select-Object -expandproperty value
                 SentTo                     = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SentTo | Select-Object -expandproperty value
-                RecievedFrom               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq From | Select-Object -expandproperty value
+                ReceivedFrom               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq From | Select-Object -expandproperty value
                 FromAddressContains        = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq FromAddressContains | Select-Object -expandproperty value
                 MoveToFolder               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MoveToFolder | Select-Object -expandproperty value
                 MarkAsRead                 = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MarkAsRead | Select-Object -expandproperty value
@@ -108,7 +108,7 @@ Function Get-OspreyTenantExchangeLogs {
                 ClientIP                   = $rule1 | Select-Object -ExpandProperty ClientIP
                 RuleName                   = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq name | Select-Object -expandproperty value
                 SentTo                     = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SentTo | Select-Object -expandproperty value
-                RecievedFrom               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq From | Select-Object -expandproperty value
+                ReceivedFrom               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq From | Select-Object -expandproperty value
                 FromAddressContains        = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq FromAddressContains | Select-Object -expandproperty value
                 MoveToFolder               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MoveToFolder | Select-Object -expandproperty value
                 MarkAsRead                 = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MarkAsRead | Select-Object -expandproperty value
@@ -123,7 +123,7 @@ Function Get-OspreyTenantExchangeLogs {
 
     ##Search for the deletion of ALL Inbox Rules##
 
-    #This kinda sucks as the remove-inboxrule record doesnt have a lot of information :c
+    #This kinda sucks as the remove-inboxrule record doesn't have a lot of information :c
     $TenantRemoveInboxRules = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operations Remove-InboxRule")
 
     if ($null -eq $TenantRemoveinboxRules) {

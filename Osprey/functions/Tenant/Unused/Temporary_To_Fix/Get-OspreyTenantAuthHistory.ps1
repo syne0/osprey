@@ -25,7 +25,7 @@ Param (
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
 
-    # Setup inial start and end time for the search
+    # Setup initial start and end time for the search
     [datetime]$CurrentStart = $StartDate
     [datetime]$CurrentEnd = $StartDate.AddMinutes($IntervalMinutes)
 

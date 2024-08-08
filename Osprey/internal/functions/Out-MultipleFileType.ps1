@@ -23,7 +23,7 @@
     Out-MultipleFileTime
     Determined what file is being used for export of data
 .NOTES
-    Need to review invesigation criteria of data being exported
+    Need to review investigation criteria of data being exported
 #> 
 Function Out-MultipleFileType {
     param
@@ -98,7 +98,7 @@ Function Out-MultipleFileType {
             ##Output XML File##
 
             if ($xml -eq $true) {
-                # lets put the xml files in a seperate directory to not clutter things up
+                # lets put the xml files in a separate directory to not clutter things up
                 $xmlpath = Join-path $Path XML
                 if (Test-path $xmlPath) { }
                 else {
@@ -127,7 +127,7 @@ Function Out-MultipleFileType {
 
             if ($json -eq $true) {
 
-                # lets put the xml files in a seperate directory to not clutter things up
+                # lets put the xml files in a separate directory to not clutter things up
                 $jsonpath = Join-path $Path JSON
                 if (Test-path $jsonPath) { }
                 else {
@@ -147,7 +147,7 @@ Function Out-MultipleFileType {
 
                     Out-LogFile ("Appending Data to " + $filename) -silentoutput
 
-                    # Write it out to json making sture to append
+                    # Write it out to json making sure to append
                     $AllObject | ConvertTo-Json -Depth 100 | Out-File -FilePath $filename -Append
                 }
 
@@ -178,7 +178,7 @@ Function Out-MultipleFileType {
 
                     Out-LogFile ("Appending Data to " + $filename)
 
-                    # Write it out to csv making sture to append
+                    # Write it out to csv making sure to append
                     $AllObject | Export-Csv $filename -NoTypeInformation -Append -Encoding UTF8
                 }
 

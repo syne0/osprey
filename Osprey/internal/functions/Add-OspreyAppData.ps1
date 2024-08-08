@@ -6,7 +6,7 @@
 .PARAMETER Name
     Name variable
 .PARAMETER Value
-    Value of of retieved data
+    Value of of retrieved data
 .EXAMPLE
     PS C:\> <example usage>
     Explanation of what the example does

@@ -15,7 +15,7 @@
     Out-LogFile
     Sends messages to the log file
 .NOTES
-    This is will depracted soon. #TODO: Will it? determine why this was, though I'm assuming it was due to overhaul to ps framework.
+    This is will deprecated soon. #TODO: Will it? determine why this was, though I'm assuming it was due to overhaul to ps framework.
 #> 
 Function Out-LogFile {
     Param
@@ -52,14 +52,14 @@ Function Out-LogFile {
         [string]$InvestigateFile = Join-Path (Split-Path $LogFile -Parent) "_Investigate.txt"
         $logstring | Out-File -FilePath $InvestigateFile -Append
     }
-    # For silent we need to supress the screen output
+    # For silent we need to suppress the screen output
     elseif ($silentnotice) {
-        [string]$logstring = ( "Addtional Information: " + $string)
+        [string]$logstring = ( "Additional Information: " + $string)
         # Build the file name for Investigate stuff log
         [string]$InvestigateFile = Join-Path (Split-Path $LogFile -Parent) "_Investigate.txt"
         $logstring | Out-File -FilePath $InvestigateFile -Append
 
-        # Supress screen and normal log output
+        # Suppress screen and normal log output
         $ScreenOutput = $false
         $LogOutput = $false
 

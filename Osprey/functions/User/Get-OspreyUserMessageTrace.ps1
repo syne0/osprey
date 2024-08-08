@@ -8,7 +8,7 @@
 
         Further investigation will require Start-HistoricalSearch
 .PARAMETER UserPrincipalName
-Single UPN of a user, commans seperated list of UPNs, or array of objects that contain UPNs.
+Single UPN of a user, comma separated list of UPNs, or array of objects that contain UPNs.
 .OUTPUTS
 
     File: Message_Trace.csv
@@ -20,7 +20,7 @@ Single UPN of a user, commans seperated list of UPNs, or array of objects that c
 
     Gets the message trace for user@contoso.com for the last 7 days
 #>
-#TODO: This is kind of crap and doesnt usually get even 7 days. fix or remove. prehaps evaluate sent mail around incident time? we'll see 
+#TODO: This is kind of crap and doesn't usually get even 7 days. fix or remove. perhaps evaluate sent mail around incident time? we'll see 
     param
     (
         [Parameter(Mandatory = $true)]

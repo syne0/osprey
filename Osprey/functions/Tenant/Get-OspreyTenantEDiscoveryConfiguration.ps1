@@ -19,7 +19,7 @@ Function Get-OspreyTenantEDiscoveryConfiguration {
 
     # Nulling our our role arrays
     [array]$Roles = $null
-    [array]$RoleAssignements = $null
+    [array]$RoleAssignments = $null
 
     # Look for E-Discovery Roles and who they might be assigned to
     $EDiscoveryCmdlets = "New-MailboxSearch", "Search-Mailbox"
@@ -38,11 +38,11 @@ Function Get-OspreyTenantEDiscoveryConfiguration {
 
     # Get everyone who is assigned one of these roles
     Foreach ($Role in $UniqueRoles) {
-        [array]$RoleAssignements = $RoleAssignements + (Get-ManagementRoleAssignment -Role $Role.role -Delegating $false)
+        [array]$RoleAssignments = $RoleAssignments + (Get-ManagementRoleAssignment -Role $Role.role -Delegating $false)
     }
 
-    Out-LogFile ("Found " + $RoleAssignements.count + " Role Assignements for these Roles")
-    $RoleAssignements | Out-MultipleFileType -FilePreFix "eDiscoveryRoleAssignments" -csv -xml -json
+    Out-LogFile ("Found " + $RoleAssignments.count + " Role Assignments for these Roles")
+    $RoleAssignments | Out-MultipleFileType -FilePreFix "eDiscoveryRoleAssignments" -csv -xml -json
 
 
 }

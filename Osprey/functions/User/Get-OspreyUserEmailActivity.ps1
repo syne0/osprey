@@ -3,7 +3,7 @@
 .DESCRIPTION
     Pulls email-related activity (Update, Delete, Send) for a user from the UAL. Does NOT pull MailItemsAccessed record.
 .PARAMETER UserPrincipalName
-    Single UPN of a user, commans seperated list of UPNs, or array of objects that contain UPNs.
+    Single UPN of a user, comma separated list of UPNs, or array of objects that contain UPNs.
 .OUTPUTS
 
     File: Exchange_UAL_Audit.csv

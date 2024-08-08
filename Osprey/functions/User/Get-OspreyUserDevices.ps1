@@ -68,7 +68,7 @@
                     $Device | Out-MultipleFileType -FilePreFix "RegisteredDevices" -user $user -csv -xml -json -append
                 
                     # Export a simple version as well
-                    Get-MGDevice -deviceID $Device.Id | select DisplayName, RegistrationDateTime, Id, OperatingSystem, OperatingSystemVersion, EnrollmentType
+                    Get-MGDevice -deviceID $Device.Id | Select-Object DisplayName, RegistrationDateTime, Id, OperatingSystem, OperatingSystemVersion, EnrollmentType
                     $Device | Out-MultipleFileType -FilePreFix "Simple_RegisteredDevices" -user $user -csv -append
 
                     # If a device was found that was registered during investigation window, flag that for review

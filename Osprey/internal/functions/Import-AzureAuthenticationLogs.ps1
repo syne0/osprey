@@ -1,5 +1,4 @@
-﻿
-Function Import-AzureAuthenticationLogs {
+﻿Function Import-AzureAuthenticationLogs {
 <#
 .SYNOPSIS
     Takes in a set of azure Authentication logs and combines them into a unified output
@@ -9,7 +8,7 @@ Function Import-AzureAuthenticationLogs {
     Logs that are converted
 .EXAMPLE
     Import-AzureAuthenticationLogs
-    Imprts Azure Auth logs
+    Imports Azure Auth logs
 .NOTES
     General notes
 #> 
@@ -47,7 +46,7 @@ Function Import-AzureAuthenticationLogs {
 
             # Switch statement to deal with known "special" properties
             switch ($member.name) {
-                # Extended properties can contain addtional values so we need to expand those
+                # Extended properties can contain additional values so we need to expand those
                 ExtendedProperties {
                     # Null check
                     if ($null -eq $entry.ExtendedProperties) { }
@@ -75,7 +74,7 @@ Function Import-AzureAuthenticationLogs {
                         # null the output string
                         [string]$epstring = $null
 
-                        # Convert into a string that is , seperated but with : seperating name and value
+                        # Convert into a string that is , separated but with : separating name and value
                         foreach ($ep in $entry.extendedproperties) {
                             [string]$epstring += $ep.name + ":" + $ep.v + ","
                         }
@@ -92,7 +91,7 @@ Function Import-AzureAuthenticationLogs {
                         # null the output string
                         [string]$actorstring = $null
 
-                        # Convert into a string that is , seperated but with : seperating ID and type
+                        # Convert into a string that is , separated but with : separating ID and type
                         foreach ($actor in $entry.actor) {
                             [string]$actorstring += $actor.id + ":" + $actor.type + ","
                         }
@@ -107,7 +106,7 @@ Function Import-AzureAuthenticationLogs {
                         # null the output string
                         [string]$targetstring = $null
 
-                        # Convert into a string that is , seperated but with : seperating ID and type
+                        # Convert into a string that is , separated but with : separating ID and type
                         foreach ($target in $entry.target) {
                             [string]$targetstring += $target.id + ":" + $target.type + ","
                         }
@@ -159,23 +158,23 @@ Function Import-AzureAuthenticationLogs {
     [array]$sortedoutput = $Listoutput | Sort-Object -Property creationtime
     $sortedoutput = $sortedoutput | Where-Object { $_.ClientIP -ne 'Base' }
 
-    # Build an ordered arry to use to order the output coloums
-    # Key coloums that we want ordered at the begining of the output
+    # Build an ordered array to use to order the output columns
+    # Key columns that we want ordered at the beginning of the output
     [array]$baseorder = "CreationTime", "UserId", "Workload", "ClientIP", "CountryName", "City", "UserAgent", "Operation"
 
-    foreach ($coloumheader in $baseorder) {
-        # If the coloum header exists as one of our base properties then add to to coloumorder array and remove from baseproperties list
-        if ($baseproperties -contains $coloumheader) {
-            [array]$coloumorder += $coloumheader
-            $baseproperties.remove($coloumheader)
+    foreach ($columnheader in $baseorder) {
+        # If the column header exists as one of our base properties then add to to columnorder array and remove from baseproperties list
+        if ($baseproperties -contains $columnheader) {
+            [array]$columnorder += $columnheader
+            $baseproperties.remove($columnheader)
         }
         else { }
     }
 
     # Add all of the remaining base properties to the sort order array
-    [array]$coloumorder += $baseproperties
+    [array]$columnorder += $baseproperties
 
-    $sortedoutput = $sortedoutput | Select-Object $coloumorder
+    $sortedoutput = $sortedoutput | Select-Object $columnorder
 
     # write-host $baseproperties
     return $sortedoutput

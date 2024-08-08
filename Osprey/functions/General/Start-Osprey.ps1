@@ -1,6 +1,6 @@
 <#
 .DESCRIPTION
-	Connects to the nessesary modules and gathers information needed for user to run Osprey. Gives suggestions on commands user can run.
+	Connects to the necessary modules and gathers information needed for user to run Osprey. Gives suggestions on commands user can run.
     Includes functions to reinitialize an osprey session and change parameters or tenant.
 #> #conf 7/13
 [CmdletBinding()]
@@ -40,7 +40,7 @@ Function Test-LoggingPath {
     }
 }
 Function New-LoggingFolder {
-    #good but validate graph works consistantly. sometimes doesnt!
+    #good but validate graph works consistently. sometimes doesn't!
     param([string]$RootPath)
 
     # Create a folder ID based on date
@@ -106,7 +106,7 @@ Function Set-LoggingPath {
 }
 Function Get-Eula {
     #probably good? needs testing
-    #I think this is kinda broken? i cant seem to get variable to skip eula once already agreed to working... Thinkin about moving this to a global variable 
+    #I think this is kinda broken? i cant seem to get variable to skip eula once already agreed to working... Thinking about moving this to a global variable 
     #like the API key so i only see it once
     Write-Information ('
 
@@ -184,7 +184,7 @@ Function Start-Osprey {
     if ($OspreyInitialized) {
 
         $title = "Osprey Is Initialized"
-        $message = "Osprey has already been initialized. Would you like to reinitialize Osprey with differant parameters or on a differant tenant?"
+        $message = "Osprey has already been initialized. Would you like to reinitialize Osprey with different parameters or on a different tenant?"
         $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Reruns Osprey initialization."
         $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", "Does not reinitialize Osprey."
         $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
@@ -369,7 +369,7 @@ Function Start-Osprey {
             [DateTime]$EndDate = ((Get-Date).AddDays(1)).Date
         }
         elseif ($EndDate -gt (get-Date).AddDays(2)) {
-            Write-Information "EndDate to Far in the furture."
+            Write-Information "EndDate too Far in the future."
             Write-Information "Setting EndDate to Today."
             [DateTime]$EndDate = ((Get-Date).AddDays(1)).Date
         }

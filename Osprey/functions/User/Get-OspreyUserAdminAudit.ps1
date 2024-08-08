@@ -15,7 +15,7 @@
 .EXAMPLE
     Get-OspreyUserAdminAudit -UserPrincipalName user@company.com
 
-    Gets all changes made to user@company.com and ouputs them to the csv and xml files.
+    Gets all changes made to user@company.com and outputs them to the csv and xml files.
 #>
 #TODO: Determine if this can/should stick around and what is needed to keep it
 #no access to admin audit log anymore to check what activities were gathered, so determine what changes to a user account we'd need to most know about

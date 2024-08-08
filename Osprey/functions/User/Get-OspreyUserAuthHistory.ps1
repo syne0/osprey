@@ -10,7 +10,7 @@
     Will flag ip addresses that are known to be owned by Microsoft using the XML from:
     https://support.office.com/en-us/article/URLs-and-IP-address-ranges-for-Office-365-operated-by-21Vianet-5C47C07D-F9B6-4B78-A329-BFDC1B6DA7A0
 .PARAMETER UserPrincipalName
-    Single UPN of a user, comma seperated list of UPNs, or array of objects that contain UPNs.
+    Single UPN of a user, comma separated list of UPNs, or array of objects that contain UPNs.
 .PARAMETER ResolveIPLocations
     Resolved IP Locations
 .OUTPUTS

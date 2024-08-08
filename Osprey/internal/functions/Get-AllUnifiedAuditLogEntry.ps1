@@ -12,7 +12,7 @@
     The end date provide by the user during Osprey Object Initialization
 .EXAMPLE
     Get-AllUnifiedAuditLogEntry
-    Gets all unified auditlog entries
+    Gets all unified audit log entries
 .NOTES
     General notes
 #> 
@@ -57,7 +57,7 @@
         }
         # Else continue
         else {
-            # Sort our result set to make sure the higest number is in the last position
+            # Sort our result set to make sure the highest number is in the last position
             $Output = $Output | Sort-Object -Property ResultIndex
 
             # if total result count returned is 0 then we should warn and stop

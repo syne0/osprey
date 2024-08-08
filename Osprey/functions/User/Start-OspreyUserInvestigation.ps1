@@ -8,7 +8,6 @@ Function Start-OspreyUserInvestigation {
 
 	Cmdlet								Information Gathered
 	-------------------------			-------------------------
-	Get-OspreyTenantConfigurationn        Basic Tenant information
 	Get-OspreyUserConfiguration           Basic User information
 	Get-OspreyUserInboxRule               Searches the user for Inbox Rules
 	Get-OspreyUserEmailForwarding         Looks for email forwarding configured on the user
@@ -18,7 +17,7 @@ Function Start-OspreyUserInvestigation {
 	Get-OspreyUserAdminAudit				Searches the EXO Audit logs for any commands that were run against the provided user object.
 	Get-OspreyUserMessageTrace			Pulls the email sent by the user in the last 7 days.
 .PARAMETER UserPrincipalName
-	Single UPN of a user, commans seperated list of UPNs, or array of objects that contain UPNs.
+	Single UPN of a user, comma separated list of UPNs, or array of objects that contain UPNs.
 .OUTPUTS
 	See help from individual cmdlets for output list.
 	All outputs are placed in the $Osprey.FilePath directory

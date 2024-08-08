@@ -21,7 +21,7 @@ Function Get-OspreyTenantAppsAndConsents {
     $MatchingApps = $null
 
     ##Search the unified audit log for events related to application activity##
-    Out-LogFile "Searching Unified Audit Log for application-related activitied in Entra." -Action
+    Out-LogFile "Searching Unified Audit Log for application-related activities in Entra." -Action
 
     $AzureApplicationActivityEvents = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -RecordType 'AzureActiveDirectory' -Operations 'Add OAuth2PermissionGrant.','Consent to application.' ")
 
@@ -47,7 +47,7 @@ Function Get-OspreyTenantAppsAndConsents {
     
     $SuspiciousApps = Invoke-RestMethod -URI https://raw.githubusercontent.com/randomaccess3/detections/main/M365_Oauth_Apps/MaliciousOauthAppDetections.json #pull list of malicious oauth apps from github
 
-    $MatchingApps = $($AllTenantApps | Where-Object displayname -in $SuspiciousApps.applications.name; $AllTenantApps | Where-Object appid -in $SuspiciousApps.appid) | Sort-Object appid -unique #compare apps and record down any matches
+    $MatchingApps = $($AllTenantApps | Where-Object displayable -in $SuspiciousApps.applications.name; $AllTenantApps | Where-Object appid -in $SuspiciousApps.appid) | Sort-Object appid -unique #compare apps and record down any matches
 
     if ($null -eq $MatchingApps) {
         Out-LogFile "No known suspicious applications found in tenant."
@@ -65,7 +65,7 @@ Function Get-OspreyTenantAppsAndConsents {
                 Created          = $match.AdditionalProperties.createdDateTime #from entra
                 Description      = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty description #from github list
                 UsersAssigned    = Get-MgServicePrincipalAppRoleAssignedTo -serviceprincipalid $match.id | Select-Object -expandproperty PrincipalDisplayname | Out-String #need to pull from additional cmd
-                Referances       = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty references | Out-String  #from github list
+                References       = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty references | Out-String  #from github list
                 KnownPermissions = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty Permissions | Out-String #from github list
                 
             }
@@ -81,7 +81,7 @@ Function Get-OspreyTenantAppsAndConsents {
     [array]$Grants = Get-AzureADPSPermissions -ShowProgress
     # [bool]$flag = $false
 
-    #This isnt super helpful since it always grabs some apps that are from Microsoft and is noisy
+    #This isn't super helpful since it always grabs some apps that are from Microsoft and is noisy
     #TODO: Improve this bit to be more useful in situations of admin compromise
     #clipping this out for now, will update after 1.0 is published
     

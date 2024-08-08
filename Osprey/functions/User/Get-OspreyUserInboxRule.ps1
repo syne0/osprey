@@ -35,7 +35,7 @@ Function Get-OspreyUserInboxRule {
 
         if ($null -eq $InboxRules) { Out-LogFile "No Inbox Rules found" }
         else {
-            # If the rules contains one of a number of known suspecious properties flag them
+            # If the rules contains one of a number of known suspicious properties flag them
             foreach ($Rule in $InboxRules) {
                 # Set our flag to false
                 $Investigate = $false
@@ -47,7 +47,7 @@ Function Get-OspreyUserInboxRule {
                 if (!([string]::IsNullOrEmpty($Rule.RedirectTo))) { $Investigate = $true }
                 if ($Rule.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
 
-                # If we have set the Investigate flag then report it and output it to a seperate file
+                # If we have set the Investigate flag then report it and output it to a separate file
                 if ($Investigate -eq $true) {
                     Out-LogFile ("Possible Investigate inbox rule found ID:" + $Rule.Identity + " Rule:" + $Rule.Name) -notice
                     # Description is multiline

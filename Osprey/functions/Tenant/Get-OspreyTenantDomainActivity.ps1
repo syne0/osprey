@@ -1,7 +1,7 @@
 ﻿<#
 .DESCRIPTION
 	Searches the EXO Audit logs for the following commands being run.
-	Set-AccpetedDomain
+	Set-AcceptedDomain
 	Add-FederatedDomain
 	New-AcceptedDomain
 	Update Domain

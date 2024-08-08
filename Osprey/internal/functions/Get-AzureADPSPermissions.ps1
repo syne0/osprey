@@ -312,7 +312,7 @@
             CacheObject -Object $_ -ObjectType "User"
         }
     
-        # Get all existing delegated permission grnats, get the client, resource and scope details
+        # Get all existing delegated permission grants, get the client, resource and scope details
         Write-Verbose "Retrieving delegated permission grants..."
     
         # As of module version 2.15.0, Get-MgOauth2PermissionGrant doesn't have the -ConsistencyLevel switch,
