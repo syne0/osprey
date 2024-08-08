@@ -40,7 +40,7 @@ Function Get-OspreyTenantExchangeLogs {
     }
     # If not null then we must have found some events so flag them
     else {
-        Out-LogFile "New inbox rules have been found" -Notice
+        Out-LogFile "New inbox rules have been found"
         # Go thru each rule and prepare it to output to CSV
 
         $NewRuleReport = foreach ($rule in $TenantNewInboxRules) {
@@ -65,7 +65,7 @@ Function Get-OspreyTenantExchangeLogs {
             }
         }
         $NewRuleReport | Out-MultipleFileType -fileprefix "New_InboxRule" -csv
-        $InvestigateNewInboxRule = @()
+        $InvestigateLog = @()
         Foreach ($rule in $NewRuleReport) {
 
             $Investigate = $false
@@ -76,10 +76,13 @@ Function Get-OspreyTenantExchangeLogs {
             if ($rule.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
             
             if ($Investigate -eq $true) {
-                $InvestigateNewInboxRule += $rule
+                $InvestigateLog += $rule
                 Out-LogFile ("Possible Investigate inbox rule found! ID:" + $rule.Id) -notice
-                $InvestigateNewInboxRule | Out-MultipleFileType -fileprefix "_Investigate_New_InboxRule" -csv
             }
+        }
+        #if investigation-worthy rules were found, output those to csv.
+        if ($null -ne $InvestigateLog) {
+            $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_New_InboxRule" -csv
         }
     }
 
@@ -176,8 +179,9 @@ Function Get-OspreyTenantExchangeLogs {
                 ForwardingAddress = $log1 | Select-object -ExpandProperty Parameters | Where-Object name -eq ForwardingSmtpAddress | Select-Object -expandproperty value
             }
         }
+        $ForwardingChangeReport | Out-MultipleFileType -fileprefix "Forwarding_Changes" -csv
     }
-    $ForwardingChangeReport | Out-MultipleFileType -fileprefix "Forwarding_Changes" -csv
+    
 
 
     ##Look for changes to mailbox permissions##

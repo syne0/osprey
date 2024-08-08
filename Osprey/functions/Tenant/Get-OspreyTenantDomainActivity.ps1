@@ -10,7 +10,7 @@
 	Remove Unverified Domain
 .OUTPUTS
 	Domain_Changes.csv
-#> #conf 7/13
+#>
 Function Get-OspreyTenantDomainActivity {
 	
 	Test-EXOConnection
@@ -26,23 +26,21 @@ Function Get-OspreyTenantDomainActivity {
 	}
 	# If not null then we must have found some events so flag them
 	else {
-		Out-LogFile "Domain configuration changes found!" -Notice
-		Out-LogFile "Please review Domain_Changes.csv to ensure any changes are legitimate." -Notice
+		Out-LogFile "Domain configuration changes found! Please review Domain_Changes.csv to ensure any changes are legitimate." -Notice
 
 		# Go thru each event and prepare it to output to CSV
-		Foreach ($event in $DomainConfigurationEvents) {
-			$log1 = $event.auditdata | ConvertFrom-Json
-			$report = $log1  | Select-Object -Property CreationTime,
-			Id,
-			Operation,
-			UserID,
-			@{Name = 'Target'; Expression = { ($_.Target.ID) } }
-                
-			$report | Out-MultipleFileType -fileprefix "Domain_Changes" -csv -append
+		$DomainChangesReport = Foreach ($log in $DomainConfigurationEvents) {
+			$log1 = $log.auditdata | ConvertFrom-Json
+			[PSCustomObject]@{
+			CreationTime = $log1 | Select-Object -ExpandProperty CreationTime 
+			Id = $log1 | Select-Object -ExpandProperty Id 
+			Operation = $log1 | Select-Object -ExpandProperty Operation
+			UserID = $log1 | Select-Object -ExpandProperty UserId 
+			Domain = $log1 | Select-Object -ExpandProperty Target | Select-Object -ExpandProperty ID
+			}
 				
 		}
+		$DomainChangesReport | Out-MultipleFileType -fileprefix "Domain_Changes" -csv
 	}
-
-	Out-LogFile "Completed gathering Domain configuration changes"
 
 }

@@ -12,29 +12,30 @@ Function Get-OspreyTenantEntraUsers {
     Send-AIEvent -Event "CmdRun"
 
     #Obtaining all users in the tenant and outputting details to a csv
-    $TenantUsers = Get-MgUser -all -Property UserPrincipalName,DisplayName,UserType,CreatedDateTime,AccountEnabled,Id,Mail,LastPasswordChangeDateTime | select-object UserPrincipalName,DisplayName,UserType,CreatedDateTime,AccountEnabled,Id,Mail,LastPasswordChangeDateTime
+    $TenantUsers = Get-MgUser -all -Property UserPrincipalName, DisplayName, UserType, CreatedDateTime, AccountEnabled, Id, Mail, LastPasswordChangeDateTime | select-object UserPrincipalName, DisplayName, UserType, CreatedDateTime, AccountEnabled, Id, Mail, LastPasswordChangeDateTime
     $TenantUsers | Out-MultipleFileType -fileprefix "EntraIDUsers" -csv
 
     Out-Logfile "Completed exporting Entra ID users"
 
     #Getting all user creation events from the investigation period and exporting to a CSV
-    $UserCreationLog = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operation 'Add user.'")
+    $UserCreations = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operation 'Add user.'")
 
-    if ($null -eq $UserCreationLog) {
+    if ($null -eq $UserCreations) {
         Out-LogFile "No user creation activity found"
     }
     # If not null then we must have found some events so flag them
     else {
-        foreach ($log in $UserCreationLog) {
+        Out-Logfile "User creation activity found"
+        $UserCreationReport = foreach ($log in $UserCreations) {
             $log1 = $log.auditdata | ConvertFrom-Json
-            $report = $log1 | Select-Object -Property CreationTime,
-            Id,
-            Operation,
-            UserID,
-            @{Name = 'User Added'; Expression = { ($_.Target[3].ID) } }
-
-            $report | Out-MultipleFileType -fileprefix "New_Users" -csv -append 
+            [PSCustomObject]@{
+                CreationTime = $log1 | Select-Object -ExpandProperty CreationTime
+                Id           = $log1 | Select-Object -ExpandProperty Id
+                Operation    = $log1 | Select-Object -ExpandProperty Operation
+                UserID       = $log1 | Select-Object -ExpandProperty UserID
+                UserAdded    = $log1 | Select-Object -ExpandProperty ObjectId
+            }
         }
+        $UserCreationReport | Out-MultipleFileType -fileprefix "New_Users" -csv
     }
-    $Filepath
 }

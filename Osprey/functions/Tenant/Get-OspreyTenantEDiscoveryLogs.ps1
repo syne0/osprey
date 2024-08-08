@@ -20,22 +20,19 @@ Function Get-OspreyTenantEDiscoveryLogs {
 
     # If not null then we must have found some events so flag them
     else {
-        Out-LogFile "eDiscovery Activity has been found!" -Notice
-        Out-LogFile "Please review eDiscoveryLogs.csv to validate if the activity is legitimate." -Notice
+        Out-LogFile "eDiscovery Activity has been found! Please review eDiscoveryLogs.csv to validate if the activity is legitimate." -Notice
         # Go thru each even and prepare it to output to CSV
-        Foreach ($log in $eDiscoveryLogs) {
+        $eDiscoveryOutput = Foreach ($log in $eDiscoveryLogs) {
             $log1 = $log.auditdata | ConvertFrom-Json
-            $report = $log1  | Select-Object -Property CreationTime,
-            Id,
-            Operation,
-            Workload,
-            UserID,
-            Case,
-            @{Name = 'CaseID'; Expression = { ($_.ExtendedProperties | Where-Object { $_.Name -eq 'CaseId' }).value } },
-            @{Name = 'Cmdlet'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'Cmdlet' }).value } }
-
-            $report | Out-MultipleFileType -fileprefix "eDiscoveryLogs" -csv -append
+            [PSCustomObject]@{
+            CreationTime = $log1 | Select-Object -ExpandProperty CreationTime
+            Id = $log1 | Select-Object -ExpandProperty Id
+            Name = $log1 | Select-Object -ExpandProperty ObjectId
+            Operation = $log1 | Select-Object -ExpandProperty Operation
+            UserID = $log1 | Select-Object -ExpandProperty UserID
+            }
         }
+        $eDiscoveryOutput | Out-MultipleFileType -fileprefix "eDiscoveryLogs" -csv
 
     }
 }

@@ -59,7 +59,7 @@ Function Out-MultipleFileType {
             # Test the path if it is there do nothing otherwise create it
             if (test-path $path) { }
             else {
-                Out-LogFile ("Making output directory for Tenant " + $Path)
+                Out-LogFile ("Making output directory for Tenant " + $Path) -silentoutput
                 $Null = New-Item $Path -ItemType Directory
             }
         }
@@ -74,7 +74,7 @@ Function Out-MultipleFileType {
             # Test the path if it is there do nothing otherwise create it
             if (test-path $path) { }
             else {
-                Out-LogFile ("Making output directory for user " + $Path)
+                Out-LogFile ("Making output directory for user " + $Path) -silentoutput
                 $Null = New-Item $Path -ItemType Directory
             }
         }
@@ -102,7 +102,7 @@ Function Out-MultipleFileType {
                 $xmlpath = Join-path $Path XML
                 if (Test-path $xmlPath) { }
                 else {
-                    Out-LogFile ("Making output directory for xml files " + $xmlPath)
+                    Out-LogFile ("Making output directory for xml files " + $xmlPath) -silentoutput
                     $null = New-Item $xmlPath -ItemType Directory
                 }
 
@@ -131,7 +131,7 @@ Function Out-MultipleFileType {
                 $jsonpath = Join-path $Path JSON
                 if (Test-path $jsonPath) { }
                 else {
-                    Out-LogFile ("Making output directory for xml files " + $jsonPath)
+                    Out-LogFile ("Making output directory for JSON files " + $jsonPath) -silentoutput
                     $null = New-Item $jsonPath -ItemType Directory
                 }
                 # Build the file name

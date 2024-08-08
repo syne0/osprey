@@ -69,12 +69,11 @@ Function Get-OspreyTenantAppsAndConsents {
                 KnownPermissions = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty Permissions | Out-String #from github list
                 
             }
-
         }
-
         $AppOutput | Out-MultipleFileType -FilePrefix "_Investigate_Suspicious_App_List" -csv -notice
+    }
 
-        <#
+    <#
     ##Gathering all apps and their principles and permissions##
     # Using the script from the article https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/detect-and-remediate-illicit-consent-grants
 
@@ -107,5 +106,5 @@ Function Get-OspreyTenantAppsAndConsents {
 
     $Grants | Out-MultipleFileType -FilePrefix "Tenant_Applications" -csv -json
 #>
-    }
+    
 }

@@ -31,22 +31,22 @@ Function Get-OspreyTenantConfiguration {
 	#Check Audit Log Config Setting and make sure it is enabled
 	Out-LogFile "Gathering Tenant Configuration Information" -action
 
-	Out-LogFile "Admin Audit Log"
+	Out-LogFile "Gathering Audit Log Configuration"
 	Get-AdminAuditLogConfig | Out-MultipleFileType -FilePrefix "AuditLogConfig" -txt -xml
 
 	if (-not (Get-AdminAuditLogConfig).UnifiedAuditLogIngestionEnabled) {
 		Out-Logfile "!WARNING! Audit logging is NOT enabled. Post-incident enabling of UAL does not allow visibility into past events." -notice
 	}
 
-	Out-LogFile "Organization Configuration"
+	Out-LogFile "Getting Organization Configuration"
 	Get-OrganizationConfig | Out-MultipleFileType -FilePrefix "OrgConfig" -xml -txt
 
-	Out-LogFile "Remote Domains"
+	Out-LogFile "Getting Remote Domains"
 	Get-RemoteDomain | Out-MultipleFileType -FilePrefix "RemoteDomain" -xml -csv -json
 
-	Out-LogFile "Transport Rules"
+	Out-LogFile "Getting Transport Rules"
 	Get-TransportRule | Format-List | Out-MultipleFileType -FilePrefix "TransportRules" -xml -csv -json
 
-	Out-LogFile "Transport Configuration"
+	Out-LogFile "Getting Transport Configuration"
 	Get-TransportConfig | Out-MultipleFileType -FilePrefix "TransportConfig" -xml -csv -json
 }
