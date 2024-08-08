@@ -15,60 +15,68 @@
 #>
 Function Show-OspreyHelp {
 
-    Out-LogFile "Creating Osprey Help File"
+	Out-LogFile "Creating Osprey Help File"
 
-    $help = "BASIC USAGE INFORMATION FOR THE Osprey MODULE
+	$help = "BASIC USAGE INFORMATION FOR THE OSPREY MODULE
 	===========================================
-	Osprey is in constant development.  We will be adding addtional data gathering and information analysis.
+	Osprey is a fork of Hawk which differs from it in several ways. It is in constant development and is updated 
+	to reflect new tactics of threat actors.
+	
 	DISCLAIMER:
 	===========================================
-	THE SAMPLE SCRIPTS ARE NOT SUPPORTED UNDER ANY MICROSOFT STANDARD SUPPORT
-	PROGRAM OR SERVICE. THE SAMPLE SCRIPTS ARE PROVIDED AS IS WITHOUT WARRANTY
-	OF ANY KIND. MICROSOFT FURTHER DISCLAIMS ALL IMPLIED WARRANTIES INCLUDING, WITHOUT
-	LIMITATION, ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR OF FITNESS FOR A PARTICULAR
-	PURPOSE. THE ENTIRE RISK ARISING OUT OF THE USE OR PERFORMANCE OF THE SAMPLE SCRIPTS
-	AND DOCUMENTATION REMAINS WITH YOU. IN NO EVENT SHALL MICROSOFT, ITS AUTHORS, OR
-	ANYONE ELSE INVOLVED IN THE CREATION, PRODUCTION, OR DELIVERY OF THE SCRIPTS BE LIABLE
-	FOR ANY DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS
-	PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR OTHER PECUNIARY LOSS)
-	ARISING OUT OF THE USE OF OR INABILITY TO USE THE SAMPLE SCRIPTS OR DOCUMENTATION,
-	EVEN IF MICROSOFT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES
+	While the original Hawk module was created by Microsoft employees and other experienced developers,
+	Osprey was created and is primarily maintained by a single person that does not have years of
+	experience with PowerShell development. Complicated issues may take some time to fix or need to
+	be written out of the module. Users of Osprey are encouraged to troubleshoot issues on their own
+	and submit any fixes as a as a pull request to the modules Github repository.
+
 	PURPOSE:
 	===========================================
-	The Osprey module has been designed to ease the burden on O365 administrators who are performing
+	The Osprey module has been designed to ease the burden on M365 administrators who are performing
 	a forensic analysis in their organization.
+
 	It does NOT take the place of a human reviewing the data generated and is simply here to make
 	data gathering easier.
+
 	HOW TO USE:
 	===========================================
+	You must run Start-Osprey to initialize the module and settings. If you run Start-Osprey again after
+	it's first initialization, it will offer to redo the initialization with a new tenant or using
+	different settings, such as changing the investigation range.
+	
 	Osprey is divided into two primary forms of cmdlets; user based Cmdlets and Tenant based cmdlets.
 	User based cmdlets take the form Verb-OspreyUser<action>.  They all expect a -user switch and
 	will retrieve information specific to the user that is specified.  Tenant based cmdlets take
 	the form Verb-OspreyTenant<Action>.  They don't need any switches and will return information
 	about the whole tenant.
-	A good starting place is the Start-OspreyTenantInvestigation this will run all the tenant based
+
+	You can then run Start-OspreyTenantInvestigation. This will run all the tenant-based
 	cmdlets and provide a collection of data to start with.  Once this data has been reviewed
 	if there are specific user(s) that more information should be gathered on
 	Start-OspreyUserInvestigation will gather all the User specific information for a single user.
+
 	All Osprey cmdlets include help that provides an overview of the data they gather and a listing
 	of all possible output files.  Run Get-Help <cmdlet> -full to see the full help output for a
 	given Osprey cmdlet.
+
 	Some of the Osprey cmdlets will flag results that should be further reviewed.  These will appear
 	in _Investigate files.  These are NOT indicative of unwanted activity but are simply things
 	that should reviewed.
-	REVIEW Osprey CODE:
+
+	REVIEW OSPREY CODE:
 	===========================================
-	The Osprey module is written in PowerShell and only uses cmdlets and function that are availble
+	The Osprey module is written in PowerShell and only uses cmdlets and function that are available
 	to all O365 customers.  Since it is written in PowerShell anyone who has downloaded it can
 	and is encouraged to review the code so that they have a clear understanding of what it is doing
 	and are comfortable with it prior to running it in their environment.
+
 	To view the code in notepad run the following command in powershell:
 		notepad (join-path ((get-module Osprey -ListAvailable)[0]).modulebase 'Osprey.psm1')
 	To get the path for the module for use in other application run:
 		((Get-module Osprey -listavailable)[0]).modulebase"
 
-    $help | Out-MultipleFileType -FilePrefix "Osprey_Help" -txt
+	$help | Out-MultipleFileType -FilePrefix "Osprey_Help" -txt
 
-    Notepad (Join-Path $Osprey.filepath "Tenant\Osprey_Help.txt")
+	Notepad (Join-Path $Osprey.filepath "Tenant\Osprey_Help.txt")
 
 }
