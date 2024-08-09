@@ -64,21 +64,20 @@
                 # For each device we found
                 foreach ($Device in $EntraDevices) {
                     # Get information about the device using graph and export that
-                    Get-MGDevice -deviceID $Device.Id 
-                    $Device | Out-MultipleFileType -FilePreFix "RegisteredDevices" -user $user -csv -xml -json -append
+                    $device1 = Get-MGDevice -deviceID $Device.Id 
+                    $Device1 | Out-MultipleFileType -FilePreFix "RegisteredDevices" -user $user -csv -xml -json -append
                 
                     # Export a simple version as well
-                    Get-MGDevice -deviceID $Device.Id | Select-Object DisplayName, RegistrationDateTime, Id, OperatingSystem, OperatingSystemVersion, EnrollmentType
-                    $Device | Out-MultipleFileType -FilePreFix "Simple_RegisteredDevices" -user $user -csv -append
+                    $device1 = Get-MGDevice -deviceID $Device.Id | Select-Object DisplayName, RegistrationDateTime, Id, OperatingSystem, OperatingSystemVersion, EnrollmentType
+                    $Device1 | Out-MultipleFileType -FilePreFix "Simple_RegisteredDevices" -user $user -csv -append
 
                     # If a device was found that was registered during investigation window, flag that for review
-                    if ($Device.RegistrationDateTime -gt $Osprey.StartDate) {
+                    if ($Device1.RegistrationDateTime -gt $Osprey.StartDate) {
                         Out-LogFile ("Device found that was registered during investigation window.")
-                        $Device | Out-MultipleFileType -FilePreFix "_Investigate_RegisteredDevices" -user $user -csv -append -Notice
+                        $Device1 | Out-MultipleFileType -FilePreFix "_Investigate_RegisteredDevices" -user $user -csv -append -Notice
                     }
                 }
             }
-
 
         }
     }
