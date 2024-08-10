@@ -17,37 +17,41 @@ Function Get-OspreyTenantAppsAndConsents {
     $InformationPreference = "Continue"
 
     # Make sure our variables are null
-    $AzureApplicationActivityEvents = $null
+    $AppConsentActivity = $null
     $MatchingApps = $null
 
     ##Search the unified audit log for events related to application activity##
-    Out-LogFile "Searching Unified Audit Log for application-related activities in Entra." -Action
+    Out-LogFile "Searching Unified Audit Log for application-related activities in Entra." -action
 
-    $AzureApplicationActivityEvents = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -RecordType 'AzureActiveDirectory' -Operations 'Add OAuth2PermissionGrant.','Consent to application.' ")
+    $AppConsentActivity = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -RecordType 'AzureActiveDirectory' -Operations 'Add OAuth2PermissionGrant.','Consent to application.' ")
 
     # If null we found no changes to nothing to do here
-    if ($null -eq $AzureApplicationActivityEvents) {
+    if ($null -eq $AppConsentActivity) {
         Out-LogFile "No Application related events found in the search time frame."
     }
 
     # If not null then we must have found some events so flag them
     else {
-        Out-LogFile "Application consent activity found. Please review Entra_App_Consents.csv to ensure any changes are legitimate."
-        Foreach ($event in $AzureApplicationActivityEvents) {
-            $report = $event.auditdata | ConvertFrom-Json | Select-Object -Property Id, CreationTime, UserID, Operation, @{Name = 'Application Name'; Expression = { ($_.Target[3].ID) } }
-
-            $report  | Out-MultipleFileType -fileprefix "Entra_App_Consents" -csv -json -append
+        Out-LogFile "Application consent activity found. Please review Entra_App_Consents.csv to ensure consents are legitimate."
+        $AppConsentReport = Foreach ($log in $AppConsentActivity) {
+            $log1 = $log.auditdata | ConvertFrom-Json
+            [PSCustomObject]@{
+                CreationTime    = $log1 | Select-Object -ExpandProperty CreationTime
+                Id              = $log1 | Select-Object -ExpandProperty Id
+                UserID          = $log1 | Select-Object -ExpandProperty UserID
+                Operation       = $log1 | Select-Object -ExpandProperty Operation
+                ApplicationName = $log1 | Select-Object -ExpandProperty Target | Select-Object -ExpandProperty ID | Select-object -index 3
+            }
         }
-
+        $AppConsentReport  | Out-MultipleFileType -fileprefix "Entra_App_Consents" -csv -json
     }
-
     ##Searching for known malicious applications##
 
     $AllTenantApps = @(Get-MgServicePrincipal -all) #get all apps in tenant
     
     $SuspiciousApps = Invoke-RestMethod -URI https://raw.githubusercontent.com/randomaccess3/detections/main/M365_Oauth_Apps/MaliciousOauthAppDetections.json #pull list of malicious oauth apps from github
 
-    $MatchingApps = $($AllTenantApps | Where-Object displayable -in $SuspiciousApps.applications.name; $AllTenantApps | Where-Object appid -in $SuspiciousApps.appid) | Sort-Object appid -unique #compare apps and record down any matches
+    $MatchingApps = $($AllTenantApps | Where-Object displayname -in $SuspiciousApps.applications.name; $AllTenantApps | Where-Object appid -in $SuspiciousApps.appid) | Sort-Object appid -unique #compare apps and record down any matches
 
     if ($null -eq $MatchingApps) {
         Out-LogFile "No known suspicious applications found in tenant."
@@ -66,8 +70,7 @@ Function Get-OspreyTenantAppsAndConsents {
                 Description      = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty description #from github list
                 UsersAssigned    = Get-MgServicePrincipalAppRoleAssignedTo -serviceprincipalid $match.id | Select-Object -expandproperty PrincipalDisplayname | Out-String #need to pull from additional cmd
                 References       = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty references | Out-String  #from github list
-                KnownPermissions = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty Permissions | Out-String #from github list
-                
+                KnownPermissions = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty Permissions | Out-String #from github list  
             }
         }
         $AppOutput | Out-MultipleFileType -FilePrefix "_Investigate_Suspicious_App_List" -csv -notice

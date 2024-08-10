@@ -9,7 +9,7 @@
     All_InboxRules.csv
     SweepRules.csv
     All_SweepRules.csv
-#>  #conf 7/13
+#>
 Function Get-OspreyUserInboxRule {
 
     param
@@ -32,7 +32,7 @@ Function Get-OspreyUserInboxRule {
         # Get Inbox rules
         Out-LogFile ("Gathering Inbox Rules: " + $User) -action
         $InboxRules = Get-InboxRule -mailbox  $User
-
+        $InvestigateLog = @()
         if ($null -eq $InboxRules) { Out-LogFile "No Inbox Rules found" }
         else {
             # If the rules contains one of a number of known suspicious properties flag them
@@ -41,12 +41,17 @@ Function Get-OspreyUserInboxRule {
                 $Investigate = $false
 
                 # Evaluate each of the properties that we know bad actors like to use and flip the flag if needed
-                if ($Rule.DeleteMessage -eq $true) { $Investigate = $true }
-                if (!([string]::IsNullOrEmpty($Rule.ForwardAsAttachmentTo))) { $Investigate = $true }
-                if (!([string]::IsNullOrEmpty($Rule.ForwardTo))) { $Investigate = $true }
-                if (!([string]::IsNullOrEmpty($Rule.RedirectTo))) { $Investigate = $true }
-                if ($Rule.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
-
+                if ($rule.DeleteMessage -eq $true) { $Investigate = $true }
+                if (!([string]::IsNullOrEmpty($rule.ForwardAsAttachmentTo))) { $Investigate = $true }
+                if (!([string]::IsNullOrEmpty($rule.ForwardTo))) { $Investigate = $true }
+                if (!([string]::IsNullOrEmpty($rule.RedirectTo))) { $Investigate = $true }
+                if ($rule.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
+                
+                if ($Investigate -eq $true) {
+                    $InvestigateLog += $rule
+                    Out-LogFile ("Possible Investigate inbox rule found! ID:" + $rule.Id) -notice
+                }
+            }
                 # If we have set the Investigate flag then report it and output it to a separate file
                 if ($Investigate -eq $true) {
                     Out-LogFile ("Possible Investigate inbox rule found ID:" + $Rule.Identity + " Rule:" + $Rule.Name) -notice
@@ -54,7 +59,7 @@ Function Get-OspreyUserInboxRule {
                     $Rule.Description = $Rule.Description.replace("`r`n", " ").replace("`t", "")
                     $Rule | Out-MultipleFileType -FilePreFix "_Investigate_InboxRules" -user $user -csv -json -append -Notice
                 }
-            }
+            
 
             # Description is multiline
             $inboxrulesRawDescription = $InboxRules
