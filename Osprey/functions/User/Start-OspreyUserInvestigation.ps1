@@ -1,6 +1,6 @@
 ﻿# String together the Osprey user functions to pull data for a single user
 Function Start-OspreyUserInvestigation {
-<#
+	<#
 .SYNOPSIS
 	Gathers common data about a provided user.
 .DESCRIPTION
@@ -32,46 +32,57 @@ Function Start-OspreyUserInvestigation {
 	Runs all Get-OspreyUser* cmdlets against all users who have "C-Level" set in CustomAttribute1
 #>
 
-    param
-    (
-        [Parameter(Mandatory = $true)]
-        [array]$UserPrincipalName
-    )
+	param
+	(
+		[Parameter(Mandatory = $true)]
+		[array]$UserPrincipalName
+	)
 
-    Out-LogFile "Investigating Users"
-    Send-AIEvent -Event "CmdRun"
+	Out-LogFile "Investigating Users"
+	Send-AIEvent -Event "CmdRun"
 
-    # Verify our UPN input
-    [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
+	# Verify our UPN input
+	[array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
 
-    foreach ($Object in $UserArray) {
-        [string]$User = $Object.UserPrincipalName
+	foreach ($Object in $UserArray) {
+		[string]$User = $Object.UserPrincipalName
 
-        Out-LogFile "Running Get-OspreyUserConfiguration" -action
-        Get-OspreyUserConfiguration -User $User
+		Out-LogFile "Running Get-OspreyUserConfiguration" -action
+		Get-OspreyUserConfiguration -User $User
+		Write-Host "------------------------------------------------"
 
-        Out-LogFile "Running Get-OspreyUserInboxRule" -action
-        Get-OspreyUserInboxRule -User $User
+		Out-LogFile "Running Get-OspreyUserInboxRule" -action
+		Get-OspreyUserInboxRule -User $User
+		Write-Host "------------------------------------------------"
 
-        Out-LogFile "Running Get-OspreyUserEmailForwarding" -action
+		Out-LogFile "Running Get-OspreyUserEmailForwarding" -action
 		Get-OspreyUserEmailForwarding -User $User
+		Write-Host "------------------------------------------------"
 
 		Out-LogFile "Running Get-OspreyUserAutoReply" -action
 		Get-OspreyUserAutoReply -User $User
+		Write-Host "------------------------------------------------"
 
-        Out-LogFile "Running Get-OspreyUserAuthHistory" -action
-        Get-OspreyUserAuthHistory -User $user -ResolveIPLocations
+		Out-LogFile "Running Get-OspreyUserAuthHistory" -action
+		Get-OspreyUserAuthHistory -User $user -ResolveIPLocations
+		Write-Host "------------------------------------------------"
 		
-        Out-LogFile "Running Get-OspreyUserEmailActivity" -action
-        Get-OspreyUserEmailActivity -User $User
+		Out-LogFile "Running Get-OspreyUserEmailActivity" -action
+		Get-OspreyUserEmailActivity -User $User
+		Write-Host "------------------------------------------------"
 
-        Out-LogFile "Running Get-OspreyUserAdminAudit" -action
+		Out-LogFile "Running Get-OspreyUserAdminAudit" -action
 		Get-OspreyUserAdminAudit -User $User
+		Write-Host "------------------------------------------------"
 
 		Out-LogFile "Running Get-OspreyUserMessageTrace" -action
 		Get-OspreyUserMessageTrace -user $User
+		Write-Host "------------------------------------------------"
 
 		Out-LogFile "Running Get-OspreyUserDevices" -action
 		Get-OspreyUserDevices -user $User
-    }
+		Write-Host "------------------------------------------------"
+
+		Out-LogFile "User investigation complete"
+	}
 }
