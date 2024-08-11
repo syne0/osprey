@@ -20,6 +20,8 @@
 #TODO: Determine if this can/should stick around and what is needed to keep it
 #no access to admin audit log anymore to check what activities were gathered, so determine what changes to a user account we'd need to most know about
 #this may be tough as records like 'update user' have a lot of stuff contained and a lot of it is automatic system garbage..
+
+#Deprecating for the time being
     param
     (
         [Parameter(Mandatory = $true)]
@@ -42,7 +44,9 @@
 
         # Get all changes to this user from the admin audit logs
         [array]$UserChanges = Search-AdminAuditLog -ObjectIDs $MailboxName -StartDate $Osprey.StartDate -EndDate $Osprey.EndDate
-
+        $UserChanges = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIDs " + $User + " -RecordType ExchangeAdmin")
+        $UserChanges = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -RecordType ExchangeAdmin")
+            
 
         # If there are any results push them to an output file
         if ($UserChanges.Count -gt 0) {
