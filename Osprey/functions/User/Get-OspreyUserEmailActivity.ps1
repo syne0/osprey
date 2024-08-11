@@ -42,38 +42,97 @@
 
         Out-LogFile ("Attempting to Gather Email Activity from the UAL for " + $User) -action
 
-        # Test if mailbox auditing is enabled
-        # if enabled pull the mailbox auditing from the unified audit logs
-        Out-LogFile "Searching Unified Audit Log for Exchange Related Events"
+        ##Searching for Update records##
+        #These records will show what emails a threat actor may have accessed
 
-        $UALExchangeItemRecords = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIDs " + $User + " -RecordType ExchangeItem -operation update")
+        Out-LogFile "Searching Unified Audit Log for Update events."
+        $UALUpdateRecords = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIDs " + $User + " -RecordType ExchangeItem -operation update")
             
-        if ($null -eq $UALExchangeItemRecords) {
-            Out-LogFile "No Exchange activity found."
+        if ($null -eq $UALUpdateRecords) {
+            Out-LogFile "No Update activity found."
         }
-        # If not null then we must have found some events so flag them
+        # If not null then we must have found some events so export them
         else {
-            Out-LogFile ("Found " + $UALExchangeItemRecords.Count + " Exchange audit records.") 
-                
-            #TODO: fix this all asap next
-            #Issue: for this i need to extract stuff from Item in some records, but i cant do it like with the inbox rules or apps
-            #since it seems that it's just a bunch of string data
-            Foreach ($record in $UALExchangeItemRecords) {
-                $record1 = $record.auditdata | ConvertFrom-Json
-                $report = $record1  | Select-Object -Property CreationTime,
-                Id,
-                Operation,
-                UserID,
-                ClientIP,
-                @{Name = 'thing'; Expression = { ($_.Item) } }
+            Out-LogFile ("Found " + $UALUpdateRecords.Count + " email Update records") 
 
-                $report 
-                # | Out-MultipleFileType -fileprefix "ExchangeItems" -csv -append temp comment out for testing
-        
+            #build custom object out of UAL records to get the most important information
+            $UpdateReport = Foreach ($record in $UALUpdateRecords) {
+                $record1 = $record.auditdata | ConvertFrom-Json
+                [PSCustomObject]@{
+                    CreationTime      = $record1.CreationTime
+                    RecordId          = $record1.Id
+                    Operation         = $record1.Operation
+                    UserID            = $record1.UserID
+                    ClientIP          = $record1.ClientIP
+                    Subject           = $record1.Item | Select-Object -ExpandProperty Subject
+                    ParentFolder      = $record1.Item | Select-Object -ExpandProperty ParentFolder  | Select-object -expandproperty Path
+                    Attachments       = $record1.Item | Select-Object Attachments | Select-object -expandproperty Attachments
+                    InternetMessageId = $record1.Item | Select-Object -ExpandProperty InternetMessageId
+                    Id                = $record1.Item | Select-Object -ExpandProperty Id
+                }
             }
+            #output the object
+            $UpdateReport | Out-MultipleFileType -FilePrefix "Email_Update_Records" -User $user -csv -json -xml
         }
-        # Output the data we found
-        $UnifiedAuditLogs | Out-MultipleFileType -FilePrefix "Exchange_UAL_Audit" -User $User -csv -json
+
+        ##Searching for Delete records##
+        Out-LogFile "Searching Unified Audit Log for Delete events."
+        $UALDeleteRecords = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIDs " + $User + " -RecordType ExchangeItemGroup")
+
+        if ($null -eq $UALDeleteRecords) {
+            Out-LogFile "No Delete activity found."
+        }
+        else {
+            Out-LogFile ("Found " + $UALDeleteRecords.Count + " email Delete records")
+
+            #build custom object out of UAL records to get the most important information
+            #this is a bit screwy right now due to the occasional multiple records returned in one record. will fix eventually.
+            $DeleteReport = Foreach ($record in $UALDeleteRecords) {
+                $record1 = $record.auditdata | ConvertFrom-Json
+                [PSCustomObject]@{
+                    CreationTime = $record1.CreationTime
+                    RecordId     = $record1.Id
+                    Operation    = $record1.Operation
+                    UserID       = $record1.UserID
+                    ClientIP     = $record1.ClientIP
+                    Subject      = $record1.AffectedItems | Select-object Subject | Select-object -expandproperty subject
+                    Folder       = $record1.AffectedItems | Select-Object -ExpandProperty ParentFolder  | Select-object -expandproperty Path
+                }
+            }
+            #output the object
+            $DeleteReport | Out-MultipleFileType -FilePrefix "Email_Delete_Records" -User $user -csv -json -xml
+        }
+
+        ##Searching for Create records##
+        Out-LogFile "Searching Unified Audit Log for Create events."
+        $UALCreateRecords = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIDs " + $User + " -RecordType ExchangeItem -operation create")
+            
+        if ($null -eq $UALCreateRecords) {
+            Out-LogFile "No Create activity found."
+        }
+        # If not null then we must have found some events so export them
+        else {
+            Out-LogFile ("Found " + $UALCreateRecords.Count + " email Create records") 
+
+            #build custom object out of UAL records to get the most important information
+            $CreateReport = Foreach ($record in $UALCreateRecords) {
+                $record1 = $record.auditdata | ConvertFrom-Json
+                [PSCustomObject]@{
+                    CreationTime      = $record1.CreationTime
+                    RecordId          = $record1.Id
+                    Operation         = $record1.Operation
+                    UserID            = $record1.UserID
+                    ClientIP          = $record1.ClientIP
+                    Subject           = $record1.Item | Select-Object -ExpandProperty Subject
+                    ParentFolder      = $record1.Item | Select-Object -ExpandProperty ParentFolder  | Select-object -expandproperty Path
+                    InternetMessageId = $record1.Item | Select-Object -ExpandProperty InternetMessageId
+                    Id                = $record1.Item | Select-Object -ExpandProperty Id
+                }
+            }
+            #output the object
+            $CreateReport | Out-MultipleFileType -FilePrefix "Email_Create_Records" -User $user -csv -json -xml
+        }
+
     }
 }
 
