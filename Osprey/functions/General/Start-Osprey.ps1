@@ -2,7 +2,7 @@
 .DESCRIPTION
 	Connects to the necessary modules and gathers information needed for user to run Osprey. Gives suggestions on commands user can run.
     Includes functions to reinitialize an osprey session and change parameters or tenant.
-#> #conf 7/13
+#>
 [CmdletBinding()]
 param
 (
@@ -211,7 +211,6 @@ Function Start-Osprey {
         switch ($result) {
             0 {
                 Write-Host "Disconnecting currently connected tenant"
-                Disconnect-AzureAD
                 Disconnect-ExchangeOnline
                 Disconnect-MgGraph
                 Disconnect-graph #TODO: required? determine..
