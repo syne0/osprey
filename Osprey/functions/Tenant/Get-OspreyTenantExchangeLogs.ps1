@@ -183,33 +183,42 @@ Function Get-OspreyTenantExchangeLogs {
     }
     
 
-
     ##Look for changes to mailbox permissions##
 
     Out-LogFile "Searching for changes to mailbox permissions" -Action
     $TenantMailboxPermissionChanges = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -Operations Add-MailboxPermission")
 
-    if ($null -eq $TenantMailboxPermissionChanges) {
+    #Expanding changes and exporting raw
+    $MailboxChangesExpanded = $TenantMailboxPermissionChanges | Select-object -ExpandProperty AuditData | ConvertFrom-Json
+    $MailboxChangesExpanded | Out-MultipleFileType -fileprefix "Unfiltered_Mailbox_Permission_Changes" -csv -json
+
+    #Filtering out system changes
+    $MailboxChangesFiltered = $MailboxChangesExpanded | Where-Object { $_.UserId -notlike "NT AUTHORITY\SYSTEM*" }
+
+    if ($null -eq $MailboxChangesFiltered) {
         Out-LogFile "No permission changes during the investigation period found."
     }
     # If not null then we must have found some events so flag them
     else {
-        Out-LogFile "Mailbox permission changes have been found. Please review non-system changes. Note: target and user with permission details are via ID."
+        Out-LogFile "Mailbox permission changes have been found."
         # Go thru each log and prepare it to output to CSV
-        Foreach ($change in $TenantMailboxPermissionChanges) {
-            $change1 = $change.auditdata | ConvertFrom-Json
-            $report = $change1  | Select-Object -Property CreationTime,
-            Id,
-            Operation,
-            UserID,
-            ClientIP,
-            @{Name = 'Target ID'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'User' }).value } },
-            @{Name = 'User with Access ID'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'Identity' }).value } },
-            @{Name = 'Access Rights'; Expression = { ($_.Parameters | Where-Object { $_.Name -eq 'AccessRights' }).value } }
-                
-            $report | Out-MultipleFileType -fileprefix "Mailbox_Permission_Changes" -csv -append
-
+        $PermissionChangesReport = foreach ($change in $MailboxChangesFiltered) {
+            $TargetID = $change.Parameters | Where-Object Name -eq Identity | Select-Object -expandproperty Value
+            $AccessID = $change.Parameters | Where-Object Name -eq User | Select-Object -expandproperty Value
+            [PSCustomObject]@{
+                CreationTime       = $change.CreationTime
+                ID                 = $change.Id
+                Operation          = $change.Operation
+                UserMakingChange   = $change.UserId
+                ClientIP           = $change.ClientIP
+                TargetName         = Get-MgUser -userid $TargetID | Select-Object -ExpandProperty DisplayName
+                TargetUPN          = Get-MgUser -userid $TargetID | Select-Object -ExpandProperty UserPrincipalName
+                UserWithAccessName = Get-MgUser -userid $AccessID | Select-Object -ExpandProperty DisplayName
+                UserWithAccessUPN  = Get-MgUser -userid $AccessID | Select-Object -ExpandProperty UserPrincipalName
+                AccessRights       = $change.Parameters | Where-Object Name -eq AccessRights | Select-Object -expandproperty Value
+            }
         }
+        $PermissionChangesReport | Out-MultipleFileType -fileprefix "Mailbox_Permission_Changes" -csv 
     }
 
 
