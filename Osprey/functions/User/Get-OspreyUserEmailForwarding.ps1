@@ -5,7 +5,7 @@ Pulls the values of ForwardingSMTPAddress and ForwardingAddress to see if the us
 File: _Investigate_Users_WithForwarding.csv
 File: User_ForwardingReport.csv
 File: ForwardingReport.csv
-#>  #conf 7/13
+#>
 Function Get-OspreyUserEmailForwarding {
 
     param
@@ -26,7 +26,6 @@ Function Get-OspreyUserEmailForwarding {
 
         # Looking for email forwarding stored in AD
         Out-LogFile ("Gathering possible Forwarding changes for: " + $User) -action
-        Out-LogFile "Collecting AD Forwarding Settings" -action
         $mbx = Get-Mailbox -identity $User
 
         # Check if forwarding is configured by user or admin

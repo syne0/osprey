@@ -82,7 +82,7 @@ Function Get-OspreyTenantExchangeLogs {
         }
         #if investigation-worthy rules were found, output those to csv.
         if ($null -ne $InvestigateLog) {
-            $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_New_InboxRule" -csv
+            $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_New_InboxRule" -csv -notice
         }
     }
 

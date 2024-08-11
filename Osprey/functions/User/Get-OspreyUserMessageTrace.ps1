@@ -1,10 +1,10 @@
 ﻿Function Get-OspreyUserMessageTrace {
-<#
+    <#
 .SYNOPSIS
-    Pull that last 7 days of message trace data for the specified user.
+    Pull that last 10 days of message trace data for the specified user.
 .DESCRIPTION
         Pulls the basic message trace data for the specified user.
-        Can only pull the last 7 days as that is all we keep in get-messagetrace
+        Can only pull the last 10 days as that is all we keep in get-messagetrace
 
         Further investigation will require Start-HistoricalSearch
 .PARAMETER UserPrincipalName
@@ -20,12 +20,11 @@ Single UPN of a user, comma separated list of UPNs, or array of objects that con
 
     Gets the message trace for user@contoso.com for the last 7 days
 #>
-#TODO: This is kind of crap and doesn't usually get even 7 days. fix or remove. perhaps evaluate sent mail around incident time? we'll see 
+
     param
     (
         [Parameter(Mandatory = $true)]
         [array]$UserPrincipalName
-
     )
 
     Test-EXOConnection
@@ -34,6 +33,8 @@ Single UPN of a user, comma separated list of UPNs, or array of objects that con
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
 
+    [DateTime]$MTEndDate = Get-Date
+    [DateTime]$MTStartDate = ((Get-Date).AddDays(-10)).Date
     # Gather the trace
     foreach ($Object in $UserArray) {
 
@@ -47,9 +48,9 @@ Single UPN of a user, comma separated list of UPNs, or array of objects that con
         }
         else {
             # Get the 7 day message trace for the primary SMTP address as the sender
-            Out-LogFile ("Gathering messages sent by: " + $PrimarySMTP) -action
+            Out-LogFile ("Gathering messages sent by:$PrimarySMTP in the last 10 days") -action
 
-            (Get-MessageTrace -Sender $PrimarySMTP) | Out-MultipleFileType -FilePreFix "Message_Trace" -user $User -csv -json
+            (Get-MessageTrace -SenderAddress $PrimarySMTP -StartDate $MTStartDate -EndDate $MTEndDate) | Out-MultipleFileType -FilePreFix "Sent_MessageTrace" -user $User -csv -json
         }
     }
 }

@@ -40,45 +40,72 @@
         else {
             Out-Logfile ("Found " + $MobileDevices.count + " Devices")
 
-            # Check each device to see if it was NEW
-            # If so flag it for investigation
-            foreach ($Device in $MobileDevices) {
-                if ($Device.FirstSyncTime -gt $Osprey.StartDate) {
-                    Out-Logfile ("Device found that was first synced inside investigation window") -notice
-                    Out-LogFile ("DeviceID: " + $Device.DeviceID) -notice
-                    $Device | Out-MultipleFileType -FilePreFix "_Investigate_MobileDevice" -user $user -csv -json -append -Notice
-                }
-            }
             # Output all mobile devices found
             $MobileDevices | Out-MultipleFileType -FilePreFix "MobileDevices" -user $user -csv -json
 
+            # Check each device to see if it was NEW
+            # If so flag it for investigation
+            $InvestigateLog = @()
 
-            ##Get all Entra joined/registered devices##
-            Out-Logfile ("Gathering Entra registered or joined devices for: " + $User)
-            # Get all devices
-            $EntraDevices = Get-MgUserRegisteredDevice -UserId $user
-            if ($Null -eq $EntraDevices) {
-                Out-Logfile ("No Entra devices found for user: " + $User)
-            }
-            else {
-                # For each device we found
-                foreach ($Device in $EntraDevices) {
-                    # Get information about the device using graph and export that
-                    $device1 = Get-MGDevice -deviceID $Device.Id 
-                    $Device1 | Out-MultipleFileType -FilePreFix "RegisteredDevices" -user $user -csv -xml -json -append
-                
-                    # Export a simple version as well
-                    $device1 = Get-MGDevice -deviceID $Device.Id | Select-Object DisplayName, RegistrationDateTime, Id, OperatingSystem, OperatingSystemVersion, EnrollmentType
-                    $Device1 | Out-MultipleFileType -FilePreFix "Simple_RegisteredDevices" -user $user -csv -append
-
-                    # If a device was found that was registered during investigation window, flag that for review
-                    if ($Device1.RegistrationDateTime -gt $Osprey.StartDate) {
-                        Out-LogFile ("Device found that was registered during investigation window.")
-                        $Device1 | Out-MultipleFileType -FilePreFix "_Investigate_RegisteredDevices" -user $user -csv -append -Notice
-                    }
+            foreach ($Device in $MobileDevices) {
+                if ($Device.FirstSyncTime -gt $Osprey.StartDate) {
+                    Out-Logfile ("Device found that was first synced inside investigation window. DeviceID: " + $Device.DeviceID) -notice
+                    $InvestigateLog += $Device #append flagged devices
                 }
             }
 
+            #if investigation-worthy devices  were found, output those to csv.
+            if ($null -ne $InvestigateLog) {
+                $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_MobileDevice" -csv -json -notice
+            }
+        }
+
+        ##Get all Entra joined/registered devices##
+        Out-Logfile ("Gathering Entra registered or joined devices for: " + $User)
+        # Get all devices
+        $EntraDevices = Get-MgUserRegisteredDevice -UserId $user
+        if ($Null -eq $EntraDevices) {
+            Out-Logfile ("No Entra devices found for user: " + $User)
+        }
+        else {
+            # For each device we found
+            $DeviceLog = @()
+            foreach ($Device in $EntraDevices) {
+                # Get information about the device using graph and export that by appending it into an array
+                $device1 = Get-MGDevice -deviceID $Device.Id 
+                $DeviceLog = + $device1
+            }
+            $DeviceLog | Out-MultipleFileType -fileprefix "EntraDevices" -user $user -csv -json -xml
+
+            # Export a simple version as well
+            $SimpleDeviceReport = foreach ($Device in $EntraDevices) {
+                # Get information about the device using graph and export that by appending it into an array
+                $device1 = Get-MGDevice -deviceID $Device.Id 
+                [PSCustomObject]@{
+                    DisplayName            = $device1 | Select-Object DisplayName
+                    RegistrationDateTime   = $device1 | Select-Object RegistrationDateTime
+                    Id                     = $device1 | Select-Object Id
+                    OperatingSystem        = $device1 | Select-Object OperatingSystem
+                    OperatingSystemVersion = $device1 | Select-Object OperatingSystemVersion
+                    EnrollmentType         = $device1 | Select-Object EnrollmentType
+                }
+                    
+            }
+            $SimpleDeviceReport | Out-MultipleFileType -FilePreFix "Simple_EntraDevices" -user $user -csv
+
+            # If a device was found that was registered during investigation window, flag that for review
+            $InvestigateLog = @()
+            foreach ($Device in $EntraDevices) {
+                $device1 = Get-MGDevice -deviceID $Device.Id | Select-Object Displayname,RegistrationDateTime,Id,OperatingSystem,OperatingSystemVersion,EnrollmentType
+            if ($device1.RegistrationDateTime -gt $Osprey.StartDate) {
+                Out-Logfile ("Device found that was first added inside investigation window. DeviceID: " + $Device1.Id) -notice
+                $InvestigateLog += $device1
+            }
+        }
+        if ($null -ne $InvestigateLog) {
+            $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_EntraDevices" -csv -notice
         }
     }
 }
+} 
+
