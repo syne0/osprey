@@ -17,7 +17,7 @@
 
     # Prompt the user that this is going to take a long time to run
     $title = "Long Running Command"
-    $message = "Running this search can take a very long time to complete (~1min per user). `nDo you wish to continue?"
+    $message = "Running this search can take a very long time to complete. `nDo you wish to continue?"
     $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Continue operation"
     $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", "Exit Cmdlet"
     $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
@@ -37,7 +37,7 @@
 
     foreach ($mailbox in $AllMailboxes) {
         Get-OspreyUserInboxRule -UserPrincipalName $mailbox.PrimarySMTPAddress
-        Get-OspreuUserEmailForwarding -UserPrincipalName $mailbox.PrimarySMTPAddress
+        Get-OspreyUserEmailForwarding -UserPrincipalName $mailbox.PrimarySMTPAddress
     }
 
 }
