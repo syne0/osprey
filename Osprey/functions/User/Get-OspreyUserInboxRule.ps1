@@ -31,7 +31,7 @@ Function Get-OspreyUserInboxRule {
 
         # Get Inbox rules
         Out-LogFile ("Gathering Inbox Rules: " + $User) -action
-        $InboxRules = Get-InboxRule -mailbox  $User
+        $InboxRules = Get-InboxRule -mailbox  $User -IncludeHidden | Where-Object {$_.Name -ne “Junk E-Mail Rule”}
         
         #if we found no rules
         if ($null -eq $InboxRules) { Out-LogFile "No Inbox Rules found" }
