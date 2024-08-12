@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hawk
+namespace Osprey
 {
     public class Class1
     {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{BD184F2C-49FE-418A-AD0A-71D0AB9479B2}") = "Hawk", "Hawk\Hawk.csproj", "{283E2E4F-323E-4600-A18A-80EF665523AD}"
+Project("{BD184F2C-49FE-418A-AD0A-71D0AB9479B2}") = "Osprey", "Osprey\Osprey.csproj", "{283E2E4F-323E-4600-A18A-80EF665523AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

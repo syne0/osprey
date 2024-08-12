@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-16"?>
 <Configuration>
     <ViewDefinitions>
-        <!-- Hawk.Options -->
+        <!-- Osprey.Options -->
         <View>
-            <Name>Hawk.Options</Name>
+            <Name>Osprey.Options</Name>
             <ViewSelectedBy>
-                <TypeName>Hawk.Options</TypeName>
+                <TypeName>Osprey.Options</TypeName>
             </ViewSelectedBy>
             <TableControl>
                 <AutoSize/>

@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\Hawk\bin</OutputPath>
-    <DocumentationFile>..\..\..\Hawk\bin\Hawk.xml</DocumentationFile>
+    <OutputPath>..\..\..\Osprey\bin</OutputPath>
+    <DocumentationFile>..\..\..\Osprey\bin\Osprey.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Release)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\Hawk\bin</OutputPath>
-    <DocumentationFile>..\..\..\Hawk\bin\Hawk.xml</DocumentationFile>
+    <OutputPath>..\..\..\Osprey\bin</OutputPath>
+    <DocumentationFile>..\..\..\Osprey\bin\Osprey.xml</DocumentationFile>
   </PropertyGroup>
   
   <PropertyGroup>

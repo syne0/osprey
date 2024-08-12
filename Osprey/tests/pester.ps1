@@ -19,9 +19,9 @@ Write-PSFMessage -Level Important -Message "Importing Module"
 $global:testroot = $PSScriptRoot
 $global:__pester_data = @{ }
 
-Remove-Module Hawk -ErrorAction Ignore
-Import-Module "$PSScriptRoot\..\Hawk.psd1"
-Import-Module "$PSScriptRoot\..\Hawk.psm1" -Force
+Remove-Module Osprey -ErrorAction Ignore
+Import-Module "$PSScriptRoot\..\Osprey.psd1"
+Import-Module "$PSScriptRoot\..\Osprey.psm1" -Force
 
 # Need to import explicitly so we can use the configuration class
 Import-Module Pester

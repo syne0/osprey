@@ -5,15 +5,15 @@
 *TempPoint*
 
 # Ignore staging info from Visual Studio
-library/Hawk/.vs/*
-library/Hawk/Hawk/bin/*
-library/Hawk/Hawk/obj/*
+library/Osprey/.vs/*
+library/Osprey/Osprey/bin/*
+library/Osprey/Osprey/obj/*
 
 # ignore PowerShell Studio MetaData
-Hawk/Hawk.psproj
-Hawk/Hawk.psproj.bak
-Hawk/Hawk.psprojs
-Hawk/Hawk.psproj
+Osprey/Osprey.psproj
+Osprey/Osprey.psproj.bak
+Osprey/Osprey.psprojs
+Osprey/Osprey.psproj
 
 # ignore the TestResults
 TestResults/*

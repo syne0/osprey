@@ -1,5 +1,5 @@
-﻿New-PSFLicense -Product 'Hawk' -Manufacturer 'Paul Navarro' -ProductVersion $script:ModuleVersion -ProductType Module -Name MIT -Version "1.0.0.0" -Date (Get-Date "2020-11-25") -Text @"
-Copyright (c) 2020 Paul Navarro
+﻿New-PSFLicense -Product 'Osprey' -Manufacturer 'Damien Miller-McAndrews' -ProductVersion $script:ModuleVersion -ProductType Module -Name MIT -Version "1.0.0.0" -Date (Get-Date "2024-08-12") -Text @"
+Copyright (c) 2024 Damien Miller-McAndrews
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,9 +1,9 @@
 ﻿<#
 	.SYNOPSIS
-		Installs the Hawk Module from github
+		Installs the Osprey Module from github
 
 	.DESCRIPTION
-		This script installs the Hawk Module from github.
+		This script installs the Osprey Module from github.
 
 		It does so by ...
 		- downloading the specified branch as zip to $env:TEMP
@@ -42,13 +42,13 @@ Param (
 
 #region Configuration for cloning script
 # Name of the module that is being cloned
-$ModuleName = "Hawk"
+$ModuleName = "Osprey"
 
 # Base path to the github repository
-$BaseUrl = "https://github.com/T0pcyber/Hawk"
+$BaseUrl = "https://github.com/syne0/Osprey"
 
 # If the module is in a subfolder of the cloned repository, specify relative path here. Empty string to skip.
-$SubFolder = "Hawk"
+$SubFolder = "Osprey"
 #endregion Configuration for cloning script
 
 #region Parameter Calculation

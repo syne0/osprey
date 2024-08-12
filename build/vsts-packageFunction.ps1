@@ -16,7 +16,7 @@
 		The name of the repository to use for gathering dependencies from.
 #>
 param (
-	$WorkingDirectory = "$($env:SYSTEM_DEFAULTWORKINGDIRECTORY)\_Hawk",
+	$WorkingDirectory = "$($env:SYSTEM_DEFAULTWORKINGDIRECTORY)\_Osprey",
 	
 	$Repository = 'PSGallery',
 
@@ -24,7 +24,7 @@ param (
 	$IncludeAZ
 )
 
-$moduleName = 'Hawk'
+$moduleName = 'Osprey'
 
 # Prepare Paths
 Write-PSFMessage -Level Host -Message "Creating working folders"
