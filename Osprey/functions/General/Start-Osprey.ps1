@@ -145,7 +145,6 @@ Function Get-Eula {
     switch ($result) {
         0 {
             Write-Information "`n"
-            Add-OspreyAppData -Name IAgreeToTheEula -Value True
                     
         }
         1 {
@@ -175,7 +174,7 @@ Function Start-Osprey {
     $OspreyInitialized = $false
 
     if ([string]::IsNullOrEmpty($Osprey.FilePath)) {
-        Write-Information "Running Start-Osprey...`n"
+        Write-Information "Running Start-Osprey..."
     }
     else {
         $OspreyInitialized = $true
@@ -212,7 +211,6 @@ Function Start-Osprey {
             0 {
                 Write-Host "Disconnecting currently connected tenant"
                 Disconnect-ExchangeOnline
-                Disconnect-MgGraph
                 Disconnect-graph #TODO: required? determine..
                 Write-Host "Connecting to prerequisites with new tenant."
                 Connect-Prerequisites
@@ -237,7 +235,7 @@ Function Start-Osprey {
         for the M365 IR and BEC community. <3
 
         More information about Osprey can be found at https://cybercorner.tech/osprey.
-                ') -ForegroundColor DarkMagenta #not sure if that will be the final URL, may change that. just an idea. -s
+                ') -ForegroundColor Cyan #not sure if that will be the final URL, may change that. just an idea. -s
 
         Read-Host -Prompt "Press any key to continue..."
 
@@ -251,7 +249,6 @@ Function Start-Osprey {
     #update checking
     if ($OspreyInitialized -ne $true) {
         # If we are skipping the update log it
-        #TODO: review this and update it for new repo
         if ($SkipUpdate) {
             Write-Information "Skipping Update Check"
         }
@@ -261,10 +258,8 @@ Function Start-Osprey {
         }
     }
 
-    #Making the Osprey folder in appdata##
-    Out-OspreyAppData
 
-    #EULA stuff. Should only ever do this ONCE per Osprey install!
+    <#EULA stuff. Should only ever do this ONCE per Osprey install! but is broken.
     if ($OspreyInitialized -ne $true) {
         #gets EULA info from appdata variable
         if ($null -eq $OspreyAppData.IAgreeToTheEula) {
@@ -274,7 +269,9 @@ Function Start-Osprey {
         else {
             Write-Information "Already agreed to the EULA"
         }
-    }
+    }#>
+
+    Get-Eula
 
     Write-Information "Setting Up Osprey environment" 
     
@@ -407,10 +404,10 @@ Function Start-Osprey {
     Out-LogFile $Osprey
 
     if ([string]::IsNullOrEmpty($Osprey.FilePath)) {
-        Out-LogFile "Osprey initialization may have ran into an issue. Please rerun Start-Osprey, or visit https://cybercorner.tech/osprey for help." -action
+        Out-LogFile "Osprey initialization may have ran into an issue. Please rerun Start-Osprey, or visit https://cybercorner.tech/osprey for help."
     }
     else {
-        Write-Host "Osprey is now initialized. You may run Start-OspreyTenantInvestigation to continue" -ForegroundColor DarkMagenta
+        Write-Host "Osprey is now initialized. You may run Start-OspreyTenantInvestigation to continue" -ForegroundColor Cyan
     }
 
 }

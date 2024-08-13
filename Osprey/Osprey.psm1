@@ -1,42 +1,24 @@
 ﻿$script:ModuleRoot = $PSScriptRoot
-$script:ModuleVersion = (Import-PowerShellDataFile -Path "$($script:ModuleRoot)\Osprey.psd1").ModuleVersion
 
-# Detect whether at some level dotsourcing was enforced
-$script:doDotSource = Get-PSFConfigValue -FullName Osprey.Import.DoDotSource -Fallback $false
-if ($Osprey_dotsourcemodule) { $script:doDotSource = $true }
-
-<#
-Note on Resolve-Path:
-All paths are sent through Resolve-Path/Resolve-PSFPath in order to convert them to the correct path separator.
-This allows ignoring path separators throughout the import sequence, which could otherwise cause trouble depending on OS.
-Resolve-Path can only be used for paths that already exist, Resolve-PSFPath can accept that the last leaf my not exist.
-This is important when testing for paths.
-#>
-
-# Detect whether at some level loading individual module files, rather than the compiled module was enforced
-$importIndividualFiles = Get-PSFConfigValue -FullName Osprey.Import.IndividualFiles -Fallback $false
-if ($Osprey_importIndividualFiles) { $importIndividualFiles = $true }
-if (Test-Path (Resolve-PSFPath -Path "$($script:ModuleRoot)\..\.git" -SingleItem -NewChild)) { $importIndividualFiles = $true }
-if ("<was not compiled>" -eq '<was not compiled>') { $importIndividualFiles = $true }
-
+#region Helper function
 function Import-ModuleFile
 {
 	<#
 		.SYNOPSIS
 			Loads files into the module on module import.
-
+		
 		.DESCRIPTION
 			This helper function is used during module initialization.
 			It should always be dotsourced itself, in order to proper function.
-
+			
 			This provides a central location to react to files being imported, if later desired
-
+		
 		.PARAMETER Path
 			The path to the file to load
-
+		
 		.EXAMPLE
 			PS C:\> . Import-ModuleFile -File $function.FullName
-
+	
 			Imports the file stored in $function according to import policy
 	#>
 	[CmdletBinding()]
@@ -44,42 +26,26 @@ function Import-ModuleFile
 		[string]
 		$Path
 	)
-
-	$resolvedPath = $ExecutionContext.SessionState.Path.GetResolvedPSPathFromPSPath($Path).ProviderPath
-	if ($doDotSource) { . $resolvedPath }
-	else { $ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText($resolvedPath))), $null, $null) }
+	
+	if ($script:dontDotSource) { $ExecutionContext.InvokeCommand.InvokeScript($false, ([scriptblock]::Create([io.file]::ReadAllText((Resolve-Path $Path).ProviderPath))), $null, $null) }
+	else { . (Resolve-Path $Path).ProviderPath }
 }
+#endregion Helper function
 
-#region Load individual files
-if ($importIndividualFiles)
+# Perform Actions before loading the rest of the content
+. Import-ModuleFile -Path "$ModuleRoot\internal\scripts\preimport.ps1"
+
+#region Load functions
+foreach ($function in (Get-ChildItem "$ModuleRoot\internal\functions" -Recurse -File -Filter "*.ps1"))
 {
-	# Execute Preimport actions
-	foreach ($path in (& "$ModuleRoot\internal\scripts\preimport.ps1")) {
-		. Import-ModuleFile -Path $path
-	}
-
-	# Import all internal functions
-	foreach ($function in (Get-ChildItem "$ModuleRoot\internal\functions" -Filter "*.ps1" -Recurse -ErrorAction Ignore))
-	{
-		. Import-ModuleFile -Path $function.FullName
-	}
-
-	# Import all public functions
-	foreach ($function in (Get-ChildItem "$ModuleRoot\functions" -Filter "*.ps1" -Recurse -ErrorAction Ignore))
-	{
-		. Import-ModuleFile -Path $function.FullName
-	}
-
-	# Execute Postimport actions
-	foreach ($path in (& "$ModuleRoot\internal\scripts\postimport.ps1")) {
-		. Import-ModuleFile -Path $path
-	}
-
-	# End it here, do not load compiled code below
-	return
+	. Import-ModuleFile -Path $function.FullName
 }
-#endregion Load individual files
 
-#region Load compiled code
-"<compile code into here>"
-#endregion Load compiled code
+foreach ($function in (Get-ChildItem "$ModuleRoot\functions" -Recurse -File -Filter "*.ps1"))
+{
+	. Import-ModuleFile -Path $function.FullName
+}
+#endregion Load functions
+
+# Perform Actions after loading the module contents
+. Import-ModuleFile -Path "$ModuleRoot\internal\scripts\postimport.ps1"

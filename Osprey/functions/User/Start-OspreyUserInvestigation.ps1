@@ -71,10 +71,6 @@ Function Start-OspreyUserInvestigation {
 		Get-OspreyUserEmailActivity -User $User
 		Write-Host "------------------------------------------------"
 
-		Out-LogFile "Running Get-OspreyUserAdminAudit" -action
-		Get-OspreyUserAdminAudit -User $User
-		Write-Host "------------------------------------------------"
-
 		Out-LogFile "Running Get-OspreyUserMessageTrace" -action
 		Get-OspreyUserMessageTrace -user $User
 		Write-Host "------------------------------------------------"

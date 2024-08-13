@@ -67,7 +67,6 @@ Function Get-OspreyTenantExchangeLogs {
         $NewRuleReport | Out-MultipleFileType -fileprefix "New_InboxRule" -csv
         $InvestigateLog = @()
         Foreach ($rule in $NewRuleReport) {
-
             $Investigate = $false
             if ($rule.DeleteMessage -eq $true) { $Investigate = $true }
             if (!([string]::IsNullOrEmpty($rule.ForwardAsAttachmentTo))) { $Investigate = $true }
@@ -205,17 +204,24 @@ Function Get-OspreyTenantExchangeLogs {
         $PermissionChangesReport = foreach ($change in $MailboxChangesFiltered) {
             $TargetID = $change.Parameters | Where-Object Name -eq Identity | Select-Object -expandproperty Value
             $AccessID = $change.Parameters | Where-Object Name -eq User | Select-Object -expandproperty Value
+            $TargetName = Get-MgUser -userid $TargetID -erroraction SilentlyContinue | Select-Object -ExpandProperty DisplayName
+            $TargetUPN = Get-MgUser -userid $TargetID -erroraction SilentlyContinue | Select-Object -ExpandProperty UserPrincipalName
+            $UserWithAccessName = Get-MgUser -userid $AccessID  -erroraction SilentlyContinue | Select-Object -ExpandProperty DisplayName
+            $UserWithAccessUPN = Get-MgUser -userid $AccessID -erroraction SilentlyContinue | Select-Object -ExpandProperty UserPrincipalName
             [PSCustomObject]@{
                 CreationTime       = $change.CreationTime
                 ID                 = $change.Id
                 Operation          = $change.Operation
                 UserMakingChange   = $change.UserId
                 ClientIP           = $change.ClientIP
-                TargetName         = Get-MgUser -userid $TargetID | Select-Object -ExpandProperty DisplayName
-                TargetUPN          = Get-MgUser -userid $TargetID | Select-Object -ExpandProperty UserPrincipalName
-                UserWithAccessName = Get-MgUser -userid $AccessID | Select-Object -ExpandProperty DisplayName
-                UserWithAccessUPN  = Get-MgUser -userid $AccessID | Select-Object -ExpandProperty UserPrincipalName
+                TargetName         = $TargetName
+                TargetUPN          = $TargetUPN
+                UserWithAccessName = $UserWithAccessName
+                UserWithAccessUPN  = $UserWithAccessUPN
                 AccessRights       = $change.Parameters | Where-Object Name -eq AccessRights | Select-Object -expandproperty Value
+            }
+            if ($null -in $TargetName, $TargetUPN, $UserWithAccessName, $UserWithAccessUPN) { 
+                Out-Logfile ("Warning, failed to extract target or user information from record ID: " + $change.Id)
             }
         }
         $PermissionChangesReport | Out-MultipleFileType -fileprefix "Mailbox_Permission_Changes" -csv 
