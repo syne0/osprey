@@ -117,13 +117,14 @@
             #build custom object out of UAL records to get the most important information
             $CreateReport = Foreach ($record in $UALCreateRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
+                $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
                 [PSCustomObject]@{
                     CreationTime      = $record1.CreationTime
                     RecordId          = $record1.Id
                     Operation         = $record1.Operation
                     UserID            = $record1.UserID
                     ClientIP          = $record1.ClientIP
-                    Subject           = $record1.Item | Select-Object -ExpandProperty Subject
+                    Subject           = $subject
                     ParentFolder      = $record1.Item | Select-Object -ExpandProperty ParentFolder  | Select-object -expandproperty Path
                     InternetMessageId = $record1.Item | Select-Object -ExpandProperty InternetMessageId
                     Id                = $record1.Item | Select-Object -ExpandProperty Id

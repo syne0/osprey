@@ -227,7 +227,7 @@ Function Start-Osprey {
         
         Write-Host ('
         Welcome to Osprey, a Powershell-based tool for gathering information about O365 breaches.
-        Osprey is a fork of Osprey and started as a personal project to remove deprecated dependent
+        Osprey is a fork of Hawk and started as a personal project to remove deprecated dependent
         modules and implement QoL improvements.
         
         Osprey would not have been possible without the years of work that the community put into
