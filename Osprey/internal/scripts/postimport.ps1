@@ -14,13 +14,13 @@ $moduleRoot = Split-Path (Split-Path $PSScriptRoot)
 (Get-ChildItem "$moduleRoot\internal\configurations\*.ps1" -ErrorAction Ignore).FullName
 
 # Load Scriptblocks
-(Get-ChildItem "$moduleRoot\internal\scriptblocks\*.ps1" -ErrorAction Ignore).FullName
+# (Get-ChildItem "$moduleRoot\internal\scriptblocks\*.ps1" -ErrorAction Ignore).FullName
 
 # Load Tab Expansion
-(Get-ChildItem "$moduleRoot\internal\tepp\*.tepp.ps1" -ErrorAction Ignore).FullName
+#(Get-ChildItem "$moduleRoot\internal\tepp\*.tepp.ps1" -ErrorAction Ignore).FullName
 
 # Load Tab Expansion Assignment
-"$moduleRoot\internal\tepp\assignment.ps1"
+#"$moduleRoot\internal\tepp\assignment.ps1"
 
 # Load License
 "$moduleRoot\internal\scripts\license.ps1"
