@@ -11,7 +11,7 @@
 .NOTES
     General notes
 #> 
-Function Get-IPGeolocation {
+Function Get-IPGeolocationIPWhois {
 
     Param
     (

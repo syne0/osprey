@@ -20,3 +20,7 @@
 - Moved majority of outputs that did appending into PSCustomObjects to reduce console output noise.
 - Removed Get-OspreyUserHiddenRule as -Hidden flag is available in normal Get-InboxRule command.
 - Updated Premium licence detection to add additional SKUs
+- Removed Known Microsoft IP check due to issues, will bring it back eventually.
+
+## 1.0.1 (2024-08-16)
+- Moved IP lookup API back to IPStack, intention is to eventually allow choice between a few differant options.
