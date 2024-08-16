@@ -21,7 +21,7 @@ function Get-OspreyUserFileAccess {
         [array]$UserPrincipalName
     )
 
-    #Test-EXOConnection
+    Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
 
     # Verify our UPN input

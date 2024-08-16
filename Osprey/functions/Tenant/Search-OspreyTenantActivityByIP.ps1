@@ -24,6 +24,7 @@
 
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
+    $InformationPreference = "Continue"
 
     # Replace an : in the IP address with . since : isn't allowed in a directory name
     $DirectoryName = $IpAddress.replace(":", ".")

@@ -19,7 +19,9 @@
 Function Get-OspreyTenantExchangeLogs {
 
     Test-EXOConnection
+    Test-GraphConnection
     Send-AIEvent -Event "CmdRun"
+    $InformationPreference = "Continue"
 
     Out-Logfile "Searching Unified Audit Log for Exchange-related activities."
 

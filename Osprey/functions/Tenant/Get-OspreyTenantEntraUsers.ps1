@@ -8,8 +8,11 @@
 #>
 Function Get-OspreyTenantEntraUsers {
     
-    Out-LogFile "Gathering Entra ID Users"
+    Test-GraphConnection
+    $InformationPreference = "Continue"
     Send-AIEvent -Event "CmdRun"
+    
+    Out-LogFile "Gathering Entra ID Users"
 
     #Obtaining all users in the tenant and outputting details to a csv
     $TenantUsers = Get-MgUser -all -Property UserPrincipalName, DisplayName, UserType, CreatedDateTime, AccountEnabled, Id, Mail, LastPasswordChangeDateTime | select-object UserPrincipalName, DisplayName, UserType, CreatedDateTime, AccountEnabled, Id, Mail, LastPasswordChangeDateTime

@@ -29,6 +29,7 @@ Single UPN of a user, comma separated list of UPNs, or array of objects that con
 
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
+    $InformationPreference = "Continue"
 
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName

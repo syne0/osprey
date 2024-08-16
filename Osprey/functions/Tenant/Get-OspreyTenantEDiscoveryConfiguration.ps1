@@ -14,7 +14,8 @@ Function Get-OspreyTenantEDiscoveryConfiguration {
 
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
-
+    $InformationPreference = "Continue"
+    
     Out-LogFile "Gathering Tenant information about eDiscovery Configuration" -action
 
     # Nulling our our role arrays
