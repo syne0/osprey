@@ -1,4 +1,8 @@
 ﻿# Changelog
+## 1.0.1 (2024-08-16)
+- Moved IP lookup API back to IPStack, intention is to eventually allow choice between a few different options.
+- Added function Get-OspreyUserFileAccess to get file access and sharing records, and flag suspicious access and anonymous sharing.
+- Updated Test-GraphConnection and added to functions it was missing from.
 ## 1.0.0 (2024-08-15)
 - Forked Hawk module, renamed to Osprey.
 - Removed JSON and XML export details from appearing in console output.
@@ -21,8 +25,3 @@
 - Removed Get-OspreyUserHiddenRule as -Hidden flag is available in normal Get-InboxRule command.
 - Updated Premium license detection to add additional SKUs
 - Removed Known Microsoft IP check due to issues, will bring it back eventually.
-
-## 1.0.1 (2024-08-16)
-- Moved IP lookup API back to IPStack, intention is to eventually allow choice between a few different options.
-- Added function Get-OspreyUserFileAccess to get file access and sharing records, and flag suspicious access and anonymous sharing.
-- Updated Test-GraphConnection and added to functions it was missing from.
