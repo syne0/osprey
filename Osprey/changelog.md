@@ -2,6 +2,7 @@
 ## 1.0.0 (2024-08-15)
 - Forked Hawk module, renamed to Osprey.
 - Removed JSON and XML export details from appearing in console output.
+- Moved JSON output to specific folder.
 - Added Start-Osprey function to remove need to connect to EXO and Graph ahead of time, allow for changing investigation parameters or tenant without exiting PowerShell.
 - Temporarily deprecated Get-OspreyTenantAppAndSPNCredentialDetails.
 - Merged Get-OspreyTenantAzureAppAuditLog and Get-OspreyTenantConsentGrants into one function called Get-OspreyTenantAppsAndConsents.
@@ -16,4 +17,6 @@
 - Fixed Get-OspreyUserMessageTrace to get 10 days of email instead of 2
 - Renamed Get-OspreyUserMobileDevices to Get-OspreyUserDevices and added ability to get Entra joined/registered devices and flag any recently added.
 - Attempted to fix Get-OspreyUserEmailActivity. It sort of works but outputs into differant CSVs for each activity.
-- Moved majority of outputs that did appending into PSCustomObjects to reduce console output noise. 
+- Moved majority of outputs that did appending into PSCustomObjects to reduce console output noise.
+- Removed Get-OspreyUserHiddenRule as -Hidden flag is available in normal Get-InboxRule command.
+- Updated Premium licence detection to add additional SKUs
