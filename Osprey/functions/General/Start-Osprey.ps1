@@ -112,7 +112,7 @@ Function Get-Eula {
 
     DISCLAIMER:
     
-    Osprey is based on Osprey, so the original licence and disclaimer applies.
+    Osprey is based on Hawk, so the original licence and disclaimer applies.
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
