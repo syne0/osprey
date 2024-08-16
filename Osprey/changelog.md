@@ -1,39 +1,22 @@
 ﻿# Changelog
-
-## 2.0.0 (2021-01-05)
-- Initial Transmigrated Release with new owner
-## 2.0.1 (2021-02-07)
-- Incorporated workflow and pester tests
-- Readme file updated with https://cloudforensicator.com link
-- Updated Azure AD SKU options that identity "Premium Licensing"
-- Issue #25 - Unified Audit Log AuditData JSON parsing added to "Exchange_UAL_Audit.csv"
-
-## 2.0.2 (2021-05-05)
-- Fixed Hidden Mailbox Rule EWS Credential
-- Updated Robust Cloud Command version to 2.0.1
-- Updated Get-HawkTenantInboxRules.ps1 to new switch in update Robust Cloud Command
-- Deprecate "Get-HawkTenantAzureAuthenticationLogs" from Hawk. Azure AD Graph was deprecated and no longer supported. Currently
-seeking alternate solution to retrieve Azure AD Sign-in logs.
-- Removed dependency of Cloud Connect
-- Added dependency of Exchange Online Management V2 PowerShell module and updated functions to reflect
-
-## 2.0.3.1 (2021-05-05)
-- Fixed MSOnline Requirement to manifest
-
-## 3.0.0 (2022-04-09)
-- Updated community pull requests
-a. Encoding to UTF8 - Enhancement - TakayukiTomatsuri
-b. Updated $RangeEnd to datetime - Bug - cfc-zcarter
-c. Updated Sweep variable - Bug
-d. Added Default Tenant Name to Hawk folder name - Issue#86 - Enhancement - Snickasaurus
-e. Updated Get-HawkTenantEXOAdmins to accurately list admins that is a group
-
-## 3.1.0 (2023-03-30)
-a. Updated community pull requests fixing typo
-b. Updated Get-HawkTenantAuditLog.ps1 to Get-HawkTenantAppAuditLog.ps1
-c. Added "Get-HawkTenantDomainActivity" function - This function will pull domain config changes from the UAL
-d. Added "Get-HawkTenantEDiscoveryLogs" function - This function will pull EDiscovery logs from the UAL
-e. Added Export of JSON to "Out-Multifileype" function. This will export returned results to JSON file for further ingestion into a SIEM or other data analysis platform
-f. Remove MSOnline requirements
-g. Added MS Graph requirements to replace MSOnline
-h. Fixed path for System.Net.IPNetwork.dll
+## 1.0.0 (2024-08-15)
+- Forked Hawk module, renamed to Osprey.
+- Removed JSON and XML export details from appearing in console output.
+- Moved JSON output to specific folder.
+- Added Start-Osprey function to remove need to connect to EXO and Graph ahead of time, allow for changing investigation parameters or tenant without exiting PowerShell.
+- Temporarily deprecated Get-OspreyTenantAppAndSPNCredentialDetails.
+- Merged Get-OspreyTenantAzureAppAuditLog and Get-OspreyTenantConsentGrants into one function called Get-OspreyTenantAppsAndConsents.
+- Added function to pull list of known suspicious Azure applications from GitHuba and flag if any exist in tenant.
+- Migrated remaining functions that required deprecated Search-AdminAuditLog command to use output from the UAL, where possible.
+- Replaced Azure with Entra, where applicable.
+- Added ability for Get-OspreyTenantEntraUsers to get a list of all users created during the investigation period.
+- Updated suspicious inbox rule flag to look for rules where emails are redirected into certain known-suspicious folders, or are deleted.
+- Moved RBAC obtaining function to Get-ospreyTenantExchangeLogs.
+- Moved IPStack API to free alternative temporarily.
+- Deprecated Get-OspreyUserAdminAudit as no suitable way to properly migrate to UAL was found.
+- Fixed Get-OspreyUserMessageTrace to get 10 days of email instead of 2
+- Renamed Get-OspreyUserMobileDevices to Get-OspreyUserDevices and added ability to get Entra joined/registered devices and flag any recently added.
+- Attempted to fix Get-OspreyUserEmailActivity. It sort of works but outputs into differant CSVs for each activity.
+- Moved majority of outputs that did appending into PSCustomObjects to reduce console output noise.
+- Removed Get-OspreyUserHiddenRule as -Hidden flag is available in normal Get-InboxRule command.
+- Updated Premium licence detection to add additional SKUs

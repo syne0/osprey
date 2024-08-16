@@ -1,4 +1,4 @@
-﻿# Osprey Documentation and "How to" videos
+# Osprey Documentation and "How to" videos
 https://cybercorner.tech/osprey/
 # Osprey + Github
 
@@ -27,7 +27,7 @@ is NOT an all exhaustive list.
 Please post any issues you find to the Issue section, or request features in the Discussions section.
 
 # Osprey
-Powershell Based tool for gathering information related to O365 intrusions and potential Breaches
+PowerShell Based tool for gathering information related to O365 intrusions and potential Breaches
 
 ## PURPOSE:
 The Osprey module has been designed to ease the burden on O365 administrators who are performing
@@ -44,10 +44,16 @@ will retrieve information specific to the user that is specified.  Tenant based 
 the form Verb-OspreyTenant<Action>.  They don't need any switches and will return information
 about the whole tenant.
 
-A good starting place is the Start-OspreyTenantInvestigation this will run all the tenant based
+You must run the Start-Osprey command first, which will initialize the session and allow you to set the required parameters.
+After Osprey is initialized you should run Start-OspreyTenantInvestigation which will run all the tenant based
 cmdlets and provide a collection of data to start with.  Once this data has been reviewed
 if there are specific user(s) that more information should be gathered on
 Start-OspreyUserInvestigation will gather all the User specific information for a single user.
+
+You can run Start-Osprey again in the same PowerShell Session and get prompted for reinitialization.
+When reinitializing you can either just change the investigation parameters such as the timeframe,
+or can change the actual tenant you are investigating, which is helpful for responders who may
+investigate incidents for different clients.
 
 All Osprey cmdlets include help that provides an overview of the data they gather and a listing
 of all possible output files.  Run Get-Help <cmdlet> -full to see the full help output for a
@@ -58,4 +64,4 @@ in _Investigate files.  These are NOT indicative of unwanted activity but are si
 that should reviewed.
 
 ## Disclaimer
-Osprey is NOT an official MICROSOFT tool.  Therefore use of the tool is covered exclusively by the license associated with this github repository.
+Osprey is NOT an official MICROSOFT tool.  Therefore use of the tool is covered exclusively by the license associated with this GitHub repository.
