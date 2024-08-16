@@ -79,6 +79,10 @@ Function Start-OspreyUserInvestigation {
 		Get-OspreyUserDevices -user $User
 		Write-Host "------------------------------------------------"
 
+		Out-LogFile "Running Get-OspreyUserFileAccess" -action
+		Get-OspreyUserFileAccess -user $User
+		Write-Host "------------------------------------------------"
+
 		Out-LogFile "User investigation complete"
 	}
 }

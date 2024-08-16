@@ -40,10 +40,11 @@
 
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
+    $InformationPreference = "Continue"
 
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
-    
+
     $LoginRecordType = "AzureActiveDirectoryStsLogon"#,"AzureActiveDirectoryAccountLogon","AzureActiveDirectory" these additional types dont seem to be returning anything so are noisy.
     #[array]$RecordOperations = "UserLoggedIn","UserLoginFailed", "SignInEvent"#,"mailboxlogin" #I want this to work but i'm running into too many errors right now
 
@@ -107,7 +108,7 @@
 
                     # Get the location information for this IP address
                     if ($ExpandedUserLogonLogs.item($i).clientip) {
-                        $Location = Get-IPGeolocation -ipaddress $ExpandedUserLogonLogs.item($i).clientip
+                        $Location = Get-IPGeolocationIPStack -ipaddress $ExpandedUserLogonLogs.item($i).clientip
                     }
                     else {
                         $Location = "IP Address Null"

@@ -17,8 +17,10 @@
 
     )
 
+    Test-GraphConnection
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
+    $InformationPreference = "Continue"
 
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
@@ -96,16 +98,16 @@
             # If a device was found that was registered during investigation window, flag that for review
             $InvestigateLog = @()
             foreach ($Device in $EntraDevices) {
-                $device1 = Get-MGDevice -deviceID $Device.Id | Select-Object Displayname,RegistrationDateTime,Id,OperatingSystem,OperatingSystemVersion,EnrollmentType
-            if ($device1.RegistrationDateTime -gt $Osprey.StartDate) {
-                Out-Logfile ("Device found that was first added inside investigation window. DeviceID: " + $Device1.Id) -notice
-                $InvestigateLog += $device1
+                $device1 = Get-MGDevice -deviceID $Device.Id | Select-Object Displayname, RegistrationDateTime, Id, OperatingSystem, OperatingSystemVersion, EnrollmentType
+                if ($device1.RegistrationDateTime -gt $Osprey.StartDate) {
+                    Out-Logfile ("Device found that was first added inside investigation window. DeviceID: " + $Device1.Id) -notice
+                    $InvestigateLog += $device1
+                }
+            }
+            if ($null -ne $InvestigateLog) {
+                $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_EntraDevices" -csv -notice
             }
         }
-        if ($null -ne $InvestigateLog) {
-            $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_EntraDevices" -csv -notice
-        }
     }
-}
 } 
 

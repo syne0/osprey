@@ -33,6 +33,7 @@
 
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
+    $InformationPreference = "Continue"
 
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName

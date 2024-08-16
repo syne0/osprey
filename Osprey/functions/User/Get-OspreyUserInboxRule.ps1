@@ -20,6 +20,7 @@ Function Get-OspreyUserInboxRule {
 
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
+    $InformationPreference = "Continue"
 
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
@@ -31,7 +32,7 @@ Function Get-OspreyUserInboxRule {
 
         # Get Inbox rules
         Out-LogFile ("Gathering Inbox Rules: " + $User) -action
-        $InboxRules = Get-InboxRule -mailbox  $User -IncludeHidden | Where-Object {$_.Name -ne “Junk E-Mail Rule”}
+        $InboxRules = Get-InboxRule -mailbox  $User -IncludeHidden | Where-Object { $_.Name -ne “Junk E-Mail Rule” }
         
         #if we found no rules
         if ($null -eq $InboxRules) { Out-LogFile "No Inbox Rules found" }

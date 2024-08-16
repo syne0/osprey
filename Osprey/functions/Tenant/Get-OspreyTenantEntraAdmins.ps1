@@ -7,8 +7,12 @@
     EntraIDAdministrators.json
 #>
 Function Get-OspreyTenantEntraAdmins {
-    Out-LogFile "Gathering Entra ID Administrators"
+
+    Test-GraphConnection
+    $InformationPreference = "Continue"
     Send-AIEvent -Event "CmdRun"
+
+    Out-LogFile "Gathering Entra ID Administrators"
 
     $roles = foreach ($role in Get-MgDirectoryRole) {
         $admins = (Get-MgDirectoryRoleMemberAsUser -DirectoryRoleId $role.Id).userprincipalname

@@ -8,6 +8,7 @@ Function Get-OspreyTenantEDiscoveryLogs {
     
     Test-EXOConnection
     Send-AIEvent -Event "CmdRun"
+    $InformationPreference = "Continue"
 
     Out-LogFile "Gathering any eDiscovery logs" -action
 
