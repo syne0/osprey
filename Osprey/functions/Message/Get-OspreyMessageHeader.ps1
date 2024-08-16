@@ -48,7 +48,6 @@
 
     # Create the Osprey object if it isn't there already
     Initialize-OspreyGlobalObject
-    Send-AIEvent -Event "CmdRun"
 
 
     # check to see if we have a valid file path

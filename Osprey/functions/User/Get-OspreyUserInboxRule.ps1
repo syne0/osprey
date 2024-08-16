@@ -19,7 +19,6 @@ Function Get-OspreyUserInboxRule {
     )
 
     Test-EXOConnection
-    Send-AIEvent -Event "CmdRun"
     $InformationPreference = "Continue"
 
     # Verify our UPN input

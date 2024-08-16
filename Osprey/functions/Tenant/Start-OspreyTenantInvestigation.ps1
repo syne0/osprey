@@ -13,7 +13,6 @@ Function Start-OspreyTenantInvestigation {
 	}
 
 	Out-LogFile "Starting Tenant Sweep" -action
-	Send-AIEvent -Event "CmdRun"
 
 	Out-LogFile "Running Get-OspreyTenantConfiguration" -action
 	Get-OspreyTenantConfiguration

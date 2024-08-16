@@ -25,7 +25,6 @@
 Function Get-OspreyTenantConfiguration {
 
 	Test-EXOConnection
-	Send-AIEvent -Event "CmdRun"
 	$InformationPreference = "Continue"
 
 	#Check Audit Log Config Setting and make sure it is enabled

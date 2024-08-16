@@ -14,7 +14,6 @@ Function Get-OspreyTenantAppsAndConsents {
     
     Test-EXOConnection
     Test-GraphConnection
-    Send-AIEvent -Event "CmdRun"
     $InformationPreference = "Continue"
 
     # Make sure our variables are null

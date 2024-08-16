@@ -14,7 +14,6 @@
 Function Get-OspreyTenantDomainActivity {
 	
 	Test-EXOConnection
-	Send-AIEvent -Event "CmdRun"
 	$InformationPreference = "Continue"
 	Out-LogFile "Gathering any changes to Domain configuration settings" -action
 

@@ -9,7 +9,6 @@
 Function Get-OspreyTenantExchangeAdmins {
     
     Test-EXOConnection
-    Send-AIEvent -Event "CmdRun"
     $InformationPreference = "Continue"
 
     Out-LogFile "Gathering Exchange Online Administrators"

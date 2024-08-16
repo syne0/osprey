@@ -51,9 +51,9 @@
 
                 # Check to see what the user choose
                 switch ($result) {
-                    0 { $Upgrade = $true; Send-AIEvent -Event Upgrade -Properties @{"Upgrade" = "True" }
+                    0 { $Upgrade = $true
                     }
-                    1 { $Upgrade = $false; Send-AIEvent -Event Upgrade -Properties @{"Upgrade" = "False" }
+                    1 { $Upgrade = $false
                     }
                 }
             }

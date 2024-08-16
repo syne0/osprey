@@ -112,7 +112,7 @@ Function Get-Eula {
 
     DISCLAIMER:
     
-    Osprey is based on Osprey, so the original licence and disclaimer applies.
+    Osprey is based on Osprey, so the original license and disclaimer applies.
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -154,16 +154,6 @@ Function Get-Eula {
         }
     }
 
-}
-
-Function New-ApplicationInsight {
-    #good -s
-    # Initialize Application Insights client
-    $insightkey = "b69ffd8b-4569-497c-8ee7-b71b8257390e"
-    if ($Null -eq $Client) {
-        Write-Information "Initializing Application Insights" -InformationAction SilentlyContinue
-        $Client = New-AIClient -key $insightkey
-    }
 }
 
 ###MAIN###
@@ -239,11 +229,6 @@ Function Start-Osprey {
 
         Read-Host -Prompt "Press any key to continue..."
 
-    }
-
-    #does applicationinsight
-    if ($OspreyInitialized -ne $true) {
-        New-ApplicationInsight
     }
 
     #update checking
