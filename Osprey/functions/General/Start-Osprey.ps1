@@ -105,14 +105,10 @@ Function Set-LoggingPath {
     Return $Folder
 }
 Function Get-Eula {
-    #probably good? needs testing
-    #I think this is kinda broken? i cant seem to get variable to skip eula once already agreed to working... Thinking about moving this to a global variable 
-    #like the API key so i only see it once
     Write-Information ('
-
     DISCLAIMER:
     
-    Osprey is based on Osprey, so the original license and disclaimer applies.
+    Osprey is based on Hawk, so the original license and disclaimer applies.
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
