@@ -44,7 +44,19 @@ Function Get-OspreyTenantConfiguration {
 	Get-RemoteDomain | Out-MultipleFileType -FilePrefix "RemoteDomain" -xml -csv -json
 
 	Out-LogFile "Getting Transport Rules"
-	Get-TransportRule | Format-List | Out-MultipleFileType -FilePrefix "TransportRules" -xml -csv -json
+	$TransportRules = Get-TransportRule
+	$TransportRules | Out-MultipleFileType -FilePrefix "TransportRules" -xml -csv -json
+
+	$InvestigateLog = @()
+	foreach ($rule in $transportrules) {
+		if ($rule.WhenChanged -gt $Osprey.StartDate) {
+			$InvestigateLog += $rule #append flagged rules
+		}
+	}
+	if ($InvestigateLog.count -gt 0) {
+		Out-Logfile "Found Transport Rules modified during investigation window."
+		$InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_TransportRules" -csv -json -xml -notice
+	}
 
 	Out-LogFile "Getting Transport Configuration"
 	Get-TransportConfig | Out-MultipleFileType -FilePrefix "TransportConfig" -xml -csv -json
