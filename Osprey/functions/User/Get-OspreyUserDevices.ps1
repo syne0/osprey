@@ -47,7 +47,6 @@
             # Check each device to see if it was NEW
             # If so flag it for investigation
             $InvestigateLog = @()
-
             foreach ($Device in $MobileDevices) {
                 if ($Device.FirstSyncTime -gt $Osprey.StartDate) {
                     Out-Logfile ("Device found that was first synced inside investigation window. DeviceID: " + $Device.DeviceID) -notice
@@ -56,8 +55,8 @@
             }
 
             #if investigation-worthy devices  were found, output those to csv.
-            if ($null -ne $InvestigateLog) {
-                $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_MobileDevice" -csv -json -notice
+            if ($InvestigateLog.count -gt 0) {
+                $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_MobileDevice" -user $user -csv -json -notice
             }
         }
 
@@ -71,10 +70,10 @@
         else {
             # For each device we found
             $DeviceLog = @()
-            foreach ($Device in $EntraDevices) {
+            foreach ($device in $EntraDevices) {
                 # Get information about the device using graph and export that by appending it into an array
-                $device1 = Get-MGDevice -deviceID $Device.Id 
-                $DeviceLog = + $device1
+                $device1 = Get-MGDevice -deviceID $device.Id 
+                $DeviceLog += $device1
             }
             $DeviceLog | Out-MultipleFileType -fileprefix "EntraDevices" -user $user -csv -json -xml
 
@@ -103,8 +102,8 @@
                     $InvestigateLog += $device1
                 }
             }
-            if ($null -ne $InvestigateLog) {
-                $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_EntraDevices" -csv -notice
+            if ($InvestigateLog.count -gt 0) {
+                $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_EntraDevices" -user $user -csv -notice
             }
         }
     }
