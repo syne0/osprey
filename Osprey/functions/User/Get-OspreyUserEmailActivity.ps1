@@ -58,6 +58,7 @@
             #build custom object out of UAL records to get the most important information
             $UpdateReport = Foreach ($record in $UALUpdateRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
+                $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
                 [PSCustomObject]@{
                     CreationTime      = $record1.CreationTime
                     RecordId          = $record1.Id
@@ -89,6 +90,7 @@
             #this is a bit screwy right now due to the occasional multiple records returned in one record. will fix eventually.
             $DeleteReport = Foreach ($record in $UALDeleteRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
+                $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
                 [PSCustomObject]@{
                     CreationTime = $record1.CreationTime
                     RecordId     = $record1.Id
