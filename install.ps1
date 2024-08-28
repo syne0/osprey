@@ -27,14 +27,14 @@
 [CmdletBinding()]
 Param (
 	[string]
-	$Branch = "master",
+	$Branch = "dev",
 
 	[switch]
 	$UserMode,
 
 	[ValidateSet('AllUsers', 'CurrentUser')]
 	[string]
-	$Scope = "AllUsers",
+	$Scope = "CurrentUser",
 
 	[switch]
 	$Force
