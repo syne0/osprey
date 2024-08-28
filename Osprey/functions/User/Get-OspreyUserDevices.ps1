@@ -82,12 +82,12 @@
                 # Get information about the device using graph and export that by appending it into an array
                 $device1 = Get-MGDevice -deviceID $Device.Id 
                 [PSCustomObject]@{
-                    DisplayName            = $device1 | Select-Object DisplayName
-                    RegistrationDateTime   = $device1 | Select-Object RegistrationDateTime
-                    Id                     = $device1 | Select-Object Id
-                    OperatingSystem        = $device1 | Select-Object OperatingSystem
-                    OperatingSystemVersion = $device1 | Select-Object OperatingSystemVersion
-                    EnrollmentType         = $device1 | Select-Object EnrollmentType
+                    DisplayName            = $device1.DisplayName
+                    RegistrationDateTime   = $device1.RegistrationDateTime
+                    Id                     = $device1.Id
+                    OperatingSystem        = $device1.OperatingSystem
+                    OperatingSystemVersion = $device1.OperatingSystemVersion
+                    EnrollmentType         = $device1.EnrollmentType
                 }
                     
             }

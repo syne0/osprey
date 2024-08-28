@@ -48,21 +48,21 @@ Function Get-OspreyTenantExchangeLogs {
             #throwing all new inbox rules created into custom object
             $rule1 = $rule.auditdata | ConvertFrom-Json
             [PSCustomObject]@{
-                CreationTime               = $rule1 | Select-Object -ExpandProperty CreationTime
-                Id                         = $rule1 | Select-Object -ExpandProperty id
-                Operation                  = $rule1 | Select-Object -ExpandProperty Operation
-                UserID                     = $rule1 | Select-Object -ExpandProperty UserID
-                ClientIP                   = $rule1 | Select-Object -ExpandProperty ClientIP
-                RuleName                   = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq name | Select-Object -expandproperty value
-                SentTo                     = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SentTo | Select-Object -expandproperty value
-                ReceivedFrom               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq From | Select-Object -expandproperty value
-                FromAddressContains        = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq FromAddressContains | Select-Object -expandproperty value
-                MoveToFolder               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MoveToFolder | Select-Object -expandproperty value
-                MarkAsRead                 = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MarkAsRead | Select-Object -expandproperty value
-                DeleteMessage              = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq DeleteMessage | Select-Object -expandproperty value
-                SubjectContainsWords       = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SubjectContainsWords | Select-Object -expandproperty value
-                SubjectOrBodyContainsWords = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SubjectOrBodyContainsWords | Select-Object -expandproperty value
-                ForwardTo                  = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq ForwardTo | Select-Object -expandproperty value
+                CreationTime               = $rule1.CreationTime
+                Id                         = $rule1.id
+                Operation                  = $rule1.Operation
+                UserID                     = $rule1.UserID
+                ClientIP                   = $rule1.ClientIP
+                RuleName                   = $rule1.Parameters | Where-Object name -eq name | Select-Object -expandproperty value
+                SentTo                     = $rule1.Parameters | Where-Object name -eq SentTo | Select-Object -expandproperty value
+                ReceivedFrom               = $rule1.Parameters | Where-Object name -eq From | Select-Object -expandproperty value
+                FromAddressContains        = $rule1.Parameters | Where-Object name -eq FromAddressContains | Select-Object -expandproperty value
+                MoveToFolder               = $rule1.Parameters | Where-Object name -eq MoveToFolder | Select-Object -expandproperty value
+                MarkAsRead                 = $rule1.Parameters | Where-Object name -eq MarkAsRead | Select-Object -expandproperty value
+                DeleteMessage              = $rule1.Parameters | Where-Object name -eq DeleteMessage | Select-Object -expandproperty value
+                SubjectContainsWords       = $rule1.Parameters | Where-Object name -eq SubjectContainsWords | Select-Object -expandproperty value
+                SubjectOrBodyContainsWords = $rule1.Parameters | Where-Object name -eq SubjectOrBodyContainsWords | Select-Object -expandproperty value
+                ForwardTo                  = $rule1.Parameters | Where-Object name -eq ForwardTo | Select-Object -expandproperty value
             }
         }
         $NewRuleReport | Out-MultipleFileType -fileprefix "New_InboxRule" -csv
@@ -104,21 +104,21 @@ Function Get-OspreyTenantExchangeLogs {
             #throwing all edited inbox rules created into custom object
             $rule1 = $rule.auditdata | ConvertFrom-Json
             [PSCustomObject]@{
-                CreationTime               = $rule1 | Select-Object -ExpandProperty CreationTime
-                Id                         = $rule1 | Select-Object -ExpandProperty id
-                Operation                  = $rule1 | Select-Object -ExpandProperty Operation
-                UserID                     = $rule1 | Select-Object -ExpandProperty UserID
-                ClientIP                   = $rule1 | Select-Object -ExpandProperty ClientIP
-                RuleName                   = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq name | Select-Object -expandproperty value
-                SentTo                     = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SentTo | Select-Object -expandproperty value
-                ReceivedFrom               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq From | Select-Object -expandproperty value
-                FromAddressContains        = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq FromAddressContains | Select-Object -expandproperty value
-                MoveToFolder               = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MoveToFolder | Select-Object -expandproperty value
-                MarkAsRead                 = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq MarkAsRead | Select-Object -expandproperty value
-                DeleteMessage              = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq DeleteMessage | Select-Object -expandproperty value
-                SubjectContainsWords       = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SubjectContainsWords | Select-Object -expandproperty value
-                SubjectOrBodyContainsWords = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq SubjectOrBodyContainsWords | Select-Object -expandproperty value
-                ForwardTo                  = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq ForwardTo | Select-Object -expandproperty value
+                CreationTime               = $rule1.CreationTime
+                Id                         = $rule1.id
+                Operation                  = $rule1.Operation
+                UserID                     = $rule1.UserID
+                ClientIP                   = $rule1.ClientIP
+                RuleName                   = $rule1.Parameters | Where-Object name -eq name | Select-Object -expandproperty value
+                SentTo                     = $rule1.Parameters | Where-Object name -eq SentTo | Select-Object -expandproperty value
+                ReceivedFrom               = $rule1.Parameters | Where-Object name -eq From | Select-Object -expandproperty value
+                FromAddressContains        = $rule1.Parameters | Where-Object name -eq FromAddressContains | Select-Object -expandproperty value
+                MoveToFolder               = $rule1.Parameters | Where-Object name -eq MoveToFolder | Select-Object -expandproperty value
+                MarkAsRead                 = $rule1.Parameters | Where-Object name -eq MarkAsRead | Select-Object -expandproperty value
+                DeleteMessage              = $rule1.Parameters | Where-Object name -eq DeleteMessage | Select-Object -expandproperty value
+                SubjectContainsWords       = $rule1.Parameters | Where-Object name -eq SubjectContainsWords | Select-Object -expandproperty value
+                SubjectOrBodyContainsWords = $rule1.Parameters | Where-Object name -eq SubjectOrBodyContainsWords | Select-Object -expandproperty value
+                ForwardTo                  = $rule1.Parameters | Where-Object name -eq ForwardTo | Select-Object -expandproperty value
             }
         }
         $SetRuleReport | Out-MultipleFileType -fileprefix "Set_InboxRule" -csv
@@ -141,12 +141,12 @@ Function Get-OspreyTenantExchangeLogs {
             #throwing all new inbox rules created into custom object
             $rule1 = $rule.auditdata | ConvertFrom-Json
             [PSCustomObject]@{
-                CreationTime = $rule1 | Select-Object -ExpandProperty CreationTime
-                Id           = $rule1 | Select-Object -ExpandProperty id
-                Operation    = $rule1 | Select-Object -ExpandProperty Operation
-                UserID       = $rule1 | Select-Object -ExpandProperty UserID
-                ClientIP     = $rule1 | Select-Object -ExpandProperty ClientIP
-                Identity     = $rule1 | Select-object -ExpandProperty Parameters | Where-Object name -eq Identity | Select-Object -expandproperty value
+                CreationTime = $rule1.CreationTime
+                Id           = $rule1.id
+                Operation    = $rule1.Operation
+                UserID       = $rule1.UserID
+                ClientIP     = $rule1.ClientIP
+                Identity     = $rule1.Parameters | Where-Object name -eq Identity | Select-Object -expandproperty value
             }
         }
         $RemoveRuleReport | Out-MultipleFileType -fileprefix "Remove_InboxRule" -csv
@@ -170,13 +170,13 @@ Function Get-OspreyTenantExchangeLogs {
         $ForwardingChangeReport = Foreach ($log in $TenantForwardingChanges) {
             $log1 = $log.auditdata | ConvertFrom-Json
             [PSCustomObject]@{
-                CreationTime      = $log1 | Select-Object -ExpandProperty CreationTime
-                Id                = $log1 | Select-Object -ExpandProperty id
-                Operation         = $log1 | Select-Object -ExpandProperty Operation
-                UserID            = $log1 | Select-Object -ExpandProperty UserID
-                ClientIP          = $log1 | Select-Object -ExpandProperty ClientIP
-                ForwardingStatus  = $log1 | Select-object -ExpandProperty Parameters | Where-Object name -eq DeliverToMailboxAndForward | Select-Object -expandproperty value
-                ForwardingAddress = $log1 | Select-object -ExpandProperty Parameters | Where-Object name -eq ForwardingSmtpAddress | Select-Object -expandproperty value
+                CreationTime      = $log1.CreationTime
+                Id                = $log1.id
+                Operation         = $log1.Operation
+                UserID            = $log1.UserID
+                ClientIP          = $log1.ClientIP
+                ForwardingStatus  = $log1.Parameters | Where-Object name -eq DeliverToMailboxAndForward | Select-Object -expandproperty value
+                ForwardingAddress = $log1.Parameters | Where-Object name -eq ForwardingSmtpAddress | Select-Object -expandproperty value
             }
         }
         $ForwardingChangeReport | Out-MultipleFileType -fileprefix "Forwarding_Changes" -csv

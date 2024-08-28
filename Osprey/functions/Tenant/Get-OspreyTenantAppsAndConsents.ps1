@@ -36,11 +36,11 @@ Function Get-OspreyTenantAppsAndConsents {
         $AppConsentReport = Foreach ($log in $AppConsentActivity) {
             $log1 = $log.auditdata | ConvertFrom-Json
             [PSCustomObject]@{
-                CreationTime    = $log1 | Select-Object -ExpandProperty CreationTime
-                Id              = $log1 | Select-Object -ExpandProperty Id
-                UserID          = $log1 | Select-Object -ExpandProperty UserID
-                Operation       = $log1 | Select-Object -ExpandProperty Operation
-                ApplicationName = $log1 | Select-Object -ExpandProperty Target | Select-Object -ExpandProperty ID | Select-object -index 3
+                CreationTime    = $log1.CreationTime
+                Id              = $log1.Id
+                UserID          = $log1.UserID
+                Operation       = $log1.Operation
+                ApplicationName = $log1.Target | Select-Object -ExpandProperty ID | Select-object -index 3
             }
         }
         $AppConsentReport  | Out-MultipleFileType -fileprefix "Entra_App_Consents" -csv -json

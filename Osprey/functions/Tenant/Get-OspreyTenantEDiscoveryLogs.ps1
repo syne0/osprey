@@ -25,11 +25,11 @@ Function Get-OspreyTenantEDiscoveryLogs {
         $eDiscoveryOutput = Foreach ($log in $eDiscoveryLogs) {
             $log1 = $log.auditdata | ConvertFrom-Json
             [PSCustomObject]@{
-            CreationTime = $log1 | Select-Object -ExpandProperty CreationTime
-            Id = $log1 | Select-Object -ExpandProperty Id
-            Name = $log1 | Select-Object -ExpandProperty ObjectId
-            Operation = $log1 | Select-Object -ExpandProperty Operation
-            UserID = $log1 | Select-Object -ExpandProperty UserID
+            CreationTime = $log1.CreationTime
+            Id = $log1.Id
+            Name = $log1.ObjectId
+            Operation = $log1.Operation
+            UserID = $log1.UserID
             }
         }
         $eDiscoveryOutput | Out-MultipleFileType -fileprefix "eDiscoveryLogs" -csv
