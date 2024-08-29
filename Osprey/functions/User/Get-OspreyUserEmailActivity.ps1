@@ -59,6 +59,9 @@
             $UpdateReport = Foreach ($record in $UALUpdateRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
                 $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
+                if ($null -eq $subject) {
+                    $Subject = "Not Found"
+                }
                 [PSCustomObject]@{
                     CreationTime      = $record1.CreationTime
                     RecordId          = $record1.Id
@@ -91,6 +94,9 @@
             $DeleteReport = Foreach ($record in $UALDeleteRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
                 $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
+                if ($null -eq $subject) {
+                    $Subject = "Not Found"
+                }
                 [PSCustomObject]@{
                     CreationTime = $record1.CreationTime
                     RecordId     = $record1.Id
@@ -120,6 +126,9 @@
             $CreateReport = Foreach ($record in $UALCreateRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
                 $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
+                if ($null -eq $subject) {
+                    $Subject = "Not Found"
+                }
                 [PSCustomObject]@{
                     CreationTime      = $record1.CreationTime
                     RecordId          = $record1.Id
