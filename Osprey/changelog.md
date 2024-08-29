@@ -1,6 +1,9 @@
 ﻿# Changelog
 ## 1.0.2 (2024-08-20)
-- Removed PSAppInsights dependencies and features
+- Removed PSAppInsights dependencies and features.
+- Fixed various bugs found during public testing.
+- Removed hidden OOF inbox rule from inbox rule export.
+- Transport rules created during investigation period will now flag.
 ## 1.0.1 (2024-08-16)
 - Moved IP lookup API back to IPStack, intention is to eventually allow choice between a few different options.
 - Added function Get-OspreyUserFileAccess to get file access and sharing records, and flag suspicious access and anonymous sharing.
