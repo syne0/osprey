@@ -10,7 +10,6 @@ Function Get-OspreyTenantEntraAdmins {
 
     Test-GraphConnection
     $InformationPreference = "Continue"
-    Send-AIEvent -Event "CmdRun"
 
     Out-LogFile "Gathering Entra ID Administrators"
 

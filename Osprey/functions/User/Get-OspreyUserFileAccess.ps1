@@ -22,7 +22,6 @@ function Get-OspreyUserFileAccess {
     )
 
     Test-EXOConnection
-    Send-AIEvent -Event "CmdRun"
 
     # Verify our UPN input
     [array]$UserArray = Test-UserObject -ToTest $UserPrincipalName
@@ -94,38 +93,46 @@ function Get-OspreyUserFileAccess {
             #UAL search for Sharepoint sharing operations
             $AllSharingRecords = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -UserIDs " + $User + " -RecordType SharePointSharingOperation")
             
-            #grab anonymous records in array so I can count it
-            $AnonymousSharingRecords = @($AllSharingRecords | Where-Object { $_.Operations -eq "AnonymousLinkCreated" })
-
-            if ($null -eq $AnonymousSharingRecords) {
-                Out-LogFile "No File Access activity found."
+            #if nothing found
+            if ($AllSharingRecords.count -eq 0) { 
+                Out-Logfile "No sharing activity found."
             }
-            else {
-                #if we found something
-                Out-LogFile ("Found " + $AnonymousSharingRecords.count + " anonymous links") 
-                #Create a custom object of what we found
-                $AnonReport = foreach ($record in $AnonymousSharingRecords) {
-                    $record1 = $record.auditdata | ConvertFrom-Json
-                    [PSCustomObject]@{
-                        CreationTime = $record1.CreationTime
-                        RecordId     = $record1.Id
-                        Operation    = $record1.Operation
-                        Workload     = $record1.Workload
-                        UserID       = $record1.UserID
-                        ClientIP     = $record1.ClientIP
-                        ItemType     = $record1.ItemType
-                        FileName     = $record1.SourceFileName
-                        SiteURL      = $record1.SiteURL
-                        FullURL      = $record1.ObjectID
-                        EventData    = $record1.EventData
-                    }
+            else { 
+                #if we found some
+                #grab anonymous records in array so I can count it, if exists
+                $AnonymousSharingRecords = @($AllSharingRecords | Where-Object { $_.Operations -eq "AnonymousLinkCreated" })
+
+                #if none found
+                if ($AnonymousSharingRecords.count -eq 0) {
+                    Out-LogFile "No File Access activity found."
                 }
-                #output it
-                $AnonReport | Out-MultipleFileType -FilePrefix "_Investigate_Anonymous_Links" -User $user -csv -notice
-            }
+                else {
+                    #if we found something
+                    Out-LogFile ("Found " + $AnonymousSharingRecords.count + " anonymous links") 
+                    #Create a custom object of what we found
+                    $AnonReport = foreach ($record in $AnonymousSharingRecords) {
+                        $record1 = $record.auditdata | ConvertFrom-Json
+                        [PSCustomObject]@{
+                            CreationTime = $record1.CreationTime
+                            RecordId     = $record1.Id
+                            Operation    = $record1.Operation
+                            Workload     = $record1.Workload
+                            UserID       = $record1.UserID
+                            ClientIP     = $record1.ClientIP
+                            ItemType     = $record1.ItemType
+                            FileName     = $record1.SourceFileName
+                            SiteURL      = $record1.SiteURL
+                            FullURL      = $record1.ObjectID
+                            EventData    = $record1.EventData
+                        }
+                    }
+                    #output it
+                    $AnonReport | Out-MultipleFileType -FilePrefix "_Investigate_Anonymous_Links" -User $user -csv -notice
+                }
 
-            #Exporting all sharing records as well
-            $AllSharingRecords.AuditData | ConvertFrom-Json | Out-MultipleFileType -FilePrefix "All_Sharing_Activity" -User $user -csv -json -xml
+                #Exporting all sharing records as well
+                $AllSharingRecords.AuditData | ConvertFrom-Json | Out-MultipleFileType -FilePrefix "All_Sharing_Activity" -User $user -csv -json -xml
+            }
         }
     }
 }

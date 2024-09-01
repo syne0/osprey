@@ -32,7 +32,6 @@
     )
 
     Test-EXOConnection
-    Send-AIEvent -Event "CmdRun"
     $InformationPreference = "Continue"
 
     # Verify our UPN input
@@ -59,13 +58,17 @@
             #build custom object out of UAL records to get the most important information
             $UpdateReport = Foreach ($record in $UALUpdateRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
+                $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
+                if ($null -eq $subject) {
+                    $Subject = "Osprey: Subject Not Found"
+                }
                 [PSCustomObject]@{
                     CreationTime      = $record1.CreationTime
                     RecordId          = $record1.Id
                     Operation         = $record1.Operation
                     UserID            = $record1.UserID
                     ClientIP          = $record1.ClientIP
-                    Subject           = $record1.Item | Select-Object -ExpandProperty Subject
+                    Subject           = $subject
                     ParentFolder      = $record1.Item | Select-Object -ExpandProperty ParentFolder  | Select-object -expandproperty Path
                     Attachments       = $record1.Item | Select-Object Attachments | Select-object -expandproperty Attachments
                     InternetMessageId = $record1.Item | Select-Object -ExpandProperty InternetMessageId
@@ -90,13 +93,17 @@
             #this is a bit screwy right now due to the occasional multiple records returned in one record. will fix eventually.
             $DeleteReport = Foreach ($record in $UALDeleteRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
+                $subject = $record1.AffectedItems | Select-object Subject | Select-object -expandproperty subject -erroraction SilentlyContinue
+                if ($null -eq $subject) {
+                    $Subject = "Osprey: Subject Not Found"
+                }
                 [PSCustomObject]@{
                     CreationTime = $record1.CreationTime
                     RecordId     = $record1.Id
                     Operation    = $record1.Operation
                     UserID       = $record1.UserID
                     ClientIP     = $record1.ClientIP
-                    Subject      = $record1.AffectedItems | Select-object Subject | Select-object -expandproperty subject
+                    Subject      = $subject
                     Folder       = $record1.AffectedItems | Select-Object -ExpandProperty ParentFolder  | Select-object -expandproperty Path
                 }
             }
@@ -119,6 +126,9 @@
             $CreateReport = Foreach ($record in $UALCreateRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
                 $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
+                if ($null -eq $subject) {
+                    $Subject = "Osprey: Subject Not Found"
+                }
                 [PSCustomObject]@{
                     CreationTime      = $record1.CreationTime
                     RecordId          = $record1.Id

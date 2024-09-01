@@ -13,7 +13,6 @@
 Function Get-OspreyTenantEDiscoveryConfiguration {
 
     Test-EXOConnection
-    Send-AIEvent -Event "CmdRun"
     $InformationPreference = "Continue"
     
     Out-LogFile "Gathering Tenant information about eDiscovery Configuration" -action

@@ -10,7 +10,6 @@ Function Get-OspreyTenantEntraUsers {
     
     Test-GraphConnection
     $InformationPreference = "Continue"
-    Send-AIEvent -Event "CmdRun"
     
     Out-LogFile "Gathering Entra ID Users"
 
@@ -32,11 +31,11 @@ Function Get-OspreyTenantEntraUsers {
         $UserCreationReport = foreach ($log in $UserCreations) {
             $log1 = $log.auditdata | ConvertFrom-Json
             [PSCustomObject]@{
-                CreationTime = $log1 | Select-Object -ExpandProperty CreationTime
-                Id           = $log1 | Select-Object -ExpandProperty Id
-                Operation    = $log1 | Select-Object -ExpandProperty Operation
-                UserID       = $log1 | Select-Object -ExpandProperty UserID
-                UserAdded    = $log1 | Select-Object -ExpandProperty ObjectId
+                CreationTime = $log1.CreationTime
+                Id           = $log1.Id
+                Operation    = $log1.Operation
+                UserID       = $log1.UserID
+                UserAdded    = $log1.ObjectId
             }
         }
         $UserCreationReport | Out-MultipleFileType -fileprefix "New_Users" -csv

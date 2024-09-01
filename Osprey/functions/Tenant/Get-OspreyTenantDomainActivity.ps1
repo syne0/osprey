@@ -14,7 +14,6 @@
 Function Get-OspreyTenantDomainActivity {
 	
 	Test-EXOConnection
-	Send-AIEvent -Event "CmdRun"
 	$InformationPreference = "Continue"
 	Out-LogFile "Gathering any changes to Domain configuration settings" -action
 
@@ -32,11 +31,11 @@ Function Get-OspreyTenantDomainActivity {
 		$DomainChangesReport = Foreach ($log in $DomainConfigurationEvents) {
 			$log1 = $log.auditdata | ConvertFrom-Json
 			[PSCustomObject]@{
-			CreationTime = $log1 | Select-Object -ExpandProperty CreationTime 
-			Id = $log1 | Select-Object -ExpandProperty Id 
-			Operation = $log1 | Select-Object -ExpandProperty Operation
-			UserID = $log1 | Select-Object -ExpandProperty UserId 
-			Domain = $log1 | Select-Object -ExpandProperty Target | Select-Object -ExpandProperty ID
+			CreationTime = $log1.CreationTime 
+			Id = $log1.Id 
+			Operation = $log1.Operation
+			UserID = $log1.UserId 
+			Domain = $log1.Target | Select-Object -ExpandProperty ID
 			}
 				
 		}
