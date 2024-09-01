@@ -68,7 +68,7 @@
                     Operation         = $record1.Operation
                     UserID            = $record1.UserID
                     ClientIP          = $record1.ClientIP
-                    Subject           = $record1.Item | Select-Object -ExpandProperty Subject
+                    Subject           = $subject
                     ParentFolder      = $record1.Item | Select-Object -ExpandProperty ParentFolder  | Select-object -expandproperty Path
                     Attachments       = $record1.Item | Select-Object Attachments | Select-object -expandproperty Attachments
                     InternetMessageId = $record1.Item | Select-Object -ExpandProperty InternetMessageId
@@ -93,7 +93,7 @@
             #this is a bit screwy right now due to the occasional multiple records returned in one record. will fix eventually.
             $DeleteReport = Foreach ($record in $UALDeleteRecords) {
                 $record1 = $record.auditdata | ConvertFrom-Json
-                $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
+                $subject = $record1.AffectedItems | Select-object Subject | Select-object -expandproperty subject -erroraction SilentlyContinue
                 if ($null -eq $subject) {
                     $Subject = "Not Found"
                 }
@@ -103,7 +103,7 @@
                     Operation    = $record1.Operation
                     UserID       = $record1.UserID
                     ClientIP     = $record1.ClientIP
-                    Subject      = $record1.AffectedItems | Select-object Subject | Select-object -expandproperty subject
+                    Subject      = $subject
                     Folder       = $record1.AffectedItems | Select-Object -ExpandProperty ParentFolder  | Select-object -expandproperty Path
                 }
             }
