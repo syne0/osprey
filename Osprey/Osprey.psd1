@@ -110,7 +110,7 @@
     
 			# ReleaseNotes of this module
 			ReleaseNotes = @'
-## 1.0.2 (2024-08-20)
+## 1.0.2 (2024-08-31)
 - Removed PSAppInsights dependencies and features
 - Fixed various bugs found during public testing.
 - Removed hidden OOF inbox rule from inbox rule export.
