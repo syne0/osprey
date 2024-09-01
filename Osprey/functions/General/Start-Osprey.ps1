@@ -217,10 +217,11 @@ Function Start-Osprey {
         modules and implement QoL improvements.
         
         Osprey would not have been possible without the years of work that the community put into
-        maintaining Osprey. A sincere thank you to the Osprey maintainers for everything you have done
+        maintaining Hawk. A sincere thank you to the Hawk maintainers for everything you have done
         for the M365 IR and BEC community. <3
 
-        More information about Osprey can be found at https://cybercorner.tech/osprey.
+        More information about Osprey can be found at https://github.com/syne0/osprey/wiki, including
+	troubleshooting information.
                 ') -ForegroundColor Cyan #not sure if that will be the final URL, may change that. just an idea. -s
 
         Read-Host -Prompt "Press any key to continue..."
