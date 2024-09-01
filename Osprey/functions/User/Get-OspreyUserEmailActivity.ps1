@@ -60,7 +60,7 @@
                 $record1 = $record.auditdata | ConvertFrom-Json
                 $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
                 if ($null -eq $subject) {
-                    $Subject = "Not Found"
+                    $Subject = "Osprey: Subject Not Found"
                 }
                 [PSCustomObject]@{
                     CreationTime      = $record1.CreationTime
@@ -95,7 +95,7 @@
                 $record1 = $record.auditdata | ConvertFrom-Json
                 $subject = $record1.AffectedItems | Select-object Subject | Select-object -expandproperty subject -erroraction SilentlyContinue
                 if ($null -eq $subject) {
-                    $Subject = "Not Found"
+                    $Subject = "Osprey: Subject Not Found"
                 }
                 [PSCustomObject]@{
                     CreationTime = $record1.CreationTime
@@ -127,7 +127,7 @@
                 $record1 = $record.auditdata | ConvertFrom-Json
                 $subject = $record1.Item | Select-Object -ExpandProperty Subject -erroraction SilentlyContinue
                 if ($null -eq $subject) {
-                    $Subject = "Not Found"
+                    $Subject = "Osprey: Subject Not Found"
                 }
                 [PSCustomObject]@{
                     CreationTime      = $record1.CreationTime
