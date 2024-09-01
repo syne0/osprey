@@ -27,7 +27,7 @@
 [CmdletBinding()]
 Param (
 	[string]
-	$Branch = "dev",
+	$Branch = "master",
 
 	[switch]
 	$UserMode,
