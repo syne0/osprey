@@ -141,7 +141,7 @@ Function Get-Eula {
     switch ($result) {
         0 {
             Write-Information "`n"
-                    
+            Add-OspreyAppData -Name "IAgreeToTheEula" -Value $true -SkipLogging
         }
         1 {
             Write-Information "Aborting Cmdlet"
@@ -155,6 +155,9 @@ Function Get-Eula {
 ###MAIN###
 
 Function Start-Osprey {
+    param(
+        [switch]$SkipUpdate
+    )
     #some helpful comment here
     $InformationPreference = "Continue"
     $OspreyInitialized = $false
@@ -241,9 +244,10 @@ Function Start-Osprey {
     }
 
 
-    <#EULA stuff. Should only ever do this ONCE per Osprey install! but is broken.
+    #EULA stuff. Should only ever do this ONCE per Osprey install! but is broken.
     if ($OspreyInitialized -ne $true) {
         #gets EULA info from appdata variable
+        Read-OspreyAppData
         if ($null -eq $OspreyAppData.IAgreeToTheEula) {
             Write-Information "You must agree with the EULA to continue"
             Get-Eula
@@ -251,9 +255,9 @@ Function Start-Osprey {
         else {
             Write-Information "Already agreed to the EULA"
         }
-    }#>
+    }
 
-    Get-Eula
+    #Get-Eula
 
     Write-Information "Setting Up Osprey environment" 
     
@@ -361,7 +365,7 @@ Function Start-Osprey {
     
     
     # Determine if we have access to a P1 or P2 Azure Ad License
-    if ([bool] (Get-MgSubscribedSku | Where-Object { ($_.SkuPartNumber -like "*aad_premium*") -or ($_.SkuPartNumber -like "*EMS*") -or ($_.SkuPartNumber -like "*E5*") -or ($_.SkuPartNumber -like "*G5*") -or ($_.SkuPartNumber -like "*SPB*") -or ($_.SkuPartNumber -like "*A3*") -or ($_.SkuPartNumber -like "*A5*") -or ($_.SkuPartNumber -like "*F1*")} )) {
+    if ([bool] (Get-MgSubscribedSku | Where-Object { ($_.SkuPartNumber -like "*aad_premium*") -or ($_.SkuPartNumber -like "*EMS*") -or ($_.SkuPartNumber -like "*E5*") -or ($_.SkuPartNumber -like "*G5*") -or ($_.SkuPartNumber -like "*SPB*") -or ($_.SkuPartNumber -like "*A3*") -or ($_.SkuPartNumber -like "*A5*") -or ($_.SkuPartNumber -like "*F1*") } )) {
         Write-Information "Advanced Entra ID License Found"
         [bool]$AdvancedEntraLicense = $true
     }

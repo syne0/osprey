@@ -14,8 +14,12 @@
     General notes
 #> 
 Function Out-OspreyAppData {
-    $OspreyAppdataPath = join-path $env:LOCALAPPDATA "Osprey\Osprey.json"
-    $OspreyAppdataFolder = join-path $env:LOCALAPPDATA "Osprey"
+    param(
+        [switch]$SkipLogging
+    )
+    $OspreyAppdataFolder = $env:LOCALAPPDATA + "\Osprey"
+    $OspreyAppdataPath = $OspreyAppdataFolder + "\Osprey.json"
+
 
     # test if the folder exists
     if (test-path $OspreyAppdataFolder) { }
@@ -24,6 +28,6 @@ Function Out-OspreyAppData {
         $null = New-Item -ItemType Directory -Path $OspreyAppdataFolder
     }
 
-    Out-LogFile ("Recording OspreyAppData to file " + $OspreyAppdataPath)
+    if (!$SkipLogging) { Out-LogFile ("Recording OspreyAppData to file " + $OspreyAppdataPath) }
     $global:OspreyAppData | ConvertTo-Json | Out-File -FilePath $OspreyAppdataPath -Force
 }

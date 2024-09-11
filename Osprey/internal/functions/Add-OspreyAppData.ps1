@@ -21,14 +21,16 @@ Function Add-OspreyAppData {
     param
     (
         [string]$Name,
-        [string]$Value
+        [string]$Value,
+        [switch]$SkipLogging
+        
     )
 
-    Out-LogFile ("Adding " + $value + " to " + $Name + " in OspreyAppData")
+    if (!$SkipLogging) { Out-LogFile ("Adding " + $value + " to " + $Name + " in OspreyAppData") }
 
     # Test if our OspreyAppData variable exists
-    if ([bool](get-variable OspreyAppData -ErrorAction SilentlyContinue)) {
-        $global:OspreyAppData | Add-Member -MemberType NoteProperty -Name $Name -Value $Value
+    if ($ospreyappdata) {
+        $global:OspreyAppData | Add-Member -MemberType NoteProperty -Name $Name -Value $Value -ErrorAction SilentlyContinue
     }
     else {
         $global:OspreyAppData = New-Object -TypeName PSObject
@@ -36,6 +38,6 @@ Function Add-OspreyAppData {
     }
 
     # make sure we then write that out to the appdata storage
-    Out-OspreyAppData
+    if ($SkipLogging) { Out-OspreyAppData -SkipLogging }else { Out-OspreyAppData }
 
 }
