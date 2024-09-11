@@ -14,15 +14,14 @@
     General notes
 #> 
 Function Read-OspreyAppData {
-    $OspreyAppdataPath = join-path $env:LOCALAPPDATA "Osprey\Osprey.json"
-
-    # check to see if our xml file is there
+    param(
+        [switch]$SkipLogging
+    )
+    
+    $OspreyAppdataPath = $env:LOCALAPPDATA + "Osprey\Osprey.json"
+    # check to see if our json file is there
     if (test-path $OspreyAppdataPath) {
-        Out-LogFile ("Reading file " + $OspreyAppdataPath)
-        $global:OspreyAppData = ConvertFrom-Json -InputObject ([string](Get-Content $OspreyAppdataPath))
-    }
-    # if we don't have an xml file then do nothing
-    else {
-        Out-LogFile ("No OspreyAppData File found " + $OspreyAppdataPath)
+        if (!$SkipLogging) { Out-LogFile ("Reading file " + $OspreyAppdataPath) }
+        $global:OspreyAppData = Get-Content $OspreyAppdataPath | ConvertFrom-Json
     }
 }
