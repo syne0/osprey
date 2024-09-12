@@ -85,7 +85,7 @@ Function Set-LoggingPath {
             else {
                 Write-Information ("Path not a valid Directory " + $UserPath)
                 $ValidPath = $false
-                    # Prompt the user to agree create the folder
+                # Prompt the user to agree create the folder
                 $title = "Create Folder"
                 $message = "Provided path is in a valid directory. Would you like to create it? This is nondestructive"
                 $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Creates folder path"
@@ -97,7 +97,7 @@ Function Set-LoggingPath {
                     0 {
                         Write-Information "Creating folder path $Userpath"
                         New-item -path $Userpath -ItemType Directory -ErrorAction SilentlyContinue
-                        if(Test-LoggingPath -PathToTest $UserPath){
+                        if (Test-LoggingPath -PathToTest $UserPath) {
                             $Folder = New-LoggingFolder -RootPath $UserPath
                             $ValidPath = $true
                         }
@@ -180,7 +180,7 @@ Function Start-Osprey {
         [switch]$SkipUpdate
     )
     #some helpful comment here
-    #$InformationPreference = "Continue"
+    $InformationPreference = "Continue"
     if ([string]::IsNullOrEmpty($Osprey.FilePath)) {
         Write-Information "Running Start-Osprey..."
         $OspreyInitialized = $false
