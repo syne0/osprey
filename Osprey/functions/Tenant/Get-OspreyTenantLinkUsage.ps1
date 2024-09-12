@@ -5,7 +5,8 @@
     Noisy and in beta so not part of tenant investigation yet.
 .OUTPUTS
     AllLinkUsage.csv
-    _investigate_LinkUsage.csv
+    AnonLinkUsage.csv
+    _investigate_SharingLinkUsage.csv
 #>
 Function Get-OspreyTenantLinkUsage {
     
