@@ -294,35 +294,30 @@ Function Start-Osprey {
 
     $EndRead = Read-Host "`nLast Day of search Window (0-179, date, Default Today)"
     
-    if ($Null -eq $EndRead) {
+    if ($Null -eq $EndRead -or $EndRead -eq 0) {
         # if we have a null entry (just hit enter) then set endread to the default of 1
         Write-Information ("Setting End Date to Today")
-        $EndDate = (Get-Date).Date
+        $EndDate = ((Get-Date).AddDays(1)).Date
     }
-    elseif (($EndRead -ge 0) -and ($EndRead -le 179)) {
+    elseif (($EndRead -ge 1) -and ($EndRead -le 179)) {
         Write-Information ("Calculating End Date from current date minus " + $EndRead + " days.")
         # Subtract 1 from the EndRead entry so that we get one day less for the purpose of how searching works with times
         $EndDate = ((Get-Date).AddDays( - ($EndRead - 1))).Date
     }
     elseif ($StartRead -as [DateTime]) {
+        $EndDate = (Get-Date $EndRead).Date
+        # Test to make sure the date time is > 180 and < today
+        if ($EndDate -le ((Get-date).AddDays(-179).Date) -or ($EndDate -ge ((Get-Date).AddDays(1)).Date)) {
+            Write-Information ("Date provided beyond acceptable range of 180 days.")
+            Write-Information ("Setting date to default of $StartDate +1 day")
+            $EndDate = ((Get-Date $StartDate).AddDays(1)).Date
+        }
+        Write-Information ("Setting EndDate by Date to " + $EndDate + "`n")
     }
     else {
+        Write-Error "Invalid date information provided.  Could not determine if this was a date or an integer." -ErrorAction Stop
+    }
 
-    }
-    # Validate that the start date is further back in time than the end date
-    if ($StartDate -gt $EndDate) {
-        Write-Error "StartDate Cannot be More Recent than EndDate" -ErrorAction Stop
-    }
-    else {
-        Write-Information ("Setting EndDate by Calculation to " + $EndDate + "`n")
-    }
-}
-elseif (!($null -eq ($EndRead -as [DateTime]))) {
-    #### DATE TIME Provided ####
-                
-    # Convert the input to a date time object
-    [DateTime]$EndDate = ((Get-Date $EndRead).AddDays(1)).Date
-                
     # Test to make sure the end date is newer than the start date
     if ($StartDate -gt $EndDate) {
         Write-Information "EndDate Selected was older than start date."
@@ -336,35 +331,28 @@ elseif (!($null -eq ($EndRead -as [DateTime]))) {
     }
                 
     Write-Information ("Setting EndDate by Date to " + $EndDate + "`n")
-}
-                
-else {
-    Write-Error "Invalid date information provided.  Could not determine if this was a date or an integer." -ErrorAction Stop
-}
     
     
     
-$Output = [PSCustomObject]@{
-    FilePath  = $OutputPath
-    StartDate = $StartDate
-    EndDate   = $EndDate
-}
+    $Output = [PSCustomObject]@{
+        FilePath  = $OutputPath
+        StartDate = $StartDate
+        EndDate   = $EndDate
+    }
     
 
-# Create the script Osprey variable
-Write-Information "Setting up Script Osprey environment variable`n"
-New-Variable -Name Osprey -Scope Script -value $Output -Force
-Out-LogFile "Script Variable Configured"
-Out-LogFile ("*** Version " + (Get-Module Osprey).version + " ***")
-Out-LogFile $Osprey
+    # Create the script Osprey variable
+    Write-Information "Setting up Script Osprey environment variable`n"
+    New-Variable -Name Osprey -Scope Script -value $Output -Force
+    Out-LogFile "Script Variable Configured"
+    Out-LogFile ("*** Version " + (Get-Module Osprey).version + " ***")
+    Out-LogFile $Osprey
 
-if ([string]::IsNullOrEmpty($Osprey.FilePath)) {
-    Out-LogFile "Osprey initialization may have ran into an issue. Please rerun Start-Osprey, or visit https://cybercorner.tech/osprey for help."
+    if ([string]::IsNullOrEmpty($Osprey.FilePath)) {
+        Out-LogFile "Osprey initialization may have ran into an issue. Please rerun Start-Osprey, or visit https://cybercorner.tech/osprey for help."
+    }
+    else {
+        Write-Host "Osprey is now initialized. You may run Start-OspreyTenantInvestigation to continue" -ForegroundColor Cyan
+    }
+
 }
-else {
-    Write-Host "Osprey is now initialized. You may run Start-OspreyTenantInvestigation to continue" -ForegroundColor Cyan
-}
-
-}
-
-
