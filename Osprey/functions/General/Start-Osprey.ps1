@@ -67,7 +67,7 @@ Function Set-LoggingPath {
     param ([string]$Path)
 
     # If no value of Path is provided prompt and gather from the user
-    if ([string]::IsNullOrEmpty($Path)) {
+    if (!$Path) {
 
         # Setup a while loop so we can get a valid path
         Do {
@@ -85,6 +85,28 @@ Function Set-LoggingPath {
             else {
                 Write-Information ("Path not a valid Directory " + $UserPath)
                 $ValidPath = $false
+                    # Prompt the user to agree create the folder
+                $title = "Create Folder"
+                $message = "Provided path is in a valid directory. Would you like to create it? This is nondestructive"
+                $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Creates folder path"
+                $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", "Requires reinput of folder path"
+                $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
+                $result = $host.ui.PromptForChoice($title, $message, $options, 0)
+
+                switch ($result) {
+                    0 {
+                        Write-Information "Creating folder path $Userpath"
+                        New-item -path $Userpath -ItemType Directory -ErrorAction SilentlyContinue
+                        if(Test-LoggingPath -PathToTest $UserPath){
+                            $Folder = New-LoggingFolder -RootPath $UserPath
+                            $ValidPath = $true
+                        }
+                    }
+                    1 {
+                        Write-Information "Aborting Cmdlet"
+                        Write-Error -Message "Folder does not exist and was not created"
+                    }
+                }
             }
 
         }
@@ -101,8 +123,7 @@ Function Set-LoggingPath {
             Write-Error ("Provided Path is not valid " + $Path) -ErrorAction Stop
         }
     }
-
-    Return $Folder
+    $Folder
 }
 Function Get-Eula {
     Write-Information ('
@@ -322,17 +343,15 @@ Function Start-Osprey {
     if ($StartDate -gt $EndDate) {
         Write-Information "EndDate Selected was older than start date."
         Write-Information "Setting EndDate to today."
-        [DateTime]$EndDate = ((Get-Date).AddDays(1)).Date
+        $EndDate = ((Get-Date).AddDays(1)).Date
     }
     elseif ($EndDate -gt (get-Date).AddDays(2)) {
         Write-Information "EndDate too Far in the future."
         Write-Information "Setting EndDate to Today."
-        [DateTime]$EndDate = ((Get-Date).AddDays(1)).Date
+        $EndDate = ((Get-Date).AddDays(1)).Date
     }
                 
     Write-Information ("Setting EndDate by Date to " + $EndDate + "`n")
-    
-    
     
     $Output = [PSCustomObject]@{
         FilePath  = $OutputPath
@@ -340,7 +359,6 @@ Function Start-Osprey {
         EndDate   = $EndDate
     }
     
-
     # Create the script Osprey variable
     Write-Information "Setting up Script Osprey environment variable`n"
     New-Variable -Name Osprey -Scope Script -value $Output -Force
