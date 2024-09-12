@@ -18,7 +18,7 @@ Function Read-OspreyAppData {
         [switch]$SkipLogging
     )
     
-    $OspreyAppdataPath = $env:LOCALAPPDATA + "Osprey\Osprey.json"
+    $OspreyAppdataPath = $env:LOCALAPPDATA + "\Osprey\Osprey.json"
     # check to see if our json file is there
     if (test-path $OspreyAppdataPath) {
         if (!$SkipLogging) { Out-LogFile ("Reading file " + $OspreyAppdataPath) }
