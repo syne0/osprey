@@ -258,7 +258,7 @@ Function Start-Osprey {
             Update-OspreyModule
         }
         #gets EULA info from appdata variable
-        Read-OspreyAppData
+        Read-OspreyAppData -SkipLogging
         if ($null -eq $OspreyAppData.IAgreeToTheEula) {
             Write-Information "You must agree with the EULA to continue"
             Get-Eula
