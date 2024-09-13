@@ -1,5 +1,5 @@
 ﻿Function Update-OspreyModule {
-<#
+    <#
 .SYNOPSIS
     Osprey upgrade check
 .DESCRIPTION
@@ -25,16 +25,13 @@
     else {
 
         # See if we can do an upgrade check
-        if ($null -eq (Get-Command Find-Module)) { }
-
-        # If we can then look for an updated version of the module
-        else {
+        if (Get-Command Find-Module) {
             Write-Output "Checking for latest version online"
             $onlineversion = Find-Module -name Osprey -erroraction silentlycontinue
             $Localversion = (Get-Module Osprey | Sort-Object -Property Version -Descending)[0]
             Write-Output ("Found Version " + $onlineversion.version + " Online")
 
-            if ($null -eq $onlineversion){
+            if ($null -eq $onlineversion) {
                 Write-Output "[ERROR] - Unable to check Osprey version in Gallery"
             }
             elseif (([version]$onlineversion.version) -gt ([version]$localversion.version)) {
@@ -51,9 +48,11 @@
 
                 # Check to see what the user choose
                 switch ($result) {
-                    0 { $Upgrade = $true
+                    0 {
+                        $Upgrade = $true
                     }
-                    1 { $Upgrade = $false
+                    1 {
+                        $Upgrade = $false
                     }
                 }
             }
