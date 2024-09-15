@@ -284,7 +284,8 @@ Function Start-Osprey {
                 
     # Determine if the input was a date time
     # True means it was NOT a datetime
-    if ($Null -eq $StartRead) {
+
+    if ([string]::IsNullOrEmpty($StartRead)) {
         # if we have a null entry (just hit enter) then set startread to the default of 90
         $StartRead = 90
         # Calculate our startdate setting it to midnight
@@ -293,6 +294,13 @@ Function Start-Osprey {
         Write-Information ("Setting StartDate by Calculation to " + $StartDate + "`n")
     }
     elseif (($StartRead -ge 1) -and ($StartRead -le 180)) {
+        Write-Information ("Calculating Start Date from current date minus " + $StartRead + " days.")
+        $StartDate = ((Get-Date).AddDays(-$StartRead)).Date
+        Write-Information ("Setting StartDate by Calculation to " + $StartDate + "`n")
+    }
+    elseif ($StartRead -ge 180) {
+        Write-Information "That's too far ahead. Defaulting to 180 days."
+        $StartRead = 180
         Write-Information ("Calculating Start Date from current date minus " + $StartRead + " days.")
         $StartDate = ((Get-Date).AddDays(-$StartRead)).Date
         Write-Information ("Setting StartDate by Calculation to " + $StartDate + "`n")
@@ -315,7 +323,7 @@ Function Start-Osprey {
 
     $EndRead = Read-Host "`nLast Day of search Window (0-179, date, Default Today)"
     
-    if ($Null -eq $EndRead -or $EndRead -eq 0) {
+    if ([string]::IsNullOrEmpty($EndRead) -or $EndRead -eq 0) {
         # if we have a null entry (just hit enter) then set endread to the default of 1
         Write-Information ("Setting End Date to Today")
         $EndDate = ((Get-Date).AddDays(1)).Date
