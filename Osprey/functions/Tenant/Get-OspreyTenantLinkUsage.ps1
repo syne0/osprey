@@ -1,6 +1,6 @@
 <#
 .DESCRIPTION
-    Gets a report of all link usage for the investigation period. Exports additional report highlighting anonymous usage.
+    Gets a report of all link usage for the investigation period. Exports additional report highlighting anonymous sharing.
     Flags access to sensitive files.
 .OUTPUTS
     AllLinkUsage.csv
