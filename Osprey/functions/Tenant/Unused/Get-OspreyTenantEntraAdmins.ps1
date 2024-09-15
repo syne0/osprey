@@ -30,5 +30,9 @@ Function Get-OspreyTenantEntraAdmins {
     }
     $roles | Out-MultipleFileType -FilePrefix "EntraIDAdministrators" -csv -json
 
+    $admins2 = $roles | Where-Object -property members -notMatch "No Members" | Select-Object -unique -property Members
+
+    $AllAdmins += $admins2.members
+
     Out-LogFile "Completed exporting Entra ID Admins"
 }
