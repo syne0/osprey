@@ -20,7 +20,8 @@ Function Connect-Prerequisites {
         Write-Host "Failed to import and connect to Exchange Online Powershell"
     }
 
-    if (Get-Module -FullyQualifiedName @{ModuleName = "Microsoft.Graph"; RequiredVersion = "2.19.0" } -ListAvailable) {
+    #this is a little problematic due to graph dependencies and the bulk associated with importing the entire graph suite
+    <#if (Get-Module -FullyQualifiedName @{ModuleName = "Microsoft.Graph.Authentication"; RequiredVersion = "2.19.0" } -ListAvailable) {
         Write-Host "Supported Graph API version installed"
         Write-Host "Importing supported version"
     }
@@ -28,7 +29,10 @@ Function Connect-Prerequisites {
         Write-Host "Supported Graph API version not installed"
         Write-Host "Installing supported version"
         remove-module Microsoft.Graph -ErrorAction SilentlyContinue
-        Install-module Microsoft.Graph -requiredversion 2.19.0
+        Install-module Microsoft.Graph.Authentication -requiredversion 2.19.0
+        Install-module Microsoft.Graph.Identity.DirectoryManagement -requiredversion 2.19.0
+        Install-module Microsoft.Graph.Applications -requiredversion 2.19.0
+        Install-module Microsoft.Graph.Users requiredversion 2.19.0
     }
     Try {
         Write-Host "Importing Graph API"
@@ -38,5 +42,5 @@ Function Connect-Prerequisites {
     }
     catch {
         Write-Host "Failed to import and connect to Graph API"
-    }
+    }#>
 } 
