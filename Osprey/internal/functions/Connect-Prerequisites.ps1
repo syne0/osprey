@@ -20,6 +20,9 @@ Function Connect-Prerequisites {
         Write-Host "Failed to import and connect to Exchange Online Powershell"
     }
 
+    Write-Host "Connecting to Graph API"
+    Connect-Graph -Scopes "User.Read.All", "Group.Read.All", "Domain.Read.All", "Directory.Read.All", "Application.Read.All"
+
     #this is a little problematic due to graph dependencies and the bulk associated with importing the entire graph suite
     <#if (Get-Module -FullyQualifiedName @{ModuleName = "Microsoft.Graph.Authentication"; RequiredVersion = "2.19.0" } -ListAvailable) {
         Write-Host "Supported Graph API version installed"
