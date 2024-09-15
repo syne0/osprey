@@ -1,8 +1,7 @@
 <#
 .DESCRIPTION
-    Gets a report of all link usage for the investigation period.
+    Gets a report of all link usage for the investigation period. Exports additional report highlighting anonymous usage.
     Flags access to sensitive files.
-    Noisy and in beta so not part of tenant investigation yet.
 .OUTPUTS
     AllLinkUsage.csv
     AnonLinkUsage.csv
@@ -17,7 +16,7 @@ Function Get-OspreyTenantLinkUsage {
     else {
         Test-EXOConnection
 
-        Out-LogFile "Searching Unified Audit Log for anonymous link usage events."
+        Out-LogFile "Searching Unified Audit Log for sharing link usage events."
         $LinkUsage = Get-AllUnifiedAuditLogEntry -UnifiedSearch ("Search-UnifiedAuditLog -operation SharingLinkUsed")
 
         #if we found nothing
@@ -25,7 +24,7 @@ Function Get-OspreyTenantLinkUsage {
             Out-LogFile "No link usage found."
         }
         else {
-            Out-LogFile ("Found " + $LinkUsage.Count + " link usage records") 
+            Out-LogFile ("Found " + $LinkUsage.identity.Count + " link usage records") 
 
             #we found something
             #set blank array for anon log and false for the flag to do anon
@@ -47,7 +46,7 @@ Function Get-OspreyTenantLinkUsage {
                     SharingLinkScope = $link1.SharingLinkScope
                     SiteURL          = $link1.SiteURL
                     FullURL          = $link1.ObjectID
-                    FileName         = $link1.SourceFileName
+                    SourceFileName   = $link1.SourceFileName
                 }
                 #if an anyone link is found i'll flip the flag to do it later
                 if ($link1.SharingLinkScope -like "Anyone") {
@@ -58,12 +57,12 @@ Function Get-OspreyTenantLinkUsage {
 
             if ($DoAnonLog) {
                 Out-LogFile "Anonymous link usage found. Pulling out results into additional file."
-                $AnonLinkUsageReport = foreach ($link in $LinkUsageReport) {
+                foreach ($link in $LinkUsageReport) {
                     if ($link.SharingLinkScope -like "anyone") {
                         $AnonLog += $link
                     }
                 }
-                $AnonLinkUsageReport | Out-MultipleFileType -FilePrefix "AnonLinkUsage" -csv -json
+                $AnonLog | Out-MultipleFileType -FilePrefix "AnonLinkUsage" -csv -json
             }
 
             #flagging sus link usage
@@ -80,7 +79,7 @@ Function Get-OspreyTenantLinkUsage {
                 }
 
             }
-            if ($InvestigateLog.count -ge 1) { 
+            if ($InvestigateLog.RecordId.count -ge 1) { 
                 #say we found something and output the file
                 Out-LogFile ("Access to potentially sensitive files via sharing links found! Please review access to determine if legitimate.") -notice
                 $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_SharingLinkUsage" -csv -notice
@@ -89,15 +88,6 @@ Function Get-OspreyTenantLinkUsage {
         }
     }
 }
-
-
-
-
-
-
-
-
-
           <#⠀⠀⠀⠀
     ⠀⠀⠀⠀⣼⣿⣿⣧⠀⠀⠀⠀
     ⠀⠀⠀⠾⠿⠿⠿⠿⠷⠀⠀⠀

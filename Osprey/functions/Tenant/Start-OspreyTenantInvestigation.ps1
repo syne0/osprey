@@ -38,6 +38,10 @@ Function Start-OspreyTenantInvestigation {
 	Get-OspreyTenantAppsAndConsents
 	Write-Host "------------------------------------------------"
 
+	Out-LogFile "Running Get-OspreyTenantLinkUsage" -action
+	Get-OspreyTenantLinkUsage
+	Write-Host "------------------------------------------------"
+	
 	Out-LogFile "Running Get-OspreyTenantExchangeAdmins" -action
 	Get-OspreyTenantExchangeAdmins
 	Write-Host "------------------------------------------------"
