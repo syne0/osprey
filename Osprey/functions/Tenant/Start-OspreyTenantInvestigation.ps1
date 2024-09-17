@@ -18,12 +18,8 @@ Function Start-OspreyTenantInvestigation {
 	Get-OspreyTenantConfiguration
 	Write-Host "------------------------------------------------"
 
-	Out-LogFile "Running Get-OspreyTenantEDiscoveryConfiguration" -action
-	Get-OspreyTenantEDiscoveryConfiguration
-	Write-Host "------------------------------------------------"
-
-	Out-LogFile "Running Get-OspreyTenantEDiscoveryLogs"
-	Get-OspreyTenantEDiscoveryLogs -action
+	Out-LogFile "Running Get-OspreyTenantEDiscoveryDetails"
+	Get-OspreyTenantEDiscoveryDetails -action
 	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantExchangeLogs" -action 
