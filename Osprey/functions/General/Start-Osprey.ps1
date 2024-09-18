@@ -244,8 +244,8 @@ Function Start-Osprey {
         for the M365 IR and BEC community. <3
 
         More information about Osprey can be found at https://github.com/syne0/osprey/wiki, including
-	troubleshooting information.
-                ') -ForegroundColor Cyan #not sure if that will be the final URL, may change that. just an idea. -s
+	troubleshooting information. Please go read it! :)
+                ') -ForegroundColor Cyan
 
         Read-Host -Prompt "Press any key to continue..."
         #update checking

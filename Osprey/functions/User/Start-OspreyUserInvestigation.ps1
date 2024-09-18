@@ -54,14 +54,6 @@ Function Start-OspreyUserInvestigation {
 		Get-OspreyUserInboxRule -User $User
 		Write-Host "------------------------------------------------"
 
-		Out-LogFile "Running Get-OspreyUserEmailForwarding" -action
-		Get-OspreyUserEmailForwarding -User $User
-		Write-Host "------------------------------------------------"
-
-		Out-LogFile "Running Get-OspreyUserAutoReply" -action
-		Get-OspreyUserAutoReply -User $User
-		Write-Host "------------------------------------------------"
-
 		Out-LogFile "Running Get-OspreyUserAuthHistory" -action
 		Get-OspreyUserAuthHistory -User $user -ResolveIPLocations
 		Write-Host "------------------------------------------------"
