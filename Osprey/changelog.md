@@ -1,9 +1,12 @@
 ﻿# Changelog
-## 1.0.3 (2024-09-11)
+## 1.0.3 (2024-10-06)
 - EULA now only prompts once per Osprey install.
 - SkipUpdate flag now actually works.
 - Added validation to ensure correct version of EXO PowerShell is installed to bypass errors related to EXO and Graph and Azure.Core.dll.
 - Moved suspicious inbox rule detection to it's own function, added additional criteria to flag.
+- Combined Tenant eDiscovery functions into one function.
+- Combined Entra and Exchange admin functions into one function.
+- Added sharing link usage and check for suspicious file access to tenant investigation.
 ## 1.0.2 (2024-08-31)
 - Removed PSAppInsights dependencies and features.
 - Fixed various bugs found during public testing.
