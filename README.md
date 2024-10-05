@@ -1,9 +1,7 @@
-# Osprey Documentation and "How to" videos
-https://cybercorner.tech/osprey/
+# Osprey Documentation
+Please visit the wiki for details on running the Osprey module.
 
-NOTICE: When running Osprey with the most up to date versions of ExchangeOnlineManagement and Microsoft.Graph, you may see an error
-referencing Azure.core.dll. This is not an Osprey issue, but is an issue with it's dependancies. Downgrade EXO to 3.4.0 or Graph
-to 2.19.0 and remove other installed versions of the EXO and Graph modules.
+https://github.com/syne0/osprey/wiki
 
 # Osprey + Github
 
