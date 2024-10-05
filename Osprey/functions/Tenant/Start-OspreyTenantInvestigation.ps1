@@ -18,12 +18,8 @@ Function Start-OspreyTenantInvestigation {
 	Get-OspreyTenantConfiguration
 	Write-Host "------------------------------------------------"
 
-	Out-LogFile "Running Get-OspreyTenantEDiscoveryConfiguration" -action
-	Get-OspreyTenantEDiscoveryConfiguration
-	Write-Host "------------------------------------------------"
-
-	Out-LogFile "Running Get-OspreyTenantEDiscoveryLogs"
-	Get-OspreyTenantEDiscoveryLogs -action
+	Out-LogFile "Running Get-OspreyTenantEDiscoveryDetails"
+	Get-OspreyTenantEDiscoveryDetails -action
 	Write-Host "------------------------------------------------"
 
 	Out-LogFile "Running Get-OspreyTenantExchangeLogs" -action 
@@ -38,12 +34,12 @@ Function Start-OspreyTenantInvestigation {
 	Get-OspreyTenantAppsAndConsents
 	Write-Host "------------------------------------------------"
 
-	Out-LogFile "Running Get-OspreyTenantExchangeAdmins" -action
-	Get-OspreyTenantExchangeAdmins
+	Out-LogFile "Running Get-OspreyTenantLinkUsage" -action
+	Get-OspreyTenantLinkUsage
 	Write-Host "------------------------------------------------"
-
-	Out-LogFile "Running Get-OspreyTenantEntraAdmins" -action
-	Get-OspreyTenantEntraAdmins
+	
+	Out-LogFile "Running Get-OspreyTenantAdmins" -action
+	Get-OspreyTenantAdmins
 	Write-Host "------------------------------------------------"
 
 	Out-Logfile "Running Get-OspreyTenantEntraUsers" -action

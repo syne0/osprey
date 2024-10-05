@@ -67,7 +67,7 @@ Function Set-LoggingPath {
     param ([string]$Path)
 
     # If no value of Path is provided prompt and gather from the user
-    if ([string]::IsNullOrEmpty($Path)) {
+    if (!$Path) {
 
         # Setup a while loop so we can get a valid path
         Do {
@@ -85,6 +85,28 @@ Function Set-LoggingPath {
             else {
                 Write-Information ("Path not a valid Directory " + $UserPath)
                 $ValidPath = $false
+                # Prompt the user to agree create the folder
+                $title = "Create Folder"
+                $message = "Provided path is in a valid directory. Would you like to create it? This is nondestructive"
+                $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Creates folder path"
+                $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", "Requires reinput of folder path"
+                $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
+                $result = $host.ui.PromptForChoice($title, $message, $options, 0)
+
+                switch ($result) {
+                    0 {
+                        Write-Information "Creating folder path $Userpath"
+                        New-item -path $Userpath -ItemType Directory -ErrorAction SilentlyContinue
+                        if (Test-LoggingPath -PathToTest $UserPath) {
+                            $Folder = New-LoggingFolder -RootPath $UserPath
+                            $ValidPath = $true
+                        }
+                    }
+                    1 {
+                        Write-Information "Aborting Cmdlet"
+                        Write-Error -Message "Folder does not exist and was not created"
+                    }
+                }
             }
 
         }
@@ -101,8 +123,7 @@ Function Set-LoggingPath {
             Write-Error ("Provided Path is not valid " + $Path) -ErrorAction Stop
         }
     }
-
-    Return $Folder
+    $Folder
 }
 Function Get-Eula {
     Write-Information ('
@@ -141,7 +162,7 @@ Function Get-Eula {
     switch ($result) {
         0 {
             Write-Information "`n"
-                    
+            Add-OspreyAppData -Name "IAgreeToTheEula" -Value $true -SkipLogging
         }
         1 {
             Write-Information "Aborting Cmdlet"
@@ -155,12 +176,14 @@ Function Get-Eula {
 ###MAIN###
 
 Function Start-Osprey {
+    param(
+        [switch]$SkipUpdate
+    )
     #some helpful comment here
     $InformationPreference = "Continue"
-    $OspreyInitialized = $false
-
     if ([string]::IsNullOrEmpty($Osprey.FilePath)) {
         Write-Information "Running Start-Osprey..."
+        $OspreyInitialized = $false
     }
     else {
         $OspreyInitialized = $true
@@ -221,15 +244,11 @@ Function Start-Osprey {
         for the M365 IR and BEC community. <3
 
         More information about Osprey can be found at https://github.com/syne0/osprey/wiki, including
-	troubleshooting information.
-                ') -ForegroundColor Cyan #not sure if that will be the final URL, may change that. just an idea. -s
+	troubleshooting information. Please go read it! :)
+                ') -ForegroundColor Cyan
 
         Read-Host -Prompt "Press any key to continue..."
-
-    }
-
-    #update checking
-    if ($OspreyInitialized -ne $true) {
+        #update checking
         # If we are skipping the update log it
         if ($SkipUpdate) {
             Write-Information "Skipping Update Check"
@@ -238,29 +257,19 @@ Function Start-Osprey {
         else {
             Update-OspreyModule
         }
-    }
-
-
-    <#EULA stuff. Should only ever do this ONCE per Osprey install! but is broken.
-    if ($OspreyInitialized -ne $true) {
         #gets EULA info from appdata variable
+        Read-OspreyAppData -SkipLogging
         if ($null -eq $OspreyAppData.IAgreeToTheEula) {
             Write-Information "You must agree with the EULA to continue"
             Get-Eula
-        }
+        }  
         else {
             Write-Information "Already agreed to the EULA"
         }
-    }#>
-
-    Get-Eula
-
-    Write-Information "Setting Up Osprey environment" 
-    
-    if ($OspreyInitialized -ne $true) {
         Connect-Prerequisites #Connects to the prerequisite modules
     }
-    
+
+    Write-Information "Setting Up Osprey environment" 
     ##Get path and set subdirectory##
     # If we have a path passed in then we need to check that otherwise ask
     if ([string]::IsNullOrEmpty($FilePath)) {
@@ -275,109 +284,89 @@ Function Start-Osprey {
                 
     # Determine if the input was a date time
     # True means it was NOT a datetime
-    if ($Null -eq ($StartRead -as [DateTime])) {
-                
+
+    if ([string]::IsNullOrEmpty($StartRead)) {
         # if we have a null entry (just hit enter) then set startread to the default of 90
-        if ([string]::IsNullOrEmpty($StartRead)) { $StartRead = 90 }
-                
+        $StartRead = 90
         # Calculate our startdate setting it to midnight
         Write-Information ("Calculating Start Date from current date minus " + $StartRead + " days.")
-        [DateTime]$StartDate = ((Get-Date).AddDays(-$StartRead)).Date
+        $StartDate = ((Get-Date).AddDays(-$StartRead)).Date
         Write-Information ("Setting StartDate by Calculation to " + $StartDate + "`n")
     }
-    elseif (!($null -eq ($StartRead -as [DateTime]))) {
+    elseif (($StartRead -ge 1) -and ($StartRead -le 180)) {
+        Write-Information ("Calculating Start Date from current date minus " + $StartRead + " days.")
+        $StartDate = ((Get-Date).AddDays(-$StartRead)).Date
+        Write-Information ("Setting StartDate by Calculation to " + $StartDate + "`n")
+    }
+    elseif ($StartRead -ge 180) {
+        Write-Information "That's too far ahead. Defaulting to 180 days."
+        $StartRead = 180
+        Write-Information ("Calculating Start Date from current date minus " + $StartRead + " days.")
+        $StartDate = ((Get-Date).AddDays(-$StartRead)).Date
+        Write-Information ("Setting StartDate by Calculation to " + $StartDate + "`n")
+    }
+    elseif ($StartRead -as [DateTime]) {
         #### DATE TIME Provided ####
-                
         # Convert the input to a date time object
-        [DateTime]$StartDate = (Get-Date $StartRead).Date
-                
+        $StartDate = (Get-Date $StartRead).Date
         # Test to make sure the date time is > 180 and < today
-        if ($StartDate -ge ((Get-date).AddDays(-180).Date) -and ($StartDate -le (Get-Date).Date)) {
-            #Valid Date do nothing
-        }
-        else {
+        if ($StartDate -le ((Get-date).AddDays(-180).Date) -or ($StartDate -ge (Get-Date).Date)) {
             Write-Information ("Date provided beyond acceptable range of 180 days.")
             Write-Information ("Setting date to default of Today - 180 days.")
-            [DateTime]$StartDate = ((Get-Date).AddDays(-180)).Date
+            $StartDate = ((Get-Date).AddDays(-180)).Date
         }
-                
         Write-Information ("Setting StartDate by Date to " + $StartDate + "`n")
     }
     else {
         Write-Error "Invalid date information provided.  Could not determine if this was a date or an integer." -ErrorAction Stop
     }
-                
-    $EndRead = Read-Host "`nLast Day of search Window (1-180, date, Default Today)"
-                
-    # Determine if the input was a date time
-    # True means it was NOT a datetime
-    if ($Null -eq ($EndRead -as [DateTime])) {
-        #### Not a Date time ####
-                
+
+    $EndRead = Read-Host "`nLast Day of search Window (0-179, date, Default Today)"
+    
+    if ([string]::IsNullOrEmpty($EndRead) -or $EndRead -eq 0) {
         # if we have a null entry (just hit enter) then set endread to the default of 1
-        if ([string]::IsNullOrEmpty($EndRead)) {
-            Write-Information ("Setting End Date to Today")
-            [DateTime]$EndDate = ((Get-Date).AddDays(1)).Date
-        }
-        else {
-            # Calculate our startdate setting it to midnight
-            Write-Information ("Calculating End Date from current date minus " + $EndRead + " days.")
-            # Subtract 1 from the EndRead entry so that we get one day less for the purpose of how searching works with times
-            [DateTime]$EndDate = ((Get-Date).AddDays( - ($EndRead - 1))).Date
-        }
-                
-        # Validate that the start date is further back in time than the end date
-        if ($StartDate -gt $EndDate) {
-            Write-Error "StartDate Cannot be More Recent than EndDate" -ErrorAction Stop
-        }
-        else {
-            Write-Information ("Setting EndDate by Calculation to " + $EndDate + "`n")
-        }
+        Write-Information ("Setting End Date to Today")
+        $EndDate = ((Get-Date).AddDays(1)).Date
     }
-    elseif (!($null -eq ($EndRead -as [DateTime]))) {
-        #### DATE TIME Provided ####
-                
-        # Convert the input to a date time object
-        [DateTime]$EndDate = ((Get-Date $EndRead).AddDays(1)).Date
-                
-        # Test to make sure the end date is newer than the start date
-        if ($StartDate -gt $EndDate) {
-            Write-Information "EndDate Selected was older than start date."
-            Write-Information "Setting EndDate to today."
-            [DateTime]$EndDate = ((Get-Date).AddDays(1)).Date
+    elseif (($EndRead -ge 1) -and ($EndRead -le 179)) {
+        Write-Information ("Calculating End Date from current date minus " + $EndRead + " days.")
+        # Subtract 1 from the EndRead entry so that we get one day less for the purpose of how searching works with times
+        $EndDate = ((Get-Date).AddDays( - ($EndRead - 1))).Date
+    }
+    elseif ($StartRead -as [DateTime]) {
+        $EndDate = (Get-Date $EndRead).Date
+        # Test to make sure the date time is > 180 and < today
+        if ($EndDate -le ((Get-date).AddDays(-179).Date) -or ($EndDate -ge ((Get-Date).AddDays(1)).Date)) {
+            Write-Information ("Date provided beyond acceptable range of 180 days.")
+            Write-Information ("Setting date to default of $StartDate +1 day")
+            $EndDate = ((Get-Date $StartDate).AddDays(1)).Date
         }
-        elseif ($EndDate -gt (get-Date).AddDays(2)) {
-            Write-Information "EndDate too Far in the future."
-            Write-Information "Setting EndDate to Today."
-            [DateTime]$EndDate = ((Get-Date).AddDays(1)).Date
-        }
-                
         Write-Information ("Setting EndDate by Date to " + $EndDate + "`n")
     }
-                
     else {
         Write-Error "Invalid date information provided.  Could not determine if this was a date or an integer." -ErrorAction Stop
     }
-    
-    
-    # Determine if we have access to a P1 or P2 Azure Ad License
-    if ([bool] (Get-MgSubscribedSku | Where-Object { ($_.SkuPartNumber -like "*aad_premium*") -or ($_.SkuPartNumber -like "*EMS*") -or ($_.SkuPartNumber -like "*E5*") -or ($_.SkuPartNumber -like "*G5*") -or ($_.SkuPartNumber -like "*SPB*") -or ($_.SkuPartNumber -like "*A3*") -or ($_.SkuPartNumber -like "*A5*") -or ($_.SkuPartNumber -like "*F1*")} )) {
-        Write-Information "Advanced Entra ID License Found"
-        [bool]$AdvancedEntraLicense = $true
+
+    # Test to make sure the end date is newer than the start date
+    if ($StartDate -gt $EndDate) {
+        Write-Information "EndDate Selected was older than start date."
+        Write-Information "Setting EndDate to today."
+        $EndDate = ((Get-Date).AddDays(1)).Date
     }
-    else {
-        Write-Information "Advanced Entra ID License NOT Found"
-        [bool]$AdvancedEntraLicense = $false
+    elseif ($EndDate -gt (get-Date).AddDays(2)) {
+        Write-Information "EndDate too Far in the future."
+        Write-Information "Setting EndDate to Today."
+        $EndDate = ((Get-Date).AddDays(1)).Date
     }
+                
+    Write-Information ("Setting EndDate by Date to " + $EndDate + "`n")
     
     $Output = [PSCustomObject]@{
-        FilePath             = $OutputPath
-        StartDate            = $StartDate
-        EndDate              = $EndDate
-        AdvancedAzureLicense = $AdvancedEntraLicense
+        FilePath  = $OutputPath
+        StartDate = $StartDate
+        EndDate   = $EndDate
     }
     
-
     # Create the script Osprey variable
     Write-Information "Setting up Script Osprey environment variable`n"
     New-Variable -Name Osprey -Scope Script -value $Output -Force
@@ -393,5 +382,3 @@ Function Start-Osprey {
     }
 
 }
-
-

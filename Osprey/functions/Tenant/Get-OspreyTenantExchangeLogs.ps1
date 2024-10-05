@@ -66,22 +66,23 @@ Function Get-OspreyTenantExchangeLogs {
             }
         }
         $NewRuleReport | Out-MultipleFileType -fileprefix "New_InboxRule" -csv
+
+        #sus rule investigation
         $InvestigateLog = @()
         Foreach ($rule in $NewRuleReport) {
-            $Investigate = $false
-            if ($rule.DeleteMessage -eq $true) { $Investigate = $true }
-            if (!([string]::IsNullOrEmpty($rule.ForwardAsAttachmentTo))) { $Investigate = $true }
-            if (!([string]::IsNullOrEmpty($rule.ForwardTo))) { $Investigate = $true }
-            if (!([string]::IsNullOrEmpty($rule.RedirectTo))) { $Investigate = $true }
-            if ($rule.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
-            
+
+            #comparison, call function
+            $investigate = Compare-SusInboxRule -InboxRule $rule
+            #if the function call returns true
+            #doing it this exact way probably isnt best practice but it works sooooo idc
             if ($Investigate -eq $true) {
                 $InvestigateLog += $rule
                 Out-LogFile ("Possible Investigate inbox rule found! ID:" + $rule.Id) -notice
             }
         }
+
         #if investigation-worthy rules were found, output those to csv.
-        if ($null -ne $InvestigateLog) {
+        if ($InvestigateLog.count -gt 0) {
             $InvestigateLog | Out-MultipleFileType -fileprefix "_Investigate_New_InboxRule" -csv -notice
         }
     }

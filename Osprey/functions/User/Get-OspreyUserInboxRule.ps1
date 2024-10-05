@@ -48,15 +48,9 @@ Function Get-OspreyUserInboxRule {
 
             #then for each rule we check for investigate rules
             foreach ($Rule in $SimpleInboxRules) {
-                $Investigate = $false #reset var
 
-                # Evaluate each of the properties that we know bad actors like to use and flip the flag if needed
-                if ($rule.DeleteMessage -eq $true) { $Investigate = $true }
-                if (!([string]::IsNullOrEmpty($rule.ForwardAsAttachmentTo))) { $Investigate = $true }
-                if (!([string]::IsNullOrEmpty($rule.ForwardTo))) { $Investigate = $true }
-                if (!([string]::IsNullOrEmpty($rule.RedirectTo))) { $Investigate = $true }
-                if ($rule.MoveToFolder -in "Archive", "Conversation History", "RSS Subscription") { $Investigate = $true }
-                
+                #comparison, call function
+                $investigate = Compare-SusInboxRule -InboxRule $rule
                 #if we found some investigate rules, let the user know
                 if ($Investigate -eq $true) {
                     $InvestigateLog += $rule

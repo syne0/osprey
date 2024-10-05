@@ -4,7 +4,7 @@
     Looks for AutoReplyState of Enabled and exports the config.
 .OUTPUTS
     File: AutoReply.txt
-#>  #conf 7/13
+#>
 Function Get-OspreyUserAutoReply {
 
     param

@@ -1,5 +1,7 @@
-﻿# Osprey Documentation and "How to" videos
-https://cybercorner.tech/osprey/
+﻿# Osprey Documentation
+Please visit the wiki for details on running the Osprey module.
+
+https://github.com/syne0/osprey/wiki
 # Osprey + Github
 
 ## Important
