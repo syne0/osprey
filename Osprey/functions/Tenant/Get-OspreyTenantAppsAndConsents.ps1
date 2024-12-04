@@ -48,6 +48,7 @@ Function Get-OspreyTenantAppsAndConsents {
     ##Searching for known malicious applications##
 
     $AllTenantApps = @(Get-MgServicePrincipal -all) #get all apps in tenant
+    $AllTenantApps | Out-MultipleFileType -FilePrefix "Tenant_Applications" -csv -json
     
     $SuspiciousApps = Invoke-RestMethod -URI https://raw.githubusercontent.com/randomaccess3/detections/main/M365_Oauth_Apps/MaliciousOauthAppDetections.json #pull list of malicious oauth apps from github
 
