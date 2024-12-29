@@ -46,6 +46,7 @@ Function Get-OspreyTenantAppsAndConsents {
         $AppConsentReport  | Out-MultipleFileType -fileprefix "Entra_App_Consents" -csv -json
     }
     ##Searching for known malicious applications##
+    #TODO: General improvements to this process and output. Move list to Huntress project eventually as well.
 
     $AllTenantApps = @(Get-MgServicePrincipal -all) #get all apps in tenant
     $AllTenantApps | Out-MultipleFileType -FilePrefix "Tenant_Applications" -csv -json
@@ -63,18 +64,27 @@ Function Get-OspreyTenantAppsAndConsents {
         $AppOutput = foreach ($match in $MatchingApps) {
             #do this for each app match we found
 
-            [PSCustomObject]@{ #build a custom object that takes information from various sources and outputs it
-                ApplicationName  = $match.DisplayName #from entra
-                ApplicationID    = $match.AppId #from entra
-                Enabled          = $match.AccountEnabled #from entra
-                Created          = $match.AdditionalProperties.createdDateTime #from entra
-                Description      = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty description #from github list
-                UsersAssigned    = Get-MgServicePrincipalAppRoleAssignedTo -serviceprincipalid $match.id | Select-Object -expandproperty PrincipalDisplayname | Out-String #need to pull from additional cmd
-                References       = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty references | Out-String  #from github list
-                KnownPermissions = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty Permissions | Out-String #from github list  
+            #Then prepare to loop the PSCO creation if more than one user is assigned to the application
+            $UsersAssignedVar = Get-MgServicePrincipalAppRoleAssignedTo -serviceprincipalid $match.id
+
+            foreach ($assignment in $UsersAssignedVar) {
+
+                $AssignedUser = $assignment | Select-Object -ExpandProperty PrincipalID
+                $AssignedUser = Get-MGUser -UserID $AssignedUser | Select-Object -ExpandProperty UserPrincipalName
+
+                [PSCustomObject]@{ #build a custom object that takes information from various sources and outputs it
+                    ApplicationName  = $match.DisplayName #from entra
+                    ApplicationID    = $match.AppId #from entra
+                    Enabled          = $match.AccountEnabled #from entra
+                    Created          = $match.AdditionalProperties.createdDateTime #from entra
+                    Description      = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty description #from github list
+                    UserAssigned    = $AssignedUser | Out-String 
+                    References       = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty references | Out-String  #from github list
+                    KnownPermissions = $SuspiciousApps.applications | Where-Object appid -match $match.AppId | Select-object -expandproperty Permissions | Out-String #from github list  
+                }
             }
         }
-        $AppOutput | Out-MultipleFileType -FilePrefix "_Investigate_Suspicious_App_List" -csv -notice
+        $AppOutput | Out-MultipleFileType -FilePrefix "_Investigate_Suspicious_App_List" -csv -xml -notice
     }
 
     <#
