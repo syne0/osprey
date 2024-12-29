@@ -1,9 +1,7 @@
-# Osprey Documentation and "How to" videos
-https://cybercorner.tech/osprey/
+# Osprey Documentation
+Please visit the wiki for details on running the Osprey module.
 
-NOTICE: When running Osprey with the most up to date versions of ExchangeOnlineManagement and Microsoft.Graph, you may see an error
-referencing Azure.core.dll. This is not an Osprey issue, but is an issue with it's dependancies. Downgrade EXO to 3.4.0 or Graph
-to 2.19.0 and remove other installed versions of the EXO and Graph modules.
+https://github.com/syne0/osprey/wiki
 
 # Osprey + Github
 
@@ -44,18 +42,18 @@ data gathering easier.
 ## HOW TO USE:
 Osprey is divided into two primary forms of cmdlets; *user* based Cmdlets and *tenant* based cmdlets.
 
-User based cmdlets take the form Verb-OspreyUser<action>.  They all expect a -user switch and
+User based cmdlets take the form `Verb-OspreyUser<action>`.  They all expect a `-user` switch and
 will retrieve information specific to the user that is specified.  Tenant based cmdlets take
 the form Verb-OspreyTenant<Action>.  They don't need any switches and will return information
 about the whole tenant.
 
-You must run the Start-Osprey command first, which will initialize the session and allow you to set the required parameters.
-After Osprey is initialized you should run Start-OspreyTenantInvestigation which will run all the tenant based
+You must run the `Start-Osprey` command first, which will initialize the session and allow you to set the required parameters.
+After Osprey is initialized you should run `Start-OspreyTenantInvestigation` which will run all the tenant based
 cmdlets and provide a collection of data to start with.  Once this data has been reviewed
 if there are specific user(s) that more information should be gathered on
-Start-OspreyUserInvestigation will gather all the User specific information for a single user.
+`Start-OspreyUserInvestigation` will gather all the User specific information for a single user.
 
-You can run Start-Osprey again in the same PowerShell Session and get prompted for reinitialization.
+You can run `Start-Osprey` again in the same PowerShell Session and get prompted for reinitialization.
 When reinitializing you can either just change the investigation parameters such as the timeframe,
 or can change the actual tenant you are investigating, which is helpful for responders who may
 investigate incidents for different clients.
